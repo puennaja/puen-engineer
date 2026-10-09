@@ -1,5 +1,7 @@
 # Feature Delivery Lifecycle (FDL) — v0.1
 
+> **Architecture note (2026-10-09):** This draft describes engineering activities, **not mandatory sequential phases**. Apply an iterative, risk-proportional delivery model. See [Universal Engineering System](../architecture/universal-engineering-system.md) and [ADR-0001](../decisions/0001-universal-engineering-system.md).
+
 - **Status:** Proposed / Draft (not an approved team standard)
 - **Created:** 2026-10-09
 - **Owner:** My Engineer
