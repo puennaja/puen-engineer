@@ -1,6 +1,8 @@
-# Solution Design Workflow — v0.1
+# Solution Design Workflow — v1.0
 
-- **Status:** Proposed / Draft — awaiting review
+- **Status:** Accepted — My Engineer Track A workflow
+- **Approved:** 2026-10-10 by repository owner
+- **Version:** 1.0
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **Foundation:** [FDL v1.0 — Accepted](./feature-delivery-lifecycle.md)
@@ -8,6 +10,10 @@
 - **Downstream:** Delivery Planning (not yet defined)
 - **Scale:** Solo engineer → feature team → product organization
 - **Example:** Fictional Personal Finance App only; this repository is public
+
+## Approval scope
+
+The seven adaptable design activities, evidence-based option comparison, one core Solution Design Summary, and **risk-proportional documentation** are approved as the baseline. A lightweight issue note is sufficient for low-risk changes; moderate changes may use the full summary; high-risk changes require deeper review and an ADR **when a significant long-lived decision warrants it**. ADRs, diagrams and ceremonies are not mandatory for every change. Design approval means ready for **delivery planning**, not automatic readiness to implement or release.
 
 ## 1. Why this workflow exists
 
@@ -179,7 +185,7 @@ Human responsibility includes choosing design trade-offs, verifying claims, revi
 
 Build a reusable skill **only after** observing repeated time-consuming design work and validating that the skill provides measurable value with reviewable results.
 
-## 10. Pilot evaluation and pending review
+## 10. Pilot evaluation and post-approval refinement
 
 Pilot with:
 1. **Low-risk local change:** Does the workflow stay brief without forced diagrams/ADRs?
@@ -194,4 +200,4 @@ Look for fewer unsupported design assumptions, early discovery of critical risks
 - Does the distinction between *Accepted for Planning* and *Ready for Implementation* remain clear?
 - Is the workflow flexible enough for brownfield, greenfield and multiple teams?
 
-**Status stays Draft until explicit approval.** This document does not change the accepted FDL, Requirement Discovery or Technical Discovery workflows.
+**Status:** Accepted baseline. The listed questions remain open for refinement through pilots; the fictional example remains illustrative, not validated requirements or a chosen architecture. This approval does not change the accepted FDL, Requirement Discovery or Technical Discovery workflows.
