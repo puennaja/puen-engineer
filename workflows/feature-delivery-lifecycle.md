@@ -9,6 +9,7 @@
 - **Owner:** My Engineer
 - **Scope:** One feature or change, from an informal request to verified production outcome
 - **Companion:** [AI-assisted feature delivery](./ai-assisted-feature-delivery.md)
+- **Optional mentorship:** [Track B — Engineering Practice](../practice/README.md) (not required for FDL adoption)
 - **Repository:** Public — use fictional examples only; never publish internal tickets, credentials, code, or architecture
 
 ## Approval scope
