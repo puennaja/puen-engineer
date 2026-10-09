@@ -1,13 +1,21 @@
-# Feature Delivery Lifecycle (FDL) — v0.1
+# Feature Delivery Lifecycle (FDL) — v1.0
 
-> **Architecture note (2026-10-09):** This draft describes engineering activities, **not mandatory sequential phases**. Apply an iterative, risk-proportional delivery model. See [Universal Engineering System](../architecture/universal-engineering-system.md) and [ADR-0001](../decisions/0001-universal-engineering-system.md).
+> **Architecture note (2026-10-09):** This foundation describes engineering activities, **not mandatory sequential phases**. Apply an iterative, risk-proportional delivery model. See [Universal Engineering System](../architecture/universal-engineering-system.md) and [ADR-0001](../decisions/0001-universal-engineering-system.md).
 
-- **Status:** Proposed / Draft (not an approved team standard)
+- **Status:** Accepted — My Engineer foundation (not automatically a company-wide policy)
+- **Approved:** 2026-10-09 by repository owner
+- **Version:** 1.0
 - **Created:** 2026-10-09
 - **Owner:** My Engineer
 - **Scope:** One feature or change, from an informal request to verified production outcome
 - **Companion:** [AI-assisted feature delivery](./ai-assisted-feature-delivery.md)
 - **Repository:** Public — use fictional examples only; never publish internal tickets, credentials, code, or architecture
+
+## Approval scope
+
+This lifecycle is the accepted **baseline for My Engineer**. Its activities, role boundaries, traceability, and risk-proportional evidence define what should be considered across feature delivery. The numbered stages are a reference model, **not a mandatory sequential pipeline or fixed set of ceremonies**. Teams and individuals may combine, revisit, or skip inapplicable activities when justified by risk and context. Templates, specific automation, enforcement rules, and integrations require separate evaluation and agreement.
+
+**Improvement principle:** Every workflow must solve an identifiable problem; every artifact must have an intended consumer; every skill must be validated in real work before scaling. Prefer understanding and practice before automation.
 
 ## Purpose
 
