@@ -1,6 +1,8 @@
-# Technical Discovery Workflow — v0.1
+# Technical Discovery Workflow — v1.0
 
-- **Status:** Proposed / Draft — awaiting review
+- **Status:** Accepted — My Engineer Track A workflow
+- **Approved:** 2026-10-10 by repository owner
+- **Version:** 1.0
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **Foundation:** [Accepted FDL v1.0](./feature-delivery-lifecycle.md)
@@ -8,6 +10,12 @@
 - **Next activity:** Solution Design (to be defined)
 - **Scale:** Solo developer → feature team → product organization
 - **Example:** Fictional personal-finance application (no confidential data)
+
+## Approval scope
+
+This workflow is accepted as the evidence-first Technical Discovery baseline. **Material claims about existing-system behavior, contracts, dependencies and risks require traceable evidence** such as repository/path/symbol and revision, a test, a runtime observation, or confirmation by an accountable owner. State which parts have **not** been inspected, and distinguish verified facts from inference and unknowns.
+
+**Evidence should be proportional to impact:** reference consequential findings and decisions, not every sentence or general engineering fact. Read-only bounded exploration, greenfield/brownfield modes and a single lightweight summary remain the baseline. Future skill automation is not implied by this approval.
 
 ## Purpose
 
@@ -184,7 +192,7 @@ Pilot a **small reversible brownfield change** and a **greenfield feasibility qu
 
 Avoid extrapolating measurable productivity benefits from one pilot.
 
-## Review questions for v0.1
+## Refinement and pilot questions (post-approval)
 
 1. Is a **single Technical Discovery Summary** enough for solo, team and multi-repo cases?
 2. Should the evidence ledger be mandatory for all findings or only consequential ones?
@@ -192,4 +200,4 @@ Avoid extrapolating measurable productivity benefits from one pilot.
 4. When should a focused spike replace further document review?
 5. Is the greenfield mode distinct enough from Solution Design and Product Discovery?
 
-**Pending approval:** This is a proposed Track A workflow. [FDL v1.0](./feature-delivery-lifecycle.md) and [Requirement Discovery v1.0](./requirement-discovery.md) remain accepted independently. No new `puen-stack` Skill is approved or created.
+**Status:** Accepted baseline. Refinements remain open for pilot learning. [FDL v1.0](./feature-delivery-lifecycle.md) and [Requirement Discovery v1.0](./requirement-discovery.md) remain accepted independently. No new `puen-stack` Skill is approved or created.
