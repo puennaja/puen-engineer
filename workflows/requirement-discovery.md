@@ -1,12 +1,18 @@
-# Requirement Discovery Workflow — v0.1
+# Requirement Discovery Workflow — v1.0
 
-- **Status:** Proposed / Draft — awaiting review
+- **Status:** Accepted — My Engineer Track A workflow
+- **Approved:** 2026-10-10 by repository owner
+- **Version:** 1.0
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **Foundation:** [Accepted FDL v1.0](./feature-delivery-lifecycle.md)
 - **Practice companion:** [Track B: Requirement Discovery](../practice/01-requirement-discovery.md) (optional; never a prerequisite)
 - **Scale:** Solo engineer → delivery team → product organization
 - **Example:** Fictional personal finance application only; no internal company data
+
+## Approval scope
+
+The five activities, single-summary artifact, human validation, and **risk/uncertainty-proportional discovery** are approved as the baseline. Discovery depth is determined by the material uncertainty and consequences of being wrong, not a universal checklist or ceremony. This workflow permits small changes to use a short issue and ambiguous/high-risk work to require deeper evidence. Acceptance does **not** mean every example hypothesis is validated, nor that future skills, templates, or automation are approved.
 
 ## Purpose and problem solved
 
@@ -166,7 +172,7 @@ Run on one **synthetic or approved non-sensitive** request and record:
 
 No automatic productivity claim from a single exercise.
 
-## Review decisions pending (v0.1)
+## Refinements and pilot questions (post-approval)
 
 1. Is the one-summary artifact lean enough for solo use yet useful for teams?
 2. Should an explicit business-value/prioritization question always appear in the check?
@@ -174,4 +180,4 @@ No automatic productivity claim from a single exercise.
 4. Are privacy/security prompts adequate for the personal-finance sample?
 5. Which two pilot cases (tiny change and uncertain product request) best demonstrate appropriate scaling?
 
-**Status remains Draft** until reviewed and explicitly approved. Neither this document nor the fictional case changes the accepted FDL v1.0.
+**Status:** Accepted baseline. These refinement questions remain open and may be improved through pilots without blocking use. The fictional case is not a validated requirement, and FDL v1.0 remains the parent foundation.
