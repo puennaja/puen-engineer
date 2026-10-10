@@ -83,6 +83,37 @@ Verification เริ่มได้ตั้งแต่มี Acceptance Case
 
 **ไม่ต้องรอถึงขั้นท้ายค่อย Test** Developer Checks เป็น Feedback ภายใน Implementation แต่ Independent Verification อยู่ใน Workflow แยก และสามารถเรียกตรวจระหว่างทำได้
 
+## ปรับแนวทาง Implementation จาก pstack + grill-me (เสนอสำหรับ v1.0)
+
+ส่วนนี้ **ยืมหลักคิด ไม่ได้บังคับให้ใช้ Plugin หรือ Slash Command** อ้างอิง [pstack Guide](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/README.md), [Understand](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/03-understand.md), [Design](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/04-design.md), [Build](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/05-build-and-clean.md) และ [grilling ของ mattpocock](https://github.com/mattpocock/skills/blob/main/skills/productivity/grilling/SKILL.md) โดยถือว่า **Workflow เป็นหลัก ส่วน Skill เป็นเครื่องมือช่วยทำงาน**
+
+### 1. ก่อน AI แก้โค้ด ต้องมี Goal Contract
+
+ข้อมูลที่ต้องมีหรืออ้างจาก Jira/Plan เดิมคือ **Goal**, **Done Check ที่ผ่าน/ไม่ผ่านได้**, **Proof ที่ต้องเห็น**, **Known Facts/Code References** และ **Constraints** เช่น Read-only หรือหยุดรอ Decision Owner ถ้าข้อมูลอยู่ใน Issue แล้วไม่ต้องเขียน Spec ซ้ำทุก Prompt ถ้า Requirement คลุมเครือให้ AI สรุปความเข้าใจก่อนแก้โค้ด
+
+### 2. เข้าใจโค้ดจาก Evidence และถามเฉพาะ Decision สำคัญ
+
+เริ่มจาก Read-only Investigation ว่าโค้ดทำงานอย่างไร (**how**) แล้วดูเหตุผลที่ออกแบบไว้ (**why**) เมื่อกำลังเปลี่ยน Boundary, Ownership หรือ Contract แยก Fact, Inference, Assumption และ Unknown ห้ามถือว่าทฤษฎีเรื่อง Root Cause เป็นข้อเท็จจริงโดยไม่มี Reproduction
+
+นำแนวคิด `grill-me` มาใช้เฉพาะ **การตัดสินใจที่คลุมเครือหรือเปลี่ยนยาก**: ไล่ Decision Tree ตาม Dependencies, เสนอตัวเลือกพร้อมเหตุผลให้ Human ตัดสิน แต่ข้อเท็จจริงที่หาได้จาก Codebase ให้ AI ไปอ่านเอง ไม่ถาม Engineer เกินจำเป็น **Solution Design ที่ Approved อยู่แล้วเป็นเจ้าของ Design Decision**; การ Grill ไม่ใช่การ Approve Design โดยอัตโนมัติ
+
+### 3. เลือก Execution Path ให้เหมาะกับชนิดงาน
+
+| ประเภท | สิ่งที่ควรทำ | เมื่อไรต้องกลับไปค้นหาเพิ่ม |
+| --- | --- | --- |
+| **Bug** | Reproduce ด้วย Surface ที่ใกล้ผู้ใช้จริงที่สุด → หา Root Cause → แก้เล็กเท่าที่ Evidence รองรับ → รัน Repro ซ้ำ | ถ้ายัง Reproduce ไม่ได้ให้แจ้ง **Inconclusive** ไม่เดา Fix |
+| **Feature** | เริ่มจาก Acceptance/Contracts/Data Shape → Implement ทีละ Vertical Slice ที่ Verify ได้ | ถ้า Boundary หรือ Data Shape เสี่ยง ให้กลับ Solution Design และพิจารณา Options/Prototypes |
+| **Refactor** | เก็บผล Behavior เดิม → เปลี่ยนโครงสร้าง → พิสูจน์ Behavior เท่าเดิม | ถ้าผลลัพธ์หรือ Contract เปลี่ยนโดยไม่ตั้งใจ ให้หยุดทบทวน |
+| **Performance** | วัด Baseline และ Bottleneck ก่อนแก้ แล้ว Compare โดยเงื่อนไขใกล้กัน | ถ้าตัวเลขวัดไม่น่าเชื่อถือ ให้ตรวจ Harness ก่อนอ้างว่าเร็วขึ้น |
+
+ทำ **Change → Developer Check → Inspect → Adjust** แบบสั้น ๆ จะเลือก Test-first, Test-after, Real CLI/API/UI หรือ Experiment ก็ได้ตาม Risk ไม่บังคับ TDD ทุกกรณี
+
+### 4. เตรียม Diff ให้ Review ได้
+
+ตัด Unrelated Edits, Dead Compatibility Code และ Defensive Code ที่ไม่มีหลักฐานรองรับเมื่อปลอดภัย แต่ **ไม่เอากฎลบ Comments ทั้งหมดของ pstack มาใช้ตรง ๆ**: Comments ที่อธิบาย Invariant, External Constraints และ API Contract ที่จำเป็นยังมีคุณค่า เก็บ Decisions/Evidence ใน Jira/MR เดิม
+
+**Candidate Skills ในอนาคต (ยังไม่สร้าง):** Task Router (Goal/Done/Evidence → Procedure), Codebase Grounding, Implement by Slice และ Decision Interview ไม่ Copy `/poteto-mode`, `/architect`, `/grill-me` ไปเป็น Chain บังคับใน `AGENTS.md` ต้อง Pilot เทียบ No-skill Baseline ทั้งด้าน Quality, Overhead และ Token Cost ก่อน
+
 ## แนวทางตาม Risk
 
 - รักษาพฤติกรรมนอก Scope; ระวัง Compatibility และ Side Effects
