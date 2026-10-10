@@ -7,6 +7,15 @@
 - **ฉบับหลักภาษาอังกฤษ:** [English reading index](./a-philosophy-of-software-design-reading-index.md)
 - **เป้าหมาย:** เติม Architecture & System Design กับ Code Quality & Maintainability ใน My Engineer
 
+
+## งานศึกษารอบแรก — Author Talk + Stanford Lecture Notes
+
+- **เอกสาร:** [ฉบับไทย](./a-philosophy-of-software-design-author-talk.th.md) · [อังกฤษ](./a-philosophy-of-software-design-author-talk.md)
+- **สถานะ:** 🟡 Draft — สรุปจากเนื้อหาที่ตรวจได้ ไม่ใช่ Full Video / Full Chapter / สรุปหนังสือฉบับ 2
+- **ตรวจแล้ว:** บางส่วนของ Transcript วิดีโอปี 2018 + เอกสาร CS190 จากผู้เขียนปี 2018/2021 + บทสัมภาษณ์ประกอบ
+- **Candidates:** AP-C01–AP-C04 (ยังไม่ได้ Approved) และไม่มีการเปลี่ยน Principle ที่ผ่านแล้ว
+- **อุปสรรค PDF:** ลิงก์ของผู้เขียนยืนยันได้ แต่ระบบโหลดไฟล์ 13.9 MB ไม่สำเร็จ จึงยังไม่ระบุว่าอ่าน Official Extract แล้ว
+
 ## ขอบเขตและวิธีอ้างอิง
 
 ไฟล์นี้เป็น **สารบัญแหล่งข้อมูลและแผนอ่าน** ยัง **ไม่ใช่สรุปหนังสือเต็มเล่ม** และไม่อ้างว่าอ่านครบทุกบท
