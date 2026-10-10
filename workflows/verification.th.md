@@ -9,6 +9,16 @@
 - **ต้นฉบับอังกฤษ:** [Verification](./verification.md)
 - **ถัดไป:** Release & Operations (ยังไม่ได้ออกแบบ)
 
+## หน่วยที่ต้อง Verify: Work Item ตาม Jira (ข้อตกลง Track A)
+
+**Work Item = Jira Story, Sub-task, Bug หรือ Task ที่ Engineer รับผิดชอบจริง** โดยต้องระบุ Acceptance และหลักฐานที่ตรวจได้ งานของ Backend Engineer อาจมีแค่ BE, BFF หรือ BE+BFF ใน Scope ที่ตกลง ส่วน FE อาจเป็น Developer อีกคน **Verification ต้องตรวจตาม Work Item ที่ได้รับมอบหมาย** ไม่เพิ่ม Scope งานข้าม Repo/FE เอง
+
+**ก่อนเขียนโค้ด:** อ้าง Story Acceptance และ Contracts ที่ตกลงแล้วเพื่อกำหนด Expected Behavior, Negative Cases และ Test Seam เฉพาะส่วนที่รับผิดชอบ งาน BE-only ตรวจ Data/API Semantics, Authorization, Idempotency และ Contract ได้โดยไม่ต้องอ้างว่าระบบ FE ผ่าน Integration แล้ว ส่วน BFF ตรวจ Mapping, Error Semantics และ Contract กับ Consumer/Provider ด้วย Fixture หรือ Integration ที่เหมาะสม
+
+**หลังมีโค้ด:** ตรวจ Behavior จริง, คุณภาพ Unit Tests, Contract/Integration Tests ภายใน Scope และ Independent Review ตาม Risk ส่วน **Story-level Integration Verification** ระหว่าง BE/BFF/FE เป็นงานประสานการตรวจตาม Acceptance ของ Story เมื่อจำเป็น โดยมี Owner ของทีมที่เหมาะสม ไม่ใช่ Human Gate ใหม่ที่ต้องมีทุก Story และไม่ใช่เหตุผลให้ AI ไปทำงาน FE ของคนอื่นเอง ถ้าเชื่อมทดสอบไม่ได้ ให้ระบุ **Not run / Blocked / External Owner** อย่างชัดเจน **Work Item Verify ผ่าน ไม่เท่ากับ Story ทั้งหมดผ่าน**
+
+**Human Gates:** Design/Planning อนุมัติระดับ Feature/Story ส่วน Implementation/Verification อนุมัติ **แต่ละ Work Item ที่ตกลงแล้ว** ถ้า Work Item คือ Story เองก็ใช้ Jira รายการเดียวบันทึกการตัดสินใจหลาย Gate โดยไม่สร้างเอกสารซ้ำ เอกสาร [Delivery Planning ที่ Accepted](./delivery-planning.th.md) ยังใช้คำว่า Increment ในความหมายของ Delivery Slice ตาม Agile ได้ แต่หน่วยที่ AI รับงานคือ **Work Item** ดู [Track A Decisions](./ai-assisted-feature-delivery.md)
+
 ## เป้าหมายและเวลาเริ่ม
 
 สร้าง **หลักฐานที่เชื่อถือได้ว่าโค้ดตรง Acceptance ไม่ทำลาย Contract สำคัญ และได้รับการ Review อย่างเหมาะสม**
@@ -19,10 +29,10 @@ Implementation รับผิดชอบการสร้าง Change แล
 
 ## Execution Loop ร่วมกัน — ข้อตกลงการส่งต่องาน (เสนอสำหรับ v1.0)
 
-Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Increment:
+Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Work Item:
 
 ```text
-Feature Design/Plan ที่ Approved → Increment
+Feature Design/Plan ที่ Approved → Work Item
    ↓
 Verification-first: Acceptance, Expected Outcomes, Test Seams
    ↓
@@ -36,7 +46,7 @@ Human Verification Gate → Release Review (แยก)
 **Verification เริ่มได้ก่อนเขียนโค้ด:** กำหนดพฤติกรรมและหลักฐานจาก Requirement/Contract ที่ยืนยันก่อน ไม่ใช่เพิ่ม Approval Gate ใหม่ **เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
 
 **ส่งต่อผ่าน Jira/MR เดิมเพียงชุดเดียว** ไม่บังคับสร้างเอกสารใหม่:
-- **Identity / Scope:** Increment, Acceptance IDs, Repo/Diff Links, Exclusions
+- **Identity / Scope:** Work Item, Acceptance IDs, Repo/Diff Links, Exclusions
 - **Changes / Risks:** Boundary ที่เปลี่ยน, Contracts/Data/Migration และ Failure Cases
 - **Evidence:** Checks ที่รันจริงพร้อมผล/Environment, สิ่งที่ **Not run / Blocked**
 - **Feedback:** Findings พร้อม Severity/หลักฐาน/Owner, ผลแก้และตรวจซ้ำ
@@ -58,7 +68,7 @@ Human Verification Gate → Release Review (แยก)
 
 **หลังมี Code:** Verification ตรวจว่า Developer Tests จับ Behavior ผิดได้จริงหรือไม่ และรัน Independent Behavior Checks บน API/UI/CLI/Data ตามความเสี่ยง พร้อม Review Diff เทียบ Spec และ Repo Standards Unit Tests/Build ผ่านอย่างเดียว **ยังไม่ใช่หลักฐานเพียงพอ** Findings ส่งกลับ Implement เพื่อ Fix/Retest ตาม Q7 และการเปลี่ยน Acceptance/Design สำคัญต้องกลับไปหา Human Gate ที่ได้รับผลกระทบ
 
-Human Implementation/Verification Gates ราย Increment ยังมีอยู่ ใช้ Jira/MR เดิมเก็บ Scenario/Expected Outcome/Check/Result ไม่บังคับเอกสารหรือ Skill เพิ่ม อ้างอิง [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md) และ [pstack Verification](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md)
+Human Implementation/Verification Gates ราย Work Item ยังมีอยู่ ใช้ Jira/MR เดิมเก็บ Scenario/Expected Outcome/Check/Result ไม่บังคับเอกสารหรือ Skill เพิ่ม อ้างอิง [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md) และ [pstack Verification](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md)
 
 ## เกณฑ์เริ่มและเลือกความลึก
 
@@ -124,17 +134,17 @@ Human Implementation/Verification Gates ราย Increment ยังมีอ�
 
 ## ระดับการอนุมัติและการวนกลับอย่างปลอดภัย (Track A ตกลงแล้ว)
 
-**Feature-level Human Gates:** Solution Design อนุมัติแนวทางเทคนิคและ Contracts หลัก ส่วน Delivery Planning อนุมัติ Full Feature Scope, Critical Dependencies/Risks และแผนแบบ Progressive Detail สำหรับ Increment ถัด ๆ ไป **Per-Increment Human Gates:** Implementation อนุมัติ Scope/Diff ของ Increment ก่อน Publish อย่างเป็นทางการ และ Verification อนุมัติ **Acceptance Evidence, Review Findings และ Remaining Risks ของแต่ละ Increment** แยกกัน
+**Feature-level Human Gates:** Solution Design อนุมัติแนวทางเทคนิคและ Contracts หลัก ส่วน Delivery Planning อนุมัติ Full Feature Scope, Critical Dependencies/Risks และแผนแบบ Progressive Detail สำหรับ Work Item ถัด ๆ ไป **Per-Work-Item Human Gates:** Implementation อนุมัติ Scope/Diff ของ Work Item ก่อน Publish อย่างเป็นทางการ และ Verification อนุมัติ **Acceptance Evidence, Review Findings และ Remaining Risks ของแต่ละ Work Item** แยกกัน
 
-Increment ถัดไปที่อยู่ใน **Feature Scope ที่อนุมัติแล้ว** สามารถแตก Acceptance และ Verification Checks ให้ละเอียดเพิ่มได้โดยไม่ต้องขอ Approve Design/Planning ซ้ำเพียงเพราะเริ่มงานรอบใหม่ Increment เดียวอาจครอบคลุมหลาย Repos: ใช้ Feature-level Source of Truth เชื่อม Repo Diff/MRs และ Integration Evidence
+Work Item ถัดไปที่อยู่ใน **Feature Scope ที่อนุมัติแล้ว** สามารถแตก Acceptance และ Verification Checks ให้ละเอียดเพิ่มได้โดยไม่ต้องขอ Approve Design/Planning ซ้ำเพียงเพราะเริ่มงานรอบใหม่ Work Item เดียวอาจครอบคลุมหลาย Repos: ใช้ Feature-level Source of Truth เชื่อม Repo Diff/MRs และ Integration Evidence
 
-**Q7=B — Loopback:** Finding ที่แก้ใน Scope/Design/Risk เดิมของ Increment ส่งกลับ Implementation เพื่อ Fix และ Retest ตาม Impact ได้ **ไม่ต้อง Approve ทุก Edit หรือเริ่ม Feature Gate ใหม่** แต่ Human ยังคงต้องตัดสิน Verification Gate ของ Increment นั้น ถ้า Finding ส่งผลให้ Requirement/Feature Scope, Architecture, API/Data Contract สำคัญ, Security/Data Risk หรือ Delivery Constraints เปลี่ยนอย่างมีนัยสำคัญ ให้ย้อนกลับไป Approve **เฉพาะ Gate ก่อนหน้าที่ได้รับผลกระทบ**
+**Q7=B — Loopback:** Finding ที่แก้ใน Scope/Design/Risk เดิมของ Work Item ส่งกลับ Implementation เพื่อ Fix และ Retest ตาม Impact ได้ **ไม่ต้อง Approve ทุก Edit หรือเริ่ม Feature Gate ใหม่** แต่ Human ยังคงต้องตัดสิน Verification Gate ของ Work Item นั้น ถ้า Finding ส่งผลให้ Requirement/Feature Scope, Architecture, API/Data Contract สำคัญ, Security/Data Risk หรือ Delivery Constraints เปลี่ยนอย่างมีนัยสำคัญ ให้ย้อนกลับไป Approve **เฉพาะ Gate ก่อนหน้าที่ได้รับผลกระทบ**
 
-เก็บ Feature/Increment Approval พร้อม Human Owner และ Risk ใน Jira/MR เดิม **ก่อนเปิด Draft MR แต่ละอัน** ต้องตรวจ Git Flow ของ Repo/งานและถาม Human แยกเสมอ แม้ Increment มีหลาย Repos การ Verify ผ่านไม่ได้อนุญาตให้ Mark Ready, Merge หรือ Deploy แทนมนุษย์
+เก็บ Feature/Work Item Approval พร้อม Human Owner และ Risk ใน Jira/MR เดิม **ก่อนเปิด Draft MR แต่ละอัน** ต้องตรวจ Git Flow ของ Repo/งานและถาม Human แยกเสมอ แม้ Work Item มีหลาย Repos การ Verify ผ่านไม่ได้อนุญาตให้ Mark Ready, Merge หรือ Deploy แทนมนุษย์
 
 ## Fixed Verification Gate, Risk-based Review และ Scoped Rework (เสนอสำหรับ AI-assisted v1.0)
 
-**Q4=B — Risk-based Independent Review:** งาน Low-risk ทำ Review Pass แยกด้วยตนเองได้เมื่อ Policy ทีมอนุญาต งาน Medium-risk ให้มี Independent Diff Review งาน High-risk ขอ Human Peer/Domain Reviewer ที่เหมาะสมตาม Risk และ Policy แต่ **Human Verification Gate ต้องมีทุก Increment ที่ตกลงแล้ว** ไม่ว่า Review จะเข้มแค่ไหน
+**Q4=B — Risk-based Independent Review:** งาน Low-risk ทำ Review Pass แยกด้วยตนเองได้เมื่อ Policy ทีมอนุญาต งาน Medium-risk ให้มี Independent Diff Review งาน High-risk ขอ Human Peer/Domain Reviewer ที่เหมาะสมตาม Risk และ Policy แต่ **Human Verification Gate ต้องมีทุก Work Item ที่ตกลงแล้ว** ไม่ว่า Review จะเข้มแค่ไหน
 
 **Q5=B — Evidence by Change Type:** ต้องพิสูจน์ Acceptance บน Surface ที่ตรงกับงาน เช่น API/UI/CLI/Data พร้อม Checks และ Negative/Integration Cases ตาม Risk สิ่งที่ไม่ได้รันต้องระบุ **Not run / Blocked / Inconclusive** แยก Review ตาม Spec/Acceptance กับ Repo Standards/Quality ให้ชัด
 
@@ -194,11 +204,11 @@ Human decision owner / known limitations:
 - **Blocked — Discovery/Design:** Requirement/Contract ขัดกันหรือ Unknown ไม่ปลอดภัย
 - **Stop/Defer:** Risk รับไม่ได้หรือข้อมูลยังไม่พอให้รับรอง
 
-แต่ละ Increment เข้า-ออก Workflow นี้หลายรอบได้ ไม่ต้องรอโค้ดทั้ง Feature เสร็จ
+แต่ละ Work Item เข้า-ออก Workflow นี้หลายรอบได้ ไม่ต้องรอโค้ดทั้ง Feature เสร็จ
 
 ## Checklist ก่อนอนุมัติ v1.0
 
-1. Design/Planning Approve ระดับ Feature และ Implementation/Verification Approve ราย Increment ชัดเจน โดยไม่ขออนุมัติซ้ำหรือข้าม Gate
+1. Design/Planning Approve ระดับ Feature และ Implementation/Verification Approve ราย Work Item ชัดเจน โดยไม่ขออนุมัติซ้ำหรือข้าม Gate
 2. Verification แยกจาก Developer Checks แต่เริ่มตรวจระหว่าง Implementation ได้
 3. Shared Handoff อยู่ใน Jira/MR โดยไม่เพิ่ม Artifact บังคับ
 4. Evidence, Review, Retest และ Human Risk Decision ชัดตาม Risk
