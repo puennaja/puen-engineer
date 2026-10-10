@@ -96,7 +96,7 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 
 **Bug เล็กที่อยู่ภายใต้ Feature/Story ที่อนุมัติไว้แล้ว:** ใช้ Design/Planning Decisions เดิมได้ ไม่ต้องขอ Approve Feature Gate ใหม่เพียงเพราะเริ่ม Work Item ถัดไป บันทึก Reproduction หรือ Expected Behavior, Scope, Risk, Owner, Developer Checks และ Change Intention ใน Jira Work Item เดิมให้พอทำงานได้
 
-**Bug เล็กที่ไม่ได้อยู่ใน Feature Plan ที่เคยอนุมัติ:** ให้ Human Owner ยืนยัน **Design และ Planning Decisions แบบกระชับ** ใน Jira/Issue เดิม จะ Review สอง Decision ในบทสนทนาหรือ Checkpoint เดียวกันได้เมื่อ Risk ต่ำ แต่ **ห้ามตีความว่างานเล็กจึงผ่าน Fixed Human Gates เอง** ต้องระบุ Expected Behavior, แนวทางแก้และขอบเขต, Risk/Rollback, Owner ให้ชัด ถ้าเสี่ยงสูง, มี API/Data Contract หรือ Architecture เปลี่ยน, มี Requirement ไม่ชัด ต้องใช้ Discovery/Design/Planning ที่ลึกขึ้นและ Human Approval ที่เกี่ยวข้อง
+**Bug เล็กที่ไม่ได้อยู่ใน Feature Plan ที่เคยอนุมัติ:** ให้ Human Owner ยืนยัน **Design ก่อน แล้วจึง Planning Decision แบบกระชับ** ใน Jira/Issue เดิม จะพูดคุยในรอบเดียวกันได้เมื่อ Risk ต่ำ แต่ต้อง **บันทึกการอนุมัติแต่ละ Decision ตามลำดับให้ชัด** และ **ห้ามตีความว่างานเล็กจึงผ่าน Fixed Human Gates เอง** ต้องระบุ Expected Behavior, แนวทางแก้และขอบเขต, Risk/Rollback, Owner ให้ชัด ถ้าเสี่ยงสูง, มี API/Data Contract หรือ Architecture เปลี่ยน, มี Requirement ไม่ชัด ต้องใช้ Discovery/Design/Planning ที่ลึกขึ้นและ Human Approval ที่เกี่ยวข้อง
 
 **ทั้งสองกรณี:** ยังต้องมี Verification-first, Implementation ภายใน Scope, Unit/Regression Tests และ Developer Checks ที่เกี่ยวข้องผ่านจริง → **Human Implementation Gate** → Formal Independent Verification → **Human Verification Gate** สิทธิ์ Git/Push และ Human Confirmation ก่อน **ทุก Draft MR** คงเดิม ไม่เพิ่มไฟล์, Workflow Stage หรือ Gate บังคับใหม่
 
