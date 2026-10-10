@@ -36,7 +36,7 @@ Feature Design/Plan ที่ Approved → Work Item
    ↓
 Verification-first: Acceptance, Expected Outcomes, Test Seams
    ↓
-Implementation: Vertical Slice → TDD เมื่อเหมาะ → Developer Checks
+Implementation: Vertical Slice → TDD เมื่อเหมาะ → Unit Tests PASS + Developer Checks
    ⇄ Verification: Test Quality, Behavior Evidence, Independent Review
    ↳ Findings → Scoped Fix → Reverify
    ↓
