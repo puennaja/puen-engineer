@@ -1,13 +1,13 @@
-# Delivery Planning Workflow — v1.0 Release Candidate
+# Delivery Planning Workflow — v1.0
 
-- **Status:** 🟡 Review Ready / Release Candidate — pending explicit owner approval (not Accepted)
+- **Status:** Accepted — explicitly approved by repository owner on 2026-10-10
 - **Decision agreed:** Hybrid — Full Scope, Progressive Detail is the default planning depth, 2026-10-10
 - **Thai companion:** [Delivery Planning (Thai)](./delivery-planning.th.md)
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **Foundation:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.md)
 - **Upstream:** [Requirement Discovery v1.0](./requirement-discovery.md), [Technical Discovery v1.0](./technical-discovery.md), [Solution Design v1.0](./solution-design.md)
-- **Next:** Implementation & Verification (workflow to be designed)
+- **Next:** [Implementation & Verification v0.1 Draft](./implementation-verification.md)
 - **Scale:** Solo → team → product / cross-team
 - **Example:** Fictional personal-finance application; public repository, no company-confidential data
 
