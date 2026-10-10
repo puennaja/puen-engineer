@@ -52,6 +52,37 @@ Scale the checks and independent review to risk. Solo work may use separate self
 
 **Do not wait until the end to test.** Developer checks are inside implementation for fast feedback, but **independent verification** is defined in a separate workflow. An implementer can request it during any iteration.
 
+## Evidence-driven implementation — pstack + grill-me adaptation (candidate for v1.0)
+
+The following **adapts ideas**, not mandatory plugin commands. See [pstack guide](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/README.md), [Understand](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/03-understand.md), [Design](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/04-design.md), [Build](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/05-build-and-clean.md) and [mattpocock grilling](https://github.com/mattpocock/skills/blob/main/skills/productivity/grilling/SKILL.md). **Skills are optional implementations of the workflow**, not the workflow itself.
+
+### 1. Goal contract before AI writes code
+
+State, or retrieve from the existing issue/plan: **goal**, observable **done check**, required **proof**, known facts/code references and **constraints** (including read-only or human-checkpoint boundaries). A natural-language task is enough when these are already linked; do not copy specs into every prompt. Ask the agent to restate ambiguous requests before editing.
+
+### 2. Ground in evidence and challenge consequential unknowns
+
+Start with read-only tracing of **how** the affected code actually behaves, then inspect **why** relevant ownership, contracts or patterns exist when changes threaten them. Distinguish confirmed source facts, inferred history, assumptions and unresolved questions. Do not use a plausible root-cause theory as a substitute for reproduction.
+
+Inspired by `grill-me`: for **materially ambiguous / expensive-to-reverse decisions**, explore a dependency-ordered decision tree; ask the human only the questions that really require a product/engineering decision, with a recommended option and trade-off. Resolve observable codebase facts through investigation instead of interviewing the user. The upstream accepted Solution Design workflow still owns consequential design choices. An agent must **not** treat a grilling session as design approval or edit approved architecture without the authorized decision owner.
+
+### 3. Select a task-shaped execution path
+
+| Work type | Evidence-focused default | When to escalate |
+| --- | --- | --- |
+| Bug | Reproduce with the closest real surface, trace root cause, preserve failing scenario, implement smallest justified fix, rerun original repro | If behavior cannot be reproduced, report **inconclusive** and investigate rather than shipping guesses |
+| Feature | Acceptance examples + data/contracts first; implement one small verifiable vertical slice at a time | If module boundaries or data shape are high-risk, return to Solution Design; consider multiple options/prototypes |
+| Refactor | Capture current behavior; change structure within stated scope; show equivalent external behavior | Expose unexplained changes in outputs/contracts; separate feature work |
+| Performance | Measure representative baseline and bottleneck before optimizing; compare equivalent executions | Question harness validity and confounding variables before claiming improvement |
+
+Use a focused **change → developer check → inspect → adjust** loop, not a one-shot generation of the whole feature. The closest reliable feedback may be test-first, test-after, a real CLI/API/UI run, or a targeted experiment; TDD is a useful option, **not a universal mandate**.
+
+### 4. Reviewability and handoff
+
+Before a review pass, remove unrelated changes, dead compatibility scaffolding and unsupported defensive code where safe. **Do not adopt pstack's blanket comment-removal preference**: retain comments that explain non-obvious invariants, externally imposed constraints and genuinely useful API contracts. Keep human-reviewed decisions and proof in the existing Jira/MR record.
+
+**Candidate future skill boundaries (not yet created):** a task router (goal/done/evidence → selected procedure), codebase-grounding, implementation-by-slice and a decision-interview helper. Do not copy `/poteto-mode`, `/architect` or `/grill-me` into a mandatory `AGENTS.md` chain. Validate any eventual skill on pilot tasks and compare effort, quality and token cost against the no-skill baseline.
+
 ## Risk-aware implementation rules
 
 - Preserve current behavior outside agreed scope; identify compatibility and side effects.
