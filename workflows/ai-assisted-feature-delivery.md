@@ -1,6 +1,6 @@
 # AI-assisted feature delivery
 
-- Status: Draft — overarching AI-assisted decision record; Implementation and Verification v1.0 both Accepted (2026-10-10)
+- Status: Draft — overarching AI-assisted decision record; Implementation and Verification v1.0 Accepted (2026-10-10), Release & Operations v1.0 Accepted (2026-10-11)
 - Created: 2026-10-09
 - Scope: personal engineering workflow (generic example; no company-confidential material)
 
@@ -64,7 +64,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 - **No direct conflict** among Q1–Q9 after distinguishing: *fixed human gate* versus *risk-proportionate evidence*, *scoped push* versus *per-MR permission*, and *preliminary review* versus *formal Verification Gate*.
 - **Gate granularity updated for Jira ownership:** Design/Planning approvals are at Feature/Story level; Implementation/Verification approvals are at Work Item level (Story, Sub-task, Bug or Task as assigned). Material change reopens only invalidated prior gate(s). Human approver identity and repository-specific evidence storage are resolved per actual team/work item, reusing Jira/MR.
 - **Repository-specific, not framework-global decisions:** actual target branch/Git Flow, reviewer requirements, mandatory CI checks, commit convention, allowed push credentials and target branch protections. Discover from the repo/task when executing; **ask the human if absent or ambiguous**. Do not assume them in a public generic workflow.
-- **Separate future work, not a blocker for these two v1.0 workflow reviews:** detailed Release & Operations workflow, exact GitLab connector/permission enforcement, and design/evaluation of `puen-stack` skills. Nothing here changes real GitLab settings or grants access.
+- **Separate follow-up work, not a blocker for accepted workflows:** Release & Operations v1.0 was subsequently Accepted on 2026-10-11. Exact GitLab connector/permission enforcement and design/evaluation of `puen-stack` skills remain unimplemented. Nothing here changes real GitLab settings or grants access.
 
 ## Track A final gate-granularity decision — agreed 2026-10-10
 
@@ -160,6 +160,6 @@ The **Q1–Q9 design choices are now recorded**. Before piloting in an actual te
 - **Publish authority/credentials**, permitted work branch and execution environment; document the scope rather than assuming a generic bot may push.
 - **Team-specific commit convention and MR content**, from repository rules, without imposing a global template.
 
-Deferred and **not required to approve the two workflow documents**: `puen-stack` skill authoring/evaluation, GitLab automation integrations and Release & Operations workflow. Approval of workflow documents does **not** grant real repository permissions.
+Deferred and **not required for the Accepted workflow documents**: `puen-stack` skill authoring/evaluation, GitLab automation integrations, actual CI/CD and deployment/incident privileges. [Release & Operations v1.0](./release-operations.md) and its [Thai companion](./release-operations.th.md) were separately Accepted on 2026-10-11. Approval of workflow documents does **not** grant real repository or production permissions.
 
-**Status:** This overarching AI-assisted decision record remains Draft. **Implementation v1.0 and Verification v1.0 were each explicitly Accepted by the repository owner on 2026-10-10** (English and Thai). Workflow approval does **not** grant real environment access, GitLab publishing, MR creation, Ready/Merge, deployment, Skills or Automation permissions. The actual project pilot remains separate.
+**Status:** This overarching AI-assisted decision record remains Draft. **Implementation and Verification v1.0 were Accepted on 2026-10-10; Release & Operations v1.0 was separately Accepted on 2026-10-11** by the repository owner (English and Thai). Workflow approval does **not** grant real environment access, GitLab publishing, MR creation, Ready/Merge, deployment, Skills or Automation permissions. The actual project pilot remains separate.
