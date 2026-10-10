@@ -7,7 +7,7 @@
 - **Track:** A — Build My Engineer
 - **พื้นฐาน:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.th.md)
 - **ก่อนหน้า:** [Requirement Discovery](./requirement-discovery.th.md), [Technical Discovery](./technical-discovery.th.md), [Solution Design](./solution-design.th.md)
-- **ถัดไป:** [Implementation v0.1 Draft](./implementation.th.md) → [Verification v0.1 Draft](./verification.th.md) (ทำวนซ้ำได้)
+- **ถัดไป:** [Implementation v1.0 Release Candidate](./implementation.th.md) ↔ [Verification v1.0 Release Candidate](./verification.th.md) (Execution Loop ร่วมกัน) (ทำวนซ้ำได้)
 - **ขนาดงาน:** Solo → Team → Product / Cross-team
 - **ตัวอย่าง:** แอปการเงินส่วนบุคคลสมมติ ไม่มีข้อมูลลับบริษัท
 
