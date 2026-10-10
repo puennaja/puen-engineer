@@ -9,22 +9,32 @@
 - **ต้นฉบับอังกฤษ:** [Implementation](./implementation.md)
 - **รองรับ:** Solo ถึง Cross-team; AI เป็นตัวเลือก ไม่ใช่ข้อบังคับ
 
+## หน่วยงานหลัก: Work Item ตาม Jira (ข้อตกลง Track A)
+
+**Work Item** หมายถึง **Jira Story, Sub-task, Bug หรือ Task** ที่ Engineer ได้รับมอบหมายและกำหนดขอบเขตให้ AI ช่วยทำ ไม่ใช่ Jira Issue Type ใหม่ และไม่จำเป็นต้องครอบคลุม BE, BFF, FE พร้อมกัน งานจริงอาจเป็น **BE อย่างเดียว**, **BFF อย่างเดียว** หรือ BE+BFF ตามที่ได้รับมอบหมาย ส่วน FE เป็นความรับผิดชอบของ Engineer คนอื่นได้
+
+ใช้ **Story เป็น Context หลัก** สำหรับ Business Acceptance, Architecture, API/Contract และ Dependencies ส่วน Work Item ต้องระบุ **ผลลัพธ์ที่ตรวจได้, Non-goals, Test Intent, Evidence และ Repo ที่เกี่ยวข้อง** จาก Requirement จริงก่อนลงมือ
+
+**ค่าเริ่มต้น:** AI ทำงานเฉพาะ Repo ที่ได้รับอนุญาตใน Work Item ไม่สลับไป Implement Repo อื่นหรือรับงาน FE เอง Cross-repo Implementation ทำเฉพาะเมื่อ Scope/Permission ระบุ ส่วน Contract/Integration Verification ระดับ Story ให้ประสานผู้รับผิดชอบของทีมตามจริง ถ้า Backend Work Item Verify ผ่าน **ยังไม่ถือว่า Story ทั้งหมดผ่าน**; ถ้าทดสอบเชื่อม FE ไม่ได้ ให้รายงาน Not run/Blocked และผู้รับผิดชอบ
+
+**Human Gates:** Solution Design/Delivery Planning อยู่ระดับ Feature/Story และ Implementation/Verification อยู่ระดับ **Work Item ที่ตกลงแล้วแต่ละรายการ** ถ้า Work Item เป็น Story เองให้บันทึก Gate ใน Jira เดิมโดยไม่สร้าง Artifact ซ้ำ ไม่เพิ่ม Story-level Gate บังคับใหม่ ทั้งนี้ [Delivery Planning ที่ Accepted](./delivery-planning.th.md) อาจยังใช้ศัพท์ Agile ว่า *Increment* ในความหมายของ Delivery Slice แต่ AI Execution ใช้ **Work Item** ตามข้อตกลงใหม่ ดู [Track A Decisions](./ai-assisted-feature-delivery.md)
+
 ## เป้าหมายและขอบเขต
 
-นำ Increment ที่ตกลงและเข้าใจพอแล้วมาสร้างเป็น **โค้ดที่ Review ได้** พร้อม Developer Checks และหลักฐานส่งต่อให้ Verification
+นำ Work Item ที่ตกลงและเข้าใจพอแล้วมาสร้างเป็น **โค้ดที่ Review ได้** พร้อม Developer Checks และหลักฐานส่งต่อให้ Verification
 
 **Implementation กับ Verification แยกความรับผิดชอบ แต่ไม่ใช่ Waterfall**: ทำวนสั้น ๆ ได้ เขียน Test หรือขอ Review ได้ตั้งแต่ระหว่าง Implement ไม่ต้องรอเขียนโค้ดทั้ง Feature จบ
 
-**Inputs:** Acceptance Scenarios, Increment ใน Delivery Plan, Design Decisions, Repo/Contract ที่สำรวจแล้ว, Risks, Coding Conventions, สิทธิ์ที่ได้รับอนุญาต
+**Inputs:** Acceptance Scenarios, Work Item ใน Delivery Plan, Design Decisions, Repo/Contract ที่สำรวจแล้ว, Risks, Coding Conventions, สิทธิ์ที่ได้รับอนุญาต
 
 **หยุดและกลับไป Discovery/Design/Planning** ถ้าข้อสมมติที่ยังไม่พิสูจน์อาจทำให้เกิด Data Loss, Authorization ผิด, Contract เข้ากันไม่ได้หรือ Business Behavior ผิด การทำ Spike แบบจำกัดขอบเขตยังนับเป็นงานที่เหมาะสม
 
 ## Execution Loop ร่วมกัน — ข้อตกลงการส่งต่องาน (เสนอสำหรับ v1.0)
 
-Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Increment:
+Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Work Item:
 
 ```text
-Feature Design / Plan ที่ Approved → Increment
+Feature Design / Plan ที่ Approved → Work Item
    ↓
 Verification-first: Acceptance, Expected Outcomes, Test Seams
    ↓
@@ -38,7 +48,7 @@ Human Verification Gate → Release Review (แยก)
 **Verification เริ่มก่อนเขียนโค้ดได้** เพื่อกำหนด Expected Behavior จาก Requirement/Contract; นี่เป็นการเตรียมและตรวจสอบระหว่างทาง ไม่ใช่ Approval Gate ใหม่ **เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
 
 **ส่งต่อผ่าน Jira/MR เดิมเพียงชุดเดียว** ไม่บังคับสร้างเอกสารใหม่:
-- **Identity / Scope:** Increment, Acceptance IDs, Repo/Diff Links, Exclusions
+- **Identity / Scope:** Work Item, Acceptance IDs, Repo/Diff Links, Exclusions
 - **Changes / Risks:** Boundary ที่เปลี่ยน, Contracts/Data/Migration และ Failure Cases
 - **Evidence:** Checks ที่รันจริงพร้อมผล/Environment, สิ่งที่ **Not run / Blocked**
 - **Feedback:** Findings พร้อม Severity/หลักฐาน/Owner, ผลแก้และตรวจซ้ำ
@@ -63,7 +73,7 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 | กิจกรรม | ทำอะไร | หลักฐานขั้นต่ำ |
 | --- | --- | --- |
 | 1. Orient | อ่าน Codebase, AGENTS.md (ถ้ามี), Tests, Requirement/Design และ Git Working Tree | เข้าใจพฤติกรรมเดิมและ Files ที่มีหลักฐานว่ากระทบ |
-| 2. Bound | ระบุ Increment, Acceptance, Non-goals และ Integration Boundary | Task/Plan Link และ Change Intent |
+| 2. Bound | ระบุ Work Item, Acceptance, Non-goals และ Integration Boundary | Task/Plan Link และ Change Intent |
 | 3. Plan local edits | เลือกการแก้ที่เล็กและสอดคล้อง Architecture ระบุ Test/Migration/Error | แนวทางแก้และ Unknown สำคัญ |
 | 4. Implement | แก้โค้ดอย่างมีจุดประสงค์ แยก Refactor ที่ไม่เกี่ยวข้อง และรักษา Security/Compatibility | Diff ที่อ่าน Review ได้ |
 | 5. Developer checks | รัน Test/Lint/Typecheck/Build ที่เกี่ยวข้องและเพิ่ม Regression Tests | คำสั่งที่รันจริง ผลและสิ่งที่ไม่ได้รัน |
@@ -120,19 +130,19 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 
 AI เลือก Skill ตามงานแบบ Hybrid และแก้โค้ด/รัน Developer Checks ที่ปลอดภัยภายใน Scope ที่อนุมัติได้ (**Scoped Autonomy**) รวมทั้ง Local Commit บน Work Branch ที่ตกลง โดยไม่ต้องขออนุมัติทุกไฟล์ แต่การเปลี่ยน Scope/Architecture หรือใช้คำสั่งอันตราย/สิทธิ์พิเศษต้องได้รับอนุญาตเพิ่ม **Human Implementation Gate** ยังคงบังคับก่อน Publish ขึ้น Remote โดย Commit, Push และการเปิด Draft MR มี Permission แยกกัน ไม่บังคับใช้ Claude/Codex คู่กันหรือสร้าง Skill ก่อน Pilot
 
-## ระดับการอนุมัติ — Feature Design/Planning และ Increment Execution (Track A ตกลงแล้ว)
+## ระดับการอนุมัติ — Feature Design/Planning และ Work Item Execution (Track A ตกลงแล้ว)
 
-**Solution Design และ Delivery Planning อนุมัติระดับ Feature** สำหรับแนวทางหลัก, Contracts/Dependencies, Scope/Risk และแผนแบบ Full Scope, Progressive Detail ส่วน **Implementation และ Verification มี Human Gate แยกสำหรับแต่ละ Increment** ที่ตกลงและตรวจสอบได้ หนึ่ง Feature จึงมีหลาย Implement ↔ Verify Loops ได้โดยไม่ต้องกลับไป Approve Feature ทุกครั้ง
+**Solution Design และ Delivery Planning อนุมัติระดับ Feature** สำหรับแนวทางหลัก, Contracts/Dependencies, Scope/Risk และแผนแบบ Full Scope, Progressive Detail ส่วน **Implementation และ Verification มี Human Gate แยกสำหรับแต่ละ Work Item** ที่ตกลงและตรวจสอบได้ หนึ่ง Feature จึงมีหลาย Implement ↔ Verify Loops ได้โดยไม่ต้องกลับไป Approve Feature ทุกครั้ง
 
-ก่อนเริ่ม Increment ถัดไป ให้แตก Acceptance, Repos/Contracts, Dependencies และ Checks ให้ละเอียดพอภายใน **Feature Plan ที่อนุมัติอยู่แล้ว** ไม่ต้องขอ Design/Planning Approval ซ้ำถ้าเป็นเพียงการลงรายละเอียดที่ไม่เปลี่ยนขอบเขตเดิม แต่ถ้ามี Critical Unknown หรือ Increment ไม่อยู่ใน Scope เดิม ห้ามอ้าง Approval เก่ามาใช้โดยไม่ถาม Human
+ก่อนเริ่ม Work Item ถัดไป ให้แตก Acceptance, Repos/Contracts, Dependencies และ Checks ให้ละเอียดพอภายใน **Feature Plan ที่อนุมัติอยู่แล้ว** ไม่ต้องขอ Design/Planning Approval ซ้ำถ้าเป็นเพียงการลงรายละเอียดที่ไม่เปลี่ยนขอบเขตเดิม แต่ถ้ามี Critical Unknown หรือ Work Item ไม่อยู่ใน Scope เดิม ห้ามอ้าง Approval เก่ามาใช้โดยไม่ถาม Human
 
-ถ้ามีการเปลี่ยน **Feature Scope, Design, API/Data Contract, Security/Data Risk หรือ Delivery Constraints อย่างมีนัยสำคัญ** ให้หยุดส่วนที่ได้รับผลกระทบและกลับไปขออนุมัติ **เฉพาะ Gate ก่อนหน้าที่ Decision ถูกกระทบ** ตาม Human Owner ของทีมนั้น แต่ Scoped Bug Fix/Test ที่ยังอยู่ใน Scope เดิมทำซ้ำได้ตาม Q7 และต้องผ่าน Verification Gate ของ Increment นั้น ใช้ Jira/MR เดิม Link Approval ของ Feature และ Increment โดยระบุ Owner, Scope และ Evidence
+ถ้ามีการเปลี่ยน **Feature Scope, Design, API/Data Contract, Security/Data Risk หรือ Delivery Constraints อย่างมีนัยสำคัญ** ให้หยุดส่วนที่ได้รับผลกระทบและกลับไปขออนุมัติ **เฉพาะ Gate ก่อนหน้าที่ Decision ถูกกระทบ** ตาม Human Owner ของทีมนั้น แต่ Scoped Bug Fix/Test ที่ยังอยู่ใน Scope เดิมทำซ้ำได้ตาม Q7 และต้องผ่าน Verification Gate ของ Work Item นั้น ใช้ Jira/MR เดิม Link Approval ของ Feature และ Work Item โดยระบุ Owner, Scope และ Evidence
 
-Increment หนึ่งอาจกระทบหลาย Repos ได้ โดยใช้ Evidence ที่เชื่อมโยงกัน แต่ **การเปิด Draft MR แต่ละครั้งยังต้องถาม Human เพื่อยืนยัน Git Flow และ Source/Target Branch แยกเสมอ** นี่คือ Design Decision ของ Track A AI-assisted ที่ยังรอ Approve Workflow ไม่ได้เปลี่ยน General Lifecycle ที่ Accepted แล้ว ดู [Decision Q1–Q9 และ Gate Granularity](./ai-assisted-feature-delivery.md)
+Work Item หนึ่งอาจกระทบหลาย Repos ได้ โดยใช้ Evidence ที่เชื่อมโยงกัน แต่ **การเปิด Draft MR แต่ละครั้งยังต้องถาม Human เพื่อยืนยัน Git Flow และ Source/Target Branch แยกเสมอ** นี่คือ Design Decision ของ Track A AI-assisted ที่ยังรอ Approve Workflow ไม่ได้เปลี่ยน General Lifecycle ที่ Accepted แล้ว ดู [Decision Q1–Q9 และ Gate Granularity](./ai-assisted-feature-delivery.md)
 
 ## Fixed Implementation Gate, Scoped Git และ Rework (สำหรับ AI-assisted v1.0)
 
-ต่อ **Increment ที่ตกลงแล้วแต่ละงาน** Human Owner ต้องดู Scope, Diff, ผล Developer Checks ที่รันจริง, Tests ที่ไม่ได้รัน, Contract/Integration Risk และอนุมัติ **Implementation Gate** อย่างชัดเจนก่อนให้ AI Publish งาน ส่วน Preliminary Verification Feedback ทำระหว่าง Implement ได้ แต่ไม่ได้แปลว่าผ่าน Formal Verification Gate
+ต่อ **Work Item ที่ตกลงแล้วแต่ละงาน** Human Owner ต้องดู Scope, Diff, ผล Developer Checks ที่รันจริง, Tests ที่ไม่ได้รัน, Contract/Integration Risk และอนุมัติ **Implementation Gate** อย่างชัดเจนก่อนให้ AI Publish งาน ส่วน Preliminary Verification Feedback ทำระหว่าง Implement ได้ แต่ไม่ได้แปลว่าผ่าน Formal Verification Gate
 
 **Q8=B — Scoped Git Autonomy:** AI ทำ Local Commit ใน Work Branch ที่ตกลงได้ตาม Convention ของ Repo หลังผ่าน Implementation Gate ต้องมี **Publish Authorization** ก่อนจึงจะ Push แบบปกติไป **Non-protected Work Branch ที่ระบุ** ได้ และสามารถ Push Scoped Fix รอบถัดไปบน Branch เดิมภายใต้สิทธิ์นั้นตาม Policy ห้าม Force Push, Rewrite History, Push Protected Branch, เปลี่ยน Remote/ปลายทาง หรือลบข้อมูลโดยไม่ได้อนุญาต
 
@@ -171,6 +181,6 @@ Local Commit/Push ใช้กติกา Scoped Git ด้านบน ส่�
 
 ลอง Tiny Regression, Medium Feature และ Simulated Cross-repo Contract Change; วัด First Feedback, Rework, ความตรงไปตรงมาของ Test Evidence และ Overhead
 
-**จุดตรวจสุดท้าย:** ระบุ Human Gate Owner และ Increment Boundary ให้ชัดตามทีมจริง ตรวจว่า Publish Authorization เก็บใน Jira/MR เดิมและไม่มีขั้นตอน Review ที่ข้าม Fixed Gates ส่วน Target Branch, CI และ Reviewer Requirements ต้องตรวจจาก Git Flow/Policy ของ Repo จริง
+**จุดตรวจสุดท้าย:** ระบุ Human Gate Owner และ Work Item Boundary ให้ชัดตามทีมจริง ตรวจว่า Publish Authorization เก็บใน Jira/MR เดิมและไม่มีขั้นตอน Review ที่ข้าม Fixed Gates ส่วน Target Branch, CI และ Reviewer Requirements ต้องตรวจจาก Git Flow/Policy ของ Repo จริง
 
 **Release Candidate รอ Owner Approve** ยังไม่เปลี่ยน AGENTS.md, Skills, Automation หรือ Permissions
