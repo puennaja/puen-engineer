@@ -7,7 +7,7 @@
 - **Track:** A — Build My Engineer
 - **Foundation:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.md)
 - **Upstream:** [Requirement Discovery v1.0](./requirement-discovery.md), [Technical Discovery v1.0](./technical-discovery.md), [Solution Design v1.0](./solution-design.md)
-- **Next:** [Implementation v0.1 Draft](./implementation.md) ↔ [Verification v0.1 Draft](./verification.md) (iterative, not waterfall)
+- **Next:** [Implementation v1.0 Release Candidate](./implementation.md) ↔ [Verification v1.0 Release Candidate](./verification.md) (shared execution loop) (iterative, not waterfall)
 - **Scale:** Solo → team → product / cross-team
 - **Example:** Fictional personal-finance application; public repository, no company-confidential data
 
