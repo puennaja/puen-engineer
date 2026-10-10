@@ -50,6 +50,14 @@ Human Verification Gate → Release Review (แยก)
 
 **Scale:** งานเล็ก Reversible บันทึกใน MR สั้น ๆ ได้ งาน Cross-repo/Finance/Security ต้องมีหลักฐาน Contract, Tests, Review และ Release Risks มากขึ้น โดยไม่ต้องสร้าง Ticket ซ้ำ
 
+## Verification-first และ TDD (Design Direction สำหรับ v1.0)
+
+Verification กำหนด **Acceptance Scenarios, Expected Outcomes และ Test Seams ก่อน Implement** โดยอ้าง Requirement/Domain/Contract ที่ยืนยันแล้ว อาจเขียน Acceptance Test ที่ Fail ด้วยเหตุผลตรงตาม Behavior ที่ยังขาด หากมี Harness เหมาะสม มิฉะนั้นใช้ Given–When–Then หรือ Repro ที่ Review ได้ ห้ามใช้ Test Failure จาก Environment เสียเป็นหลักฐานว่าโค้ดผิด
+
+Implementation เป็นเจ้าของ Code และ Unit/Regression Tests ทำทีละ Vertical Slice และใช้ **Red → Green → Refactor → Rerun** เมื่อ TDD มี Feedback ที่เชื่อถือได้ ไม่บังคับทุกงาน ห้ามเปลี่ยน Expected Result เพียงเพื่อให้ Test ผ่าน
+
+Verification กลับมาตรวจคุณภาพ Tests และรัน Independent Behavior Evidence บน Surface จริงตาม Risk เพราะ Build/Unit Tests ผ่านไม่ได้พิสูจน์ทุกอย่าง หากต้องแก้ Acceptance/Design/Scope สำคัญต้องขอ Human Decision ใช้ Jira/MR เดิม ไม่มี Gate หรือ Skill บังคับเพิ่ม
+
 ## กิจกรรม (ทำซ้ำได้)
 
 | กิจกรรม | ทำอะไร | หลักฐานขั้นต่ำ |
