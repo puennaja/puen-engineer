@@ -34,7 +34,7 @@ Approved Feature design / plan → agreed Work Item
    ↓
 Verification-FIRST: acceptance examples, expected outcomes, test seams
    ↓
-Implementation: vertical slice → TDD when useful → developer checks
+Implementation: vertical slice → TDD when useful → unit tests GREEN + developer checks
    ⇄ Verification: independent behavior proof, test quality, review
    ↳ Findings → scoped fix → targeted re-verification
    ↓
