@@ -1,7 +1,7 @@
 # Software Engineering at Google — บทที่ 1: What Is Software Engineering? (v0.1)
 
 - **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
-- **สถานะ:** Draft — บันทึกการศึกษาและ Candidate Principles; **ยังไม่ใช่นโยบายที่ Approved**
+- **สถานะ:** Accepted — สรุปผ่านการอนุมัติ หลักการเป็นแนวทาง ไม่ใช่กฎบังคับ
 - **วันที่อ่าน:** 2026-10-10
 - **ผู้เขียนบท:** Titus Winters; บรรณาธิการ Tom Manshreck; หนังสือ *Software Engineering at Google* (2020)
 - **ต้นฉบับ:** https://abseil.io/resources/swe-book/html/ch01.html
