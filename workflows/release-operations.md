@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft
 
-- **Status:** Design Draft — **not Accepted**; Q1–Q4 agreed; Q5 pending
+- **Status:** Design Draft — **not Accepted**; Q1–Q5 agreed; Q6 pending
 - **Date:** 2026-10-10
 - **Track:** A — My Engineer, vendor/tool-neutral engineering practices
 - **Upstream:** [Implementation (Accepted)](./implementation.md), [Verification (Accepted)](./verification.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.md)
@@ -40,7 +40,7 @@ Every **production release** must receive **explicit approval by an authorized h
 - **Operational bounds:** authorized rollout steps, release timing/validity if relevant, required validation signals, pause/abort criteria, recovery/rollback or roll-forward owner and plan, and identified human release approver.
 - **Traceability:** a linked release record in existing release ticket/pipeline tooling stating **who approved what, where, when and under which bounds**, not a compulsory new Markdown artifact.
 
-**Automation inside the envelope:** a policy-compliant pipeline may execute ordinary approved stages, continue rollouts and perform retry actions **only when those actions are explicitly permitted, safe, do not expand scope/risk and preserve the same pinned release target**. Failed/repeated runs must not implicitly bypass stop conditions; risky/destructive operations and incident recovery follow their separately authorized processes.
+**Automation inside the envelope:** an authorized pipeline may execute ordinary approved stages and routine **non-intervention** retries only within its pinned artifact, environment and scope. Under Q5, if an anomaly requires an intentional response—pause, abort, recovery retry, rollback, roll forward or restart—the system must **alert and wait for fresh human confirmation of that particular action**. Never use retries to bypass stop conditions. No autonomous recovery or destructive action is authorized.
 
 **Approval invalidation / stop:** replace the artifact or manifest, change target service/environment or user exposure, expand rollout, introduce a new migration/contract risk, exceed validity or change other material release assumptions → **stop the affected release action and obtain renewed explicit human authorization**. Harmless reruns of approved checks do not automatically require new approval. Do not infer permission from CI-green, prior work-item verification, MR merge or an earlier release authorization.
 
@@ -82,15 +82,31 @@ Every **production release** must receive **explicit approval by an authorized h
 4. **Observe and decide:** choose a **risk-appropriate observation period or objective signal threshold** defined for the release, with named observer/on-call owner, accessible evidence and agreed stop/abort/escalation triggers. Short focused observation may suffice for low risk; high risk needs deeper signals/progressive exposure and potentially longer monitoring. Some effects manifest asynchronously; unknown long-tail effects remain owned follow-ups, not invented success.
 5. **Record distinct outcomes:** deployment state (**completed / partial / failed / unknown**), service state (**healthy / degraded / inconclusive**), behavioral evidence (**pass / fail / not run / inconclusive**), and overall release disposition (**Healthy / Degraded / Inconclusive / Recovery in progress**), including owner, timestamps, observed evidence and remaining risk.
 
-**Guardrails and escalation:** A breached critical threshold, material drift from the approved release envelope, harmful user/data impact, or inconclusive mandatory evidence triggers the **defined pause/abort/escalation process**; it is **not** silently stamped Healthy. Do not equate a successful pipeline, a green dashboard, or a healthy pod with business acceptance. Actions that pause/rollback/change exposure require the **separate operational authority and safety rules to be decided in Q5**; Q4 does not itself grant AI autonomous production or incident privileges.
+**Guardrails and escalation:** A breached critical threshold, material drift from the release envelope, harmful user/data impact, or inconclusive mandatory evidence triggers **detection, immediate alert and escalation to an authorized human for a pause/abort/recovery decision under Q5**. Even a protective pause requires fresh human confirmation under the chosen Q5 policy. Never stamp the release Healthy merely from pipeline, dashboard or pod status; no autonomous AI intervention privilege is granted.
 
 **Closure boundary:** A human release/outcome owner (or authorized release process under an explicit human decision) considers the collected evidence and residual risks. Mark a release Healthy only when its risk-relevant health/behavior criteria are actually met; if mandatory evidence is unavailable, record **Inconclusive/Blocked**, not success. Reuse the existing release/pipeline/incident record; no mandatory standalone report and no new per-test Human Gate.
 
-## Q5 — Proposed next decision (not yet agreed)
+## Q5 — Human Confirmation Before Every Intervention (agreed 2026-10-11)
 
-**Who may pause a rollout, roll back, roll forward, or initiate incident response when post-deploy signals go bad?**
+**Owner decision: B — Human Confirmation Before Every Intervention for Release & Operations v1.0.** Monitoring, AI and pipelines may **detect, alert, document and recommend**, but **each intentional operational intervention in response to an anomaly** requires **fresh, action-specific confirmation from an authorized human incident/release owner before execution**. This includes **Pause, Abort, Rollback, Roll Forward, restart, remedial retry, feature-flag exposure changes and recovery**, even when the proposed action appears protective or low risk.
 
-- **A. Guardrailed operational response with explicit authority (recommended):** pre-authorized pipeline safeguards may **automatically pause/abort further rollout** on objective stop conditions within the Q2 envelope. A rollback or other recovery action may be automated **only if that exact action is independently authorized, safe for the current schema/data/exposure and covered by tested/credible recovery steps**; otherwise escalate to the designated human incident/release owner. Human ownership, incident communications, recovery evidence and an explicit decision for material/new scope remain required. No default automated destructive rollback.
-- **B. Human confirmation before every intervention:** detect and alert automatically but require fresh human approval before **all** pause/abort/rollback/recovery actions, even previously authorized low-risk protective pauses.
+**Intervention contract:**
 
-**After Q5:** define lightweight outcome/learning follow-up, reconcile the complete release lifecycle with the Accepted upstream workflows, then request separate owner review/acceptance of Release & Operations v1.0.
+1. **Detect and escalate:** notify the reachable human owner through the defined incident channel, attaching observed symptoms, affected release/version, blast radius, deployment state, logs/metrics, and proposed options. Detection and paging may be automatic; recommendation is not execution permission.
+2. **Authorize each intervention:** the human reviews target/scope, data and schema safety, dependencies, expected side effects, reversibility and policy. Confirm the **specific action**. Approval for one action never authorizes another intervention by implication.
+3. **Execute only with actual operational permission:** the designated human or policy-authorized pipeline performs only the confirmed action. Material changes to the Q2 release envelope also require the applicable new release authorization. An incident does not grant AI production access.
+4. **Revalidate and record:** capture actual intervention execution, service/behavior checks and outcome (**Recovered / Degraded / Inconclusive / Still mitigating**) with human decision owner, executor, timestamp and continuing observer; successful rollback commands do not prove service recovery.
+5. **If the human is unavailable:** continue alerts and escalation under the actual incident policy, but **do not automatically execute an intervention or invent approval**. Q3 readiness should include reachable incident ownership, escalation route and realistic response expectations, especially for high-risk releases.
+
+**Reconcile with Q1–Q4:** The fixed human Release Gate and bounded envelope still allow **ordinary planned pipeline stages** to execute without a human click at each stage. Q5 controls **new, responsive operational interventions**; routine execution is not the same as a new incident response. A failed command or platform-managed shutdown is observed as a failure, not permission to initiate an autonomous recovery. **No new auto-pause or auto-rollback incident logic is approved by this design.** More stringent platform, safety and legal requirements remain authoritative; the generic draft does not reconfigure or bypass existing independent fail-safe mechanisms.
+
+**Trade-off acknowledged:** Requiring human confirmation for even protective pauses can increase response time and customer/data impact while waiting. Compensate with actionable alerts, staffed escalation and credible safe recovery procedures. This is a deliberate human-control choice, **not a claim that it is always the fastest or safest emergency response model**.
+
+## Q6 — Proposed next decision (not yet agreed)
+
+**How should a release be closed and how should operational findings flow back into engineering work?**
+
+- **A. Lightweight Outcome & Learning Loop (recommended):** after Q4 validation and any Q5 incident, the human release/outcome owner records **actual health/behavior outcome, supporting evidence, residual risks, follow-up owner and any later customer/business outcome check** in existing release/Jira/incident records. Create new Work Items only for actionable defects or improvements. Use a focused incident review when impact warrants it, without mandating a ceremony or new Markdown report for every release.
+- **B. Close at Technical Health:** record operational health and outstanding critical incidents, while leaving business outcome tracking and release learning to separate processes.
+
+**After Q6:** reconcile the complete lifecycle with the Accepted upstream workflows, review the v1.0 candidate and seek explicit separate owner approval. This Draft does not grant deployment, production or AI automation rights.
