@@ -84,6 +84,44 @@ Findings → Implementation Fix → Reverification ตาม Impact
 | 6. Reconcile | ส่ง Findings กลับ Implementation แล้วตรวจซ้ำหลังแก้ | Finding Resolved/Accepted/Blocked |
 | 7. Handoff Decision | ระบุ Verification State, Residual Risks และ Release Readiness | Decision/Owner ที่ชัดเจน |
 
+## Prove It Works — ปรับจาก pstack และ mattpocock (เสนอสำหรับ v1.0)
+
+นำแนวทาง **Evidence-based Verification** จาก [pstack Verify & Ship](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md), [pstack Interrogate](https://github.com/cursor/plugins/blob/main/pstack/skills/interrogate/SKILL.md), [pstack create-verification-skill](https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md) และ [mattpocock Code Review](https://github.com/mattpocock/skills/blob/main/skills/engineering/code-review/SKILL.md) มาปรับใช้ โดย **ไม่บังคับใช้ Plugin หรือ Tool ตามต้นฉบับ**
+
+### 1. พิสูจน์พฤติกรรมบน Surface ที่ตรงกับงานจริง
+
+กำหนด Observable Done Check **ก่อน Implement** แล้วแยกว่า Build/Typecheck หรือ Unit Test ที่เขียวเป็นหลักฐานส่วนหนึ่ง แต่ยังไม่เท่ากับการใช้งานผ่าน Interface จริง
+
+| งาน | หลักฐานที่ควรพิจารณา |
+| --- | --- |
+| **CLI / Job** | รันคำสั่งหรือ Job จริงกับ Input ตัวอย่างที่ปลอดภัย เทียบ Output, Exit Status และ Side Effects |
+| **API / Data** | ตรวจ Contract, Permission, Error Semantics และ Read-back ค่าที่บันทึกเมื่อปลอดภัย |
+| **Web / UI** | เดิน Flow ใน App ที่รันจริง ตรวจ State/Error และเก็บ Screenshot/Video เมื่อช่วยพิสูจน์ |
+| **Refactor / Migration** | Replay Before/After Input และตรวจ Behavior/Compatibility |
+| **Performance** | วัด Baseline และผลแบบเปรียบเทียบได้ ตรวจ Harness, Bottleneck, ความทำซ้ำได้และผล End-to-end |
+
+เลือกความลึกตาม Risk **ไม่บังคับทุกงานต้องถ่ายวิดีโอหรือรัน E2E ทั้งหมด** ถ้าเข้าถึง Runtime ไม่ได้ ให้รายงาน **Inconclusive / Blocked / Not run** พร้อมเหตุผลและ Owner อย่าแต่งผลว่าผ่าน
+
+### 2. Review สองแกนที่ไม่ควรปนกัน
+
+**Spec / Acceptance:** โค้ดทำตาม Requirement/Acceptance ที่ตกลงไว้จริงหรือไม่? มีสิ่งที่ทำไม่ครบหรือ Scope Creep ไหม?
+
+**Repository Standards / Quality:** Diff สอดคล้องกับ Coding Standards/Architecture/Patterns ของ Repo หรือไม่? แยก Violation ที่มีเอกสารอ้างอิงจาก Code Smell ที่เป็นเพียง Judgment และอย่าบังคับ Personal Style
+
+เพิ่ม Lens เฉพาะที่เสี่ยง เช่น Auth, Privacy, Data Integrity, Concurrency, Retry, Errors, Observability, Migration และ Cross-service Contracts โดยระบุ **Diff Base และ Spec ที่มีแหล่งอ้างอิง** ถ้าไม่มี Spec ให้บอก Gap ไม่ใช่เดา
+
+ใช้ Skeptical Independent Review หรืออีก Model ได้เมื่อคุ้มค่า แยก Findings เป็น **Act on / Consider / Noted / Dismissed** พร้อม Evidence/เหตุผล ห้าม Auto-apply เพียงเพราะ AI หลายตัวเห็นตรงกัน Engineer/Owner ยังต้องตัดสินและรับผิดชอบตาม Policy
+
+### 3. สร้าง Verification Skill เฉพาะเมื่อคุ้มและตรวจสอบได้
+
+ถ้าทีมต้องรัน UI/CLI/API แบบ Manual ซ้ำบ่อย อาจพิจารณาสร้าง **Project-local Verification Harness/Skill** จาก Test Tool ที่มีอยู่ก่อน โดยมี Contract:
+
+**Launch → Doctor/Health Check → Drive Real Behavior → Capture Evidence → Cleanup ทรัพยากรที่สร้างเอง**
+
+ใช้ Safe Fixtures, แยก Parallel Runs และต้องทดลองรันคำแนะนำที่ Skill สร้าง **End-to-end อย่างน้อยหนึ่ง Flow** ก่อนเชื่อถือ Feature Map ควรมีเมื่อช่วยการดูแลจริง
+
+**ไม่สร้าง `.cursor/skills` หรือบังคับ Maintenance ทุกวันตาม pstack ทันที** หากจะย้ายแนวทางไปเป็น Skill ใน `puen-stack` ต้องมี Approval, Pilot, Owner/Maintenance และวัดเทียบ Baseline แบบไม่ใช้ Skill ก่อน
+
 ## หลักฐานต้องไม่ปนกัน
 
 - **Proposed:** Test หรือ Review ที่เสนอ แต่ยังไม่รัน
