@@ -1,6 +1,7 @@
-# Verification Workflow — v0.1
+# Verification Workflow — v1.0 Release Candidate
 
-- **Status:** Proposed / Draft — not approved
+- **Status:** Review Ready / Release Candidate — awaiting owner approval; not Accepted
+- **Decision:** Separate Implementation and Verification with one shared execution loop (2026-10-10)
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **Related:** [Implementation](./implementation.md), [Delivery Planning v1.0](./delivery-planning.md)
@@ -13,6 +14,35 @@
 Establish **credible evidence that the change meets acceptance, respects important system boundaries and has been critically reviewed**. Verification is a distinct workflow with its own responsibilities and exit decision. It may begin **during implementation** and repeatedly send findings back; it is not a final waterfall phase.
 
 Implementation owns making the change and developer checks. Verification owns evaluating acceptance, failures, cross-component behavior and review findings. Roles can overlap for solo work, but distinguish an independent assessment from an implementer's self-check. AI review alone is not equivalent to independent human judgment.
+
+## Shared execution loop — normative coordination contract (v1.0 candidate)
+
+The two workflows remain **separate responsibilities**, but use **one iterative execution loop** for each coherent increment:
+
+```text
+Delivery Planning (agreed increment)
+   ↓
+Implementation: orient → change → developer checks
+   ⇄ Verification: acceptance / tests / contracts / independent review
+   ↳ Findings → implementation fixes → targeted re-verification
+   ↓
+Verification decision → release review (a separate workflow)
+```
+
+**Start early:** Verification may begin with acceptance examples, test strategy, API/contract or partial diff; a "Ready for Verification" label is a convenience, **not** a mandatory wait-for-all-code gate. Developer tests remain part of Implementation; independent evaluation and evidence judgment are Verification's responsibility.
+
+**One shared handoff in the existing issue/MR** (not a new obligatory artifact):
+- **Identity & scope:** increment, acceptance IDs, repo/diff links and known exclusions.
+- **Changes & risks:** touched boundaries, contract/data changes, migration and critical failure cases.
+- **Evidence:** actual executed checks, outcomes, environment, explicitly *not run / blocked* checks.
+- **Feedback:** findings with severity/evidence/owner; changed-file/test impact; retest outcomes.
+- **Decision:** continue implementing, ready for further verification, fix & reverify, blocked or verified for release review; authorized human owns residual-risk acceptance.
+
+**Loop rules:** Only the touched behavior and dependent contracts need proportional re-verification after a fix; revisit broader checks when the change has wider impact. Any newly discovered high-impact unknown returns to Discovery/Design/Planning. Neither workflow can authorize deployment, silently alter acceptance or override required human review.
+
+**Roles:** Solo engineers may perform both with deliberate separate passes; medium/high-risk changes should seek a genuinely independent reviewer when feasible or required by local policy. AI models can suggest code/findings, but agreement among agents is not evidence that checks executed or humans approved.
+
+**Scaling:** A trivial reversible change may record the whole loop in a short MR note; a multi-repo or security/data-critical feature needs explicit contract, test, review and release-risk evidence. Avoid duplicate tickets/docs.
 
 ## Entry and risk selection
 
@@ -91,10 +121,17 @@ Human decision owner / known limitations:
 
 No requirement to finish all implementation tasks before starting verification; each coherent increment can pass through several loops.
 
+## Approval checklist — v1.0 Release Candidate
+
+1. Are the two workflow responsibilities clear while enabling review during implementation?
+2. Can the shared handoff fit existing Jira/MR without separate mandatory artifacts?
+3. Are evidence, independence, risk acceptance and release authority distinguished?
+4. Are AI permissions left to separate explicit approval?
+
 ## Pilot and open decisions
 
 Pilot tiny reversible change, medium integrated feature and a simulated multi-repo contract change. Observe defect detection, rework, integration surprises, false-positive findings, time-to-feedback and paperwork burden.
 
 **Review:** What qualifies as independent review for solo work? Which medium/high-risk situations need explicit human sign-off? What exact evidence fits existing GitLab/Jira fields? When should AI-assisted diff review be used?
 
-**Draft only; no release authority, automated merge, repository policy or AI skill created.**
+**Release Candidate pending owner approval.** No release authority, automated merge, repository policy or AI skill created.
