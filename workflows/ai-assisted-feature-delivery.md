@@ -125,7 +125,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 2. **Feature-level Solution Design Gate** — human accepts the feature's major technical/contract decisions.
 3. **Feature-level Delivery Planning Gate** — human agrees feature-wide scope/risks, a detailed initial work item and progressive refinement of later work items.
 4. **Verification-first for each Work Item** — before writing code, define source-backed scenarios, expected results, a suitable test seam and proof strategy; this is preparation, not a new gate.
-5. **Per-Work-Item Implementation** — AI works within the agreed work item, performs developer checks and may make local commits; **Human Implementation Gate for that work item** reviews changed scope/diff/evidence.
+5. **Per-Work-Item Implementation** — AI works within the agreed work item, **passes applicable unit/regression tests and required developer checks with actual evidence before formal Independent Verification**, and may make local commits; **Human Implementation Gate for that work item** reviews changed scope/diff/evidence.
 6. **Scoped publish + Draft MR** — with specific work-branch publish authorization, AI can push; **inspect actual Git Flow, propose source/target and ask human before creating each Draft MR**. No automatic branch assumptions.
 7. **Per-Work-Item Verification ↔ scoped rework** — actual evidence, independent review proportionate to risk, CI/MR feedback, fixes and targeted retests; **Human Verification Gate for that work item** confirms outcome. Only material changes reopen invalidated upstream gate(s).
 8. **Human MR completion** — human alone marks Draft as Ready and performs Merge. Release/operations approval is separate.
