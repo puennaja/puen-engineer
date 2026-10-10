@@ -8,6 +8,14 @@
 - **Scope:** Prioritize architecture/system design and code quality/maintainability in My Engineer.
 
 
+## New second-edition source study (partial Chapter 21)
+
+- **[Decide What Matters — English](./a-philosophy-of-software-design-ch21-extract.md)** · **[Thai](./a-philosophy-of-software-design-ch21-extract.th.md)**
+- **Status:** 🟡 Draft — official extract was partially text-indexed, **not downloaded/read in full**.
+- **Confirmed coverage:** Chapter 21 opening, partial §21.1, §§21.3–21.4; §21.2 and §21.5 pending.
+- **New candidates:** AP-C05–AP-C06 (unapproved), with overlaps flagged for consolidation.
+- **Correction to earlier blocker:** While a full PDF reader still failed (13.9 MB), the web search index returned author-hosted original-text excerpts, enough for a **partial source study only**.
+
 ## First study completed — Author Talk + Stanford Lecture Notes
 
 - **Study:** [Author Talk & Lecture Evidence Notes (English)](./a-philosophy-of-software-design-author-talk.md) · [Thai](./a-philosophy-of-software-design-author-talk.th.md)
