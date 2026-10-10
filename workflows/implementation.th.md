@@ -68,6 +68,14 @@ Implementation เป็นเจ้าของ Code และ Unit/Regression 
 
 Verification กลับมาตรวจคุณภาพ Tests และรัน Independent Behavior Evidence บน Surface จริงตาม Risk เพราะ Build/Unit Tests ผ่านไม่ได้พิสูจน์ทุกอย่าง หากต้องแก้ Acceptance/Design/Scope สำคัญต้องขอ Human Decision ใช้ Jira/MR เดิม ไม่มี Gate หรือ Skill บังคับเพิ่ม
 
+## Unit Tests ต้องผ่านก่อน Formal Independent Verification (ตกลง 2026-10-10)
+
+**Implementation ต้องรัน Unit/Regression Tests ที่เกี่ยวข้องกับ Work Item ให้ผ่านก่อน** รวมถึง Developer Checks ที่ Repo บังคับ เช่น Build, Lint หรือ Typecheck และบันทึกผลการรันจริงกับ Environment ถ้ามี Test ล้มเหลว ให้แก้ใน Implementation และรันใหม่ **ก่อนเข้า Formal Independent Verification** ถ้าไม่สามารถรันได้ ให้รายงาน **Blocked / Not run** พร้อมเหตุผลและ Owner ห้ามถือว่าเขียวโดยไม่มีหลักฐาน
+
+ถ้างานบางประเภทไม่มี Unit Test ที่เหมาะสมจริง เช่น Documentation-only ให้ระบุเหตุผลและตกลงใช้ Developer Proof ที่เหมาะสมกับ Human ใน **Implementation Gate เดิม** ไม่ใช่ข้อยกเว้นให้ข้าม Unit Tests ของงาน BE/BFF ตามปกติ
+
+**แยกเวลาให้ชัด:** Verification-first ช่วยกำหนด Acceptance/Test Intent ก่อน Code และให้ Preliminary Feedback ระหว่าง Implement ได้ แต่ **Formal Independent Verification** ที่ตรวจ Test Quality, Behavior, Contract และ Diff เริ่มเมื่อ Developer Checks ผ่านและ Human Implementation Gate อนุมัติแล้ว **Tests ผ่านเป็นแค่เงื่อนไขเข้า ไม่ใช่เครื่องยืนยันว่าโค้ดถูกต้อง** ถ้าพบ Finding ส่งกลับ Implementation แก้และรัน Unit Tests ที่เกี่ยวข้องใหม่ก่อน Reverify โดย Human Verification Gate ยังอยู่เหมือนเดิม ไม่เพิ่ม Gate ใหม่
+
 ## กิจกรรม (ทำซ้ำได้)
 
 | กิจกรรม | ทำอะไร | หลักฐานขั้นต่ำ |
