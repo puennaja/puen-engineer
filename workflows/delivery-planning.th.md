@@ -1,6 +1,8 @@
-# กระบวนการวางแผนส่งมอบ (Delivery Planning Workflow) — v0.1
+# กระบวนการวางแผนส่งมอบ (Delivery Planning Workflow) — v1.0 Release Candidate
 
-- **สถานะ:** Proposed / Draft — รอการรีวิว
+- **สถานะ:** 🟡 Review Ready / Release Candidate — รอเจ้าของอนุมัติอย่างชัดเจน (ยังไม่ใช่ Accepted)
+- **แนวทางที่ตกลง:** Hybrid — Full Scope, Progressive Detail เป็น Default (2026-10-10)
+- **ฉบับอังกฤษหลัก:** [Delivery Planning (English)](./delivery-planning.md)
 - **วันที่:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **พื้นฐาน:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.th.md)
@@ -27,6 +29,35 @@ Input อ้าง Link ได้ ไม่ต้อง Copy:
 - บริบท: Solo/Team, Release Restrictions, Cross-team Ownership และ WIP
 
 ถ้า Unknown สำคัญทำให้ประเมิน Effort ไม่ได้ หรือเปลี่ยน Scope อย่างมีนัยสำคัญ ให้กำหนด **Discovery/Spike Task ที่มีขอบเขต** ก่อน Commit งานทั้งหมด ห้ามแปลง Discovery ที่อ่อนแอเป็น Estimate ที่ดูแม่นยำเกินจริง
+
+## 2A. แนวทางระดับความละเอียดของแผน — Hybrid: Full Scope, Progressive Detail
+
+**ค่าเริ่มต้น:** รู้ภาพรวมของ Feature ทั้งหมดในระดับที่มีประโยชน์ ได้แก่ Outcome, ขอบเขต, Dependencies สำคัญ, Contract ข้าม Repo, ความเสี่ยง Integration/Release และผู้ตัดสินใจ แต่แตกงาน **ละเอียดเพิ่มตามความเสี่ยง ความไม่แน่นอน และความใกล้ที่จะลงมือทำ** ไม่ต้องแตกทุก Subtask ของ Increment ไกล ๆ ก่อนเริ่มงาน Increment แรกที่พร้อมแล้ว
+
+แบ่งเป็นสามระดับ:
+
+| ระดับ | สิ่งขั้นต่ำที่ควรรู้ | เมื่อไรต้องลงรายละเอียดเพิ่ม |
+| --- | --- | --- |
+| **Feature / End-to-end** | Outcome, Acceptance Boundary, Component ที่รู้/ยังไม่รู้, Cross-repo Contract, Dependency, Owner, Risk และแผน Integration/Release | มีหลายทีม กำหนด Cutover, Compliance หรือการเปลี่ยนย้อนกลับยาก |
+| **Increment ที่จะส่งมอบ** | Acceptance/Learning Goal, Owner, Interface, Dependency, Verification และผลต่อ Rollback/Recovery | งานใกล้เริ่มหรืองานที่มีความเสี่ยงสูง |
+| **Task ที่ใช้ทำจริง** | ขั้นตอนและ Done Evidence เท่าที่ช่วยลงมือหรือประสานงาน; ไม่เดาชื่อไฟล์ที่ยังไม่ตรวจโค้ด | งานที่เริ่มแล้ว Hand-off ระหว่างคน หรือ Migration ที่มีเงื่อนไข |
+
+**Full Breakdown ทำได้และอาจเหมาะกว่า** กับงานเล็ก ชัดเจน หรืองานที่มีข้อจำกัดภายนอกสูง แต่ไม่บังคับแตก Task ละเอียดสำหรับงานไกลที่ยังเปลี่ยนได้ ขณะเดียวกันการเห็น Feature ครบก็ไม่ใช่คำรับรองว่ารู้ทุกอย่าง
+
+### ตารางเลือกระดับความละเอียด
+
+| Risk / Uncertainty | วิธีวางแผน | สิ่งที่ต้องรักษา |
+| --- | --- | --- |
+| ต่ำ Requirement นิ่ง ย้อนกลับง่าย | Full Breakdown ได้ทันที อาจใช้เพียง Issue เดียว | Acceptance และ Verification ชัด |
+| ปานกลาง / รายละเอียดเปลี่ยนได้ | เห็น Scope ทั้ง Feature; แตก Increment แรกละเอียด; งานหลังเป็น Outline | ระบุ Unknowns และจุดทบทวน |
+| สูง / หลายทีม / Migration / Cutover | วาง Dependency, Contracts, Release/Rollback และ Ownership **ทั้ง Feature ให้ละเอียดพอ**; ค่อยแตก Subtask ทีละช่วง | ห้ามข้าม Critical Safety/Coordination Dependency ที่ยังไม่เคลียร์ |
+| ไม่แน่นอนสูงจนกระทบ Solution/Scope | ทำ Spike/Discovery แบบจำกัดขอบเขตก่อน | ไม่สร้าง Estimate หรือ Task Count ปลอม |
+
+**เกณฑ์พิจารณา Risk:** ผลกระทบเมื่อผิดพลาด, Reversibility, Privacy/Security/Compliance, Data Correctness, จำนวน Integration, Dependencies ภายนอก, วันที่ผูกมัด และคุณภาพ Tests/Monitoring งานที่ดูเล็กอาจมี Risk สูงได้
+
+**เมื่อไรต้อง Replan:** พบ Dependency ใหม่ที่ยืนยันแล้ว, Contract เปลี่ยน, ผล Spike, Test/Acceptance ไม่ผ่าน, Priority/Capacity เปลี่ยนมาก หรือพบ Migration/Production Risk ให้ปรับใน Shared Work View เดิมและแจ้ง Decision Owner
+
+**Anti-patterns:** แตกทุก Task จากการเดา; ใช้ Rolling-wave โดยไม่เห็น Dependency/Release ทั้งระบบ; ไม่ยอมเริ่ม Spike ปลอดภัยจนกว่าจะแตก Ticket ครบ; ผลัก Test/Operational Work ไปทำตอนท้ายโดยไม่วางแผน
 
 ## 3. 7 กิจกรรมที่ทำซ้ำเมื่อสถานการณ์เปลี่ยน
 | กิจกรรม | คำถาม | ผลลัพธ์ที่พอดี | ความเสี่ยงที่ลด |
@@ -104,6 +135,12 @@ Delivery goal / current smallest valuable increment:
 Product decision owner / engineering delivery owner:
 Time/capacity assumptions (if applicable):
 
+## Planning Depth และ Checkpoint ถัดไป
+Mode: Hybrid — Full Scope, Progressive Detail (Default); ข้อยกเว้นต้องมีเหตุผล
+Scope ทั้ง Feature, Unknowns สำคัญ, Cross-team Integration/Release Dependencies:
+Increment ที่แตกละเอียดและพร้อมเริ่ม / จุดทบทวน:
+Increment ภายหลัง (Outline, Assumptions, Trigger สำหรับ Refine):
+
 ## Work slices
 Slice | Outcome / Acceptance | Owner | Dependencies | Verification | Status
 
@@ -127,13 +164,15 @@ Scope/Time/Capacity Trade-offs, Decider, Date, Rationale
 แยก Ticket เฉพาะเมื่อต้องช่วย Ownership, Execution หรือ Traceability และรักษา Source of Truth เดียวที่เชื่อมถึงกัน
 
 ## 9. เกณฑ์แผนพร้อมเริ่มและ Checkpoints
-เริ่ม Increment ปลอดภัยถัดไปได้เมื่อ:
+เริ่ม Increment ปลอดภัยถัดไปได้เมื่อ **สำรวจภาพรวมและ Critical Risks ของ Feature แล้ว** และ:
 1. Increment ที่มีคุณค่าหรือทำให้เรียนรู้ พร้อม Acceptance/Learning Goal ชัด
 2. Owner, Reviewer, Dependencies และ Major Unknowns มองเห็น
 3. Solution/Contract Boundary เข้าใจพอสำหรับ Increment นี้
 4. มี Verification, Integration และ Release Implications ตามเหมาะสม
 5. Capacity/Timing Claim (ถ้ามี) มี Assumption และ Uncertainty
 6. Critical Scope/Technical Conflict มีผู้ตัดสินใจหรือ Bounded Follow-up
+7. ข้อจำกัดสำคัญด้าน Integration, Migration, Security และ Rollout ของงานทั้ง Feature ปรากฏชัด แม้ Task ภายหลังยังเป็น Outline
+8. ระบุ Planning Mode และ Trigger สำหรับแตก Increment ถัดไป
 
 **ผลลัพธ์:** Agreed for First Increment / Start with Spike / Return to Solution-Technical-Requirement Discovery / Defer or De-scope
 
@@ -181,11 +220,11 @@ Pilot:
 
 วัด Blocked Time, WIP, Unplanned Scope, Integration Surprises, Forecast Reliability เท่าที่มีความหมาย, Review/Rework และ Plan Maintenance Overhead ในระดับทีม/ระบบ ไม่จัดอันดับบุคคล
 
-## คำถามที่ยังเปิด (v0.1)
-1. Shared Plan/View เดียวพอโดยไม่ซ้ำ Jira หรือไม่?
-2. Vertical Slicing รองรับ Foundation Tasks/Spikes โดยไม่แต่ง User Value ได้หรือไม่?
-3. Gate **Agreed for First Increment** ชัดกว่าสถานะ Ready for Everything ปลอมหรือไม่?
-4. Capacity/Forecast สำหรับ Solo เทียบ Product Team ควรต่างกันอย่างไร?
-5. จะคง Source of Truth เดียวข้าม Repo และ Team Boards อย่างไร?
+## Checklist ก่อนอนุมัติ — v1.0 Release Candidate
+1. Hybrid แสดงภาพรวม Risk/Contract ทั้ง Feature โดยไม่บังคับแตก Ticket จากการเดาหรือไม่?
+2. Full Breakdown สำหรับงานง่าย และข้อยกเว้นงาน Cutover/Risk สูง ชัดเจนพอหรือไม่?
+3. Gate **Agreed for First Increment** ป้องกัน Critical Dependency ค้างโดยไม่ต้องแตกทุก Task ไกล ๆ ได้หรือไม่?
+4. Jira-first Source of Truth, Estimate ที่บอก Unknowns และ Decision Owners ใช้ได้ทั้ง Solo/Team หรือไม่?
+5. งาน Cross-repo ใช้ Feature-level View หลักและ Link ไป Issue ราย Repo โดยไม่ดูแลข้อมูลซ้ำได้หรือไม่?
 
-**Draft Pending Explicit Approval.** เอกสารนี้ยังไม่อนุมัติ Automated Staffing, Sprint Commitments, Jira Integration หรือ Skill ใหม่
+**Release Candidate — รอเจ้าของอนุมัติอย่างชัดเจน** เอกสารนี้ยังไม่อนุมัติ Automated Staffing, Sprint Commitments, Jira Integration หรือ Skill ใหม่
