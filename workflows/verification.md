@@ -113,7 +113,7 @@ After the applicable unit/regression tests and required developer checks **actua
 
 ## Entry and risk selection
 
-**Preparation / preliminary review** may start as soon as an acceptance example, test plan, contract or reviewable partial diff exists. **Formal Independent Verification** starts **only after** actual passing applicable unit/regression tests and required developer checks **and** the Human Implementation Gate, subject to the documented no-unit-test-seam exception in the entry rule above. Before formal checks, review source-backed acceptance, a **fixed diff/commit base**, observed developer-check outputs, dependencies, risk map and the execution-safety preflight below.
+**Preparation / preliminary review** may start as soon as an acceptance example, test plan, contract or reviewable partial diff exists. **Formal Independent Verification** starts **only after** actual passing applicable unit/regression tests and required developer checks **and** the Human Implementation Gate, subject to the documented no-unit-test-seam exception in the entry rule above. Before formal checks, review source-backed acceptance, a **fixed diff/commit base**, observed developer-check outputs, dependencies and risk map; **complete the execution-safety preflight defined above** before running live or side-effecting checks.
 
 Select depth according to impact, reversibility, data sensitivity, concurrency, external contracts and operational risk:
 - **Low:** inspect relevant diff, focused tests and acceptance behavior; concise MR record.
