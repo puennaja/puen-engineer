@@ -78,6 +78,23 @@ When a reliable test harness exists, Verification may create a **small executabl
 
 Once admitted, **challenge the green tests**: confirm assertions reflect agreed expected behavior, check critical negative/edge cases, exercise appropriate real API/DB/BFF contracts, and independently review the diff. **Green unit tests are necessary feedback where applicable, never sufficient proof of correctness.** When Verification finds a defect, use scoped fix → **rerun impacted developer unit tests** → renewed Independent Verification evidence; the normal Human Verification Gate still applies. This adds no gate or bypass to existing approval policy.
 
+## Independent Verification v1.0 — four agreed safety nets (baseline design decision, 2026-10-10)
+
+After the applicable unit/regression tests and required developer checks **actually pass** and the authorized human approves the Implementation Gate, formal Independent Verification evaluates these **four distinct questions** for the assigned Work Item. **All four dimensions are considered; the checks and depth within each depend on risk and applicability.** Passing unit tests grants admission, **not** independent acceptance.
+
+| Safety net | Question and minimum output | BE / BFF examples |
+| --- | --- | --- |
+| **1. Requirement verification** | Does the work-item behavior match confirmed acceptance and parent-Story contracts? Map important scenarios to evidence; identify omissions, disputed expectations and out-of-scope changes. | Activity-log actor/action/time; response/error semantics; unauthorized access expectations |
+| **2. Independent code review** | Is the diff correct, safe and consistent with the repo? Review spec alignment and maintainability/architecture **as separate axes**, with actionable findings and impact. Inspect developer-test quality, not just green counts. | Transactions, data integrity, error handling, security, side effects, excessive coupling, weak assertions |
+| **3. Risk-based behavior/integration proof** | What actually works on the changed observable boundary? Execute the **strongest proportionate** API/DB/contract/integration or other real-surface checks; record what could not be exercised. | Update status → persisted log read-back; BFF ↔ BE mapping/contract; permission and retry/failure scenarios as relevant |
+| **4. Evidence and risk assessment** | What was actually tested, what failed or remained untested, and what risks remain? Provide concise **Pass / Fail / Not run / Blocked / Inconclusive** results, links, responsible owners and a decision recommendation for the human. | Exact test commands/results/environment, behavior observations, findings/resolution, externally owned integration gaps |
+
+**Proportionate depth:** Low-risk changes need acceptance mapping, meaningful test-quality/diff review and a traceable evidence decision; execute focused behavior checks where an applicable seam exists. Medium-risk changes warrant stronger real-behavior/contract or integration proof and deliberate independent review. High-risk changes (authorization, sensitive data, concurrency, migrations, money, destructive or hard-to-reverse effects) need tailored negative/security/data/integration checks and the qualified human reviewers required by risk/team policy. A three-line authorization change can be high-risk; diff size alone is not risk.
+
+**No checkbox theater:** Build/lint/green unit tests are **developer evidence**, not a substitute for these four independent judgments. Tests whose assertions cannot detect a relevant wrong result must produce a finding. Mutation, property-based, fuzz, load and deep security testing are **optional targeted techniques**, not mandatory on every Work Item. A reviewer must not infer unexecuted behavior from an AI narrative or declare the parent Story complete when its cross-owner integration is unverified.
+
+**Decision boundary:** Independent Verification may recommend **Verified for release review / Fix and reverify / Blocked / Stop or defer**; the **per-Work-Item Human Verification Gate** accepts or rejects the evidence and residual risk. No automation, MR Ready transition, merge or deploy permission follows merely from a green report. Record this in the existing Jira/MR rather than adding a mandatory report file.
+
 ## Entry and risk selection
 
 May start once a reviewable slice, test plan or interface contract exists. Read requirements/acceptance, solution constraints, diff, actual developer-check outputs, dependencies and relevant risk map.
@@ -216,7 +233,7 @@ No requirement to finish all implementation tasks before starting verification; 
 1. Is Feature-level Design/Planning versus per-Work-Item Implementation/Verification approval clear, without unnecessary repeat approvals or bypasses?
 2. Are the two workflow responsibilities clear while enabling review during implementation?
 3. Can the shared handoff fit existing Jira/MR without separate mandatory artifacts?
-4. Are evidence, independence, risk acceptance and release authority distinguished?
+4. Are all **four agreed safety nets** covered (requirement, independent code review/test quality, risk-based behavior proof, evidence/risk), with depth appropriate to the Work Item?
 5. Are real repository permissions and AI Skill creation separate authorizations?
 
 ## Pilot and open decisions
