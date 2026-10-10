@@ -218,4 +218,4 @@ Local Commit/Push ใช้กติกา Scoped Git ด้านบน ส่�
 
 **จุดตรวจสุดท้าย:** ระบุ Human Gate Owner และ Work Item Boundary ให้ชัดตามทีมจริง ตรวจว่า Publish Authorization เก็บใน Jira/MR เดิมและไม่มีขั้นตอน Review ที่ข้าม Fixed Gates ส่วน Target Branch, CI และ Reviewer Requirements ต้องตรวจจาก Git Flow/Policy ของ Repo จริง
 
-**Accepted v1.0 — Repository Owner อนุมัติเมื่อ 2026-10-10** การอนุมัติ Workflow นี้ **ไม่ใช่** การเปลี่ยน AGENTS.md, Skills, Automation, GitLab Permissions, Human Gates, สิทธิ์ Push หรือสิทธิ์สร้าง Draft MR ของงานจริง ส่วน Verification v1.0 **ยังเป็น Release Candidate** และรออนุมัติแยก
+**Accepted v1.0 — Repository Owner อนุมัติเมื่อ 2026-10-10** การอนุมัติ Workflow นี้ **ไม่ใช่** การเปลี่ยน AGENTS.md, Skills, Automation, GitLab Permissions, Human Gates, สิทธิ์ Push หรือสิทธิ์สร้าง Draft MR ของงานจริง ส่วน Verification v1.0 **ได้รับการอนุมัติ Accepted แยกเมื่อ 2026-10-10 แล้ว**
