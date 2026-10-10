@@ -1,7 +1,8 @@
-# Release & Operations Workflow — v1.0 Design Draft
+# Release & Operations Workflow — v1.0 (Accepted)
 
-- **Status:** Review Ready / Release Candidate — **not Accepted**; Q1–Q6 agreed; final cross-document review completed 2026-10-11; explicit owner approval pending
+- **Status:** Accepted — explicitly approved by repository owner on 2026-10-11 (My Engineer Track A); Q1–Q6
 - **Date:** 2026-10-10
+- **Approved:** 2026-10-11 by repository owner
 - **Track:** A — My Engineer, vendor/tool-neutral engineering practices
 - **Upstream:** [Implementation (Accepted)](./implementation.md), [Verification (Accepted)](./verification.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.md)
 - **Thai companion:** [Release & Operations (TH)](./release-operations.th.md)
@@ -19,16 +20,16 @@ Every **production release** must receive **explicit approval by an authorized h
 - An approved pipeline is not the same thing as unrestricted agent action. Actual production credentials, deployment actions, release approver identity, protected-environment permissions, incident ownership and company policies remain project-specific and are **not granted by approving this design decision**.
 - This decision does **not** require a human to click every pipeline step. It requires explicit human authorization before each production release, with automation allowed inside the approved bounds.
 - Deployment, feature flag enablement and other changes to live user exposure are distinct operations; the **bounded approval envelope agreed in Q2** must state which of them is authorized.
-- No deployment, production access, repo policy change, release automation or new AI Skill is authorized by this draft.
+- Acceptance of this **workflow design** grants no deployment, production access, repository-policy changes, release automation or new AI Skill.
 
-## Candidate responsibilities (not yet approved as a workflow)
+## Release & Operations responsibilities (Accepted v1.0)
 
 1. **Release candidate and readiness:** identify immutable build/artifact, included changes, dependencies, CI evidence, migration and rollback/roll-forward limitations.
 2. **Coordination and Go/No-Go:** identify release owner, affected services/environments, rollout plan, risk/stop criteria, communications and authorization.
 3. **Controlled deployment and validation:** execute only through authorized pipeline/people, validate deployment completion and critical behavior with safe observability.
 4. **Operations, recovery and learning:** monitor agreed signals, identify regressions, mitigate/rollback/roll-forward as safe, involve incident owners and record actual outcomes.
 
-**Adaptive depth:** Low-risk and reversible releases should remain lightweight; high-risk, multi-service, data-changing or hard-to-reverse releases require stronger compatibility, recovery, monitoring and qualified human ownership. These are proposed practices, **not additional auto-approved gates**.
+**Adaptive depth:** Low-risk and reversible releases should remain lightweight; high-risk, multi-service, data-changing or hard-to-reverse releases require stronger compatibility, recovery, monitoring and qualified human ownership. These are risk-adaptive practices in **Accepted v1.0**, **not additional Human Gates**.
 
 ## Q2 — Bounded Release Authorization (agreed 2026-10-10)
 
@@ -44,7 +45,7 @@ Every **production release** must receive **explicit approval by an authorized h
 
 **Approval invalidation / stop:** replace the artifact or manifest, change target service/environment or user exposure, expand rollout, introduce a new migration/contract risk, exceed validity or change other material release assumptions → **stop the affected release action and obtain renewed explicit human authorization**. Harmless reruns of approved checks do not automatically require new approval. Do not infer permission from CI-green, prior work-item verification, MR merge or an earlier release authorization.
 
-**Boundary:** Q1–Q3 approve **policy design principles**, not real credentials, deployment rights, environment access or an actual production release. The overall workflow remains a Draft.
+**Boundary:** Q1–Q6 are **Accepted workflow design principles**, not real credentials, deployment rights, environment access or authorization for an actual production release.
 
 ## Q3 — Risk-adaptive Release Readiness (agreed 2026-10-10)
 
@@ -118,7 +119,7 @@ Every **production release** must receive **explicit approval by an authorized h
 
 **AI assistance:** AI may prepare release summaries, identify unowned gaps, propose actionable Work Items and synthesize authorized incident evidence. AI **cannot silently close a degraded release, accept residual risk, change product priorities, create production privileges or declare human approval**. The original human-controlled release and intervention rules remain in force.
 
-## Proposed cohesive Release & Operations lifecycle — review candidate (not yet Accepted)
+## Cohesive Release & Operations lifecycle — Accepted v1.0
 
 The six owner decisions form one **iterative, risk-adaptive release responsibility**, not a mandatory waterfall and not a new set of approvals for every test:
 
@@ -133,18 +134,18 @@ The six owner decisions form one **iterative, risk-adaptive release responsibili
 
 **Authority boundary:** approval of this *workflow design* authorizes **no actual Production deployment**, GitLab Ready/Merge, new production access, recovery command, AI skill or automation. Protected environments and emergency/incident policy remain authoritative. If the stated Human-confirmation policy conflicts with a mandatory independent safety mechanism, **do not disable that mechanism**; reconcile under the system's responsible owner.
 
-## Candidate final-review checklist — before explicit v1.0 approval
+## Approval criteria — Accepted v1.0
 
 1. **Boundary & unit:** Work Items and release bundles remain distinct; Verification Gate passing is not permission to merge, deploy or enable a feature; no guessed target or artifact.
 2. **Human authority:** Q1 explicit release approval, Q2 bounded scope, and Q5 fresh human authorization before *each anomaly-driven intervention* coexist with ordinary authorized pipeline automation and mandatory independent fail-safes.
 3. **Readiness & proof:** Q3 covers full-release compatibility and policy-required checks; Q4 proves observed post-deploy technical and critical-flow behavior rather than pipeline status; missing critical evidence blocks a Healthy claim.
 4. **Recovery safety:** realistic rollback/roll-forward or mitigation owner, migration irreversibility and data/user impacts are examined before deployment; AI has no autonomous production privileges.
 5. **Learning & proportionality:** Q6 differentiates health from product outcomes and assigns concrete owners to actionable residual gaps without a report/ceremony mandate.
-6. **No accidental rollout authorization:** all Q1–Q6 decisions are approved **design inputs only**. This overall workflow is **still a Design Draft** until separate explicit owner acceptance; actual pilot, skills, CI/CD configuration and production permissions are separate.
+6. **No accidental rollout authorization:** Q1–Q6 and this workflow were **explicitly Accepted as design policy on 2026-10-11**. That does **not** authorize an actual release or change production permissions. Any pilot, AI skills, CI/CD configuration and operational access remain separate.
 
 ## Final review — 2026-10-11
 
-**Result: Ready for explicit owner review/approval (Release Candidate, not Accepted).** Compared the cohesive lifecycle with the Accepted Feature Delivery Lifecycle, Implementation and Verification workflows, and both language variants. No blocking decision conflict found:
+**Review result (before approval): Ready for owner review.** Compared the cohesive lifecycle with the Accepted Feature Delivery Lifecycle, Implementation and Verification workflows, and both language variants. No blocking decision conflict found:
 
 - **Upstream handoff:** Work Item Verification is evidence for, not authorization of, a potentially multi-Work-Item Production Release; MR Ready/Merge and production release remain distinct human-controlled decisions.
 - **Human and automation boundaries:** Q1 Human Release Gate and Q2 pinned authorization allow only planned pipeline execution; Q5 requires separate human confirmation for every **new anomaly-response intervention**. Detection/paging are not interventions.
@@ -155,4 +156,4 @@ The six owner decisions form one **iterative, risk-adaptive release responsibili
 
 **Remaining work outside v1.0 document acceptance:** pilot in a safe, non-sensitive environment; identify actual human owners, required company/platform controls, release and recovery permissions, CI/CD implementation and evaluation metrics. No production access, skills or automation approved.
 
-**Approval status:** Release Candidate — **awaiting explicit owner approval**.
+**Approval status: Accepted v1.0 — explicitly approved by repository owner on 2026-10-11.** This is document/design approval only; it does **not** change protected-environment or GitLab permissions, authorize an actual deployment/intervention, enable AI production access, or create Skills/Automation. A real-project pilot and policy-specific adaptation remain future separate work.
