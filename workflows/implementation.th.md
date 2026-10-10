@@ -110,9 +110,19 @@ Verification Decision → Release Review (Workflow อื่น)
 
 AI เลือก Skill ตามงานแบบ Hybrid และแก้โค้ด/รัน Developer Checks ที่ปลอดภัยภายใน Scope ที่อนุมัติได้ (**Scoped Autonomy**) รวมทั้ง Local Commit บน Work Branch ที่ตกลง โดยไม่ต้องขออนุมัติทุกไฟล์ แต่การเปลี่ยน Scope/Architecture หรือใช้คำสั่งอันตราย/สิทธิ์พิเศษต้องได้รับอนุญาตเพิ่ม **Human Implementation Gate** ยังคงบังคับก่อน Publish ขึ้น Remote โดย Commit, Push และการเปิด Draft MR มี Permission แยกกัน ไม่บังคับใช้ Claude/Codex คู่กันหรือสร้าง Skill ก่อน Pilot
 
+## ระดับการอนุมัติ — Feature Design/Planning และ Increment Execution (Track A ตกลงแล้ว)
+
+**Solution Design และ Delivery Planning อนุมัติระดับ Feature** สำหรับแนวทางหลัก, Contracts/Dependencies, Scope/Risk และแผนแบบ Full Scope, Progressive Detail ส่วน **Implementation และ Verification มี Human Gate แยกสำหรับแต่ละ Increment** ที่ตกลงและตรวจสอบได้ หนึ่ง Feature จึงมีหลาย Implement ↔ Verify Loops ได้โดยไม่ต้องกลับไป Approve Feature ทุกครั้ง
+
+ก่อนเริ่ม Increment ถัดไป ให้แตก Acceptance, Repos/Contracts, Dependencies และ Checks ให้ละเอียดพอภายใน **Feature Plan ที่อนุมัติอยู่แล้ว** ไม่ต้องขอ Design/Planning Approval ซ้ำถ้าเป็นเพียงการลงรายละเอียดที่ไม่เปลี่ยนขอบเขตเดิม แต่ถ้ามี Critical Unknown หรือ Increment ไม่อยู่ใน Scope เดิม ห้ามอ้าง Approval เก่ามาใช้โดยไม่ถาม Human
+
+ถ้ามีการเปลี่ยน **Feature Scope, Design, API/Data Contract, Security/Data Risk หรือ Delivery Constraints อย่างมีนัยสำคัญ** ให้หยุดส่วนที่ได้รับผลกระทบและกลับไปขออนุมัติ **เฉพาะ Gate ก่อนหน้าที่ Decision ถูกกระทบ** ตาม Human Owner ของทีมนั้น แต่ Scoped Bug Fix/Test ที่ยังอยู่ใน Scope เดิมทำซ้ำได้ตาม Q7 และต้องผ่าน Verification Gate ของ Increment นั้น ใช้ Jira/MR เดิม Link Approval ของ Feature และ Increment โดยระบุ Owner, Scope และ Evidence
+
+Increment หนึ่งอาจกระทบหลาย Repos ได้ โดยใช้ Evidence ที่เชื่อมโยงกัน แต่ **การเปิด Draft MR แต่ละครั้งยังต้องถาม Human เพื่อยืนยัน Git Flow และ Source/Target Branch แยกเสมอ** นี่คือ Design Decision ของ Track A AI-assisted ที่ยังรอ Approve Workflow ไม่ได้เปลี่ยน General Lifecycle ที่ Accepted แล้ว ดู [Decision Q1–Q9 และ Gate Granularity](./ai-assisted-feature-delivery.md)
+
 ## Fixed Implementation Gate, Scoped Git และ Rework (สำหรับ AI-assisted v1.0)
 
-ต่อ **Increment ที่ตกลงแล้ว** Human Owner ต้องดู Scope, Diff, ผล Developer Checks ที่รันจริง, Tests ที่ไม่ได้รัน, Contract/Integration Risk และอนุมัติ **Implementation Gate** อย่างชัดเจนก่อนให้ AI Publish งาน ส่วน Preliminary Verification Feedback ทำระหว่าง Implement ได้ แต่ไม่ได้แปลว่าผ่าน Formal Verification Gate
+ต่อ **Increment ที่ตกลงแล้วแต่ละงาน** Human Owner ต้องดู Scope, Diff, ผล Developer Checks ที่รันจริง, Tests ที่ไม่ได้รัน, Contract/Integration Risk และอนุมัติ **Implementation Gate** อย่างชัดเจนก่อนให้ AI Publish งาน ส่วน Preliminary Verification Feedback ทำระหว่าง Implement ได้ แต่ไม่ได้แปลว่าผ่าน Formal Verification Gate
 
 **Q8=B — Scoped Git Autonomy:** AI ทำ Local Commit ใน Work Branch ที่ตกลงได้ตาม Convention ของ Repo หลังผ่าน Implementation Gate ต้องมี **Publish Authorization** ก่อนจึงจะ Push แบบปกติไป **Non-protected Work Branch ที่ระบุ** ได้ และสามารถ Push Scoped Fix รอบถัดไปบน Branch เดิมภายใต้สิทธิ์นั้นตาม Policy ห้าม Force Push, Rewrite History, Push Protected Branch, เปลี่ยน Remote/ปลายทาง หรือลบข้อมูลโดยไม่ได้อนุญาต
 
