@@ -1,7 +1,7 @@
 # Software Engineering at Google — Chapter 14: Larger Testing
 
 - **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
-- **Status:** Draft v0.1 — candidate principles are **not accepted**
+- **Status:** Accepted — reference knowledge; non-mandatory guidance
 - **Chapter author(s):** Joseph Graves
 - **Primary full chapter:** https://abseil.io/resources/swe-book/html/ch14.html
 - **Thai companion:** [Thai](./software-engineering-at-google-ch14.th.md)
