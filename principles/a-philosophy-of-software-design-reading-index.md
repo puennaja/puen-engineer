@@ -7,6 +7,15 @@
 - **Thai companion:** [Thai reading index](./a-philosophy-of-software-design-reading-index.th.md)
 - **Scope:** Prioritize architecture/system design and code quality/maintainability in My Engineer.
 
+
+## First study completed — Author Talk + Stanford Lecture Notes
+
+- **Study:** [Author Talk & Lecture Evidence Notes (English)](./a-philosophy-of-software-design-author-talk.md) · [Thai](./a-philosophy-of-software-design-author-talk.th.md)
+- **Status:** 🟡 Draft — original source-backed thematic analysis, **not** a full-video, full-chapter or second-edition book summary
+- **Coverage:** Accessible excerpts from the 2018 video transcript + author-authored CS190 2018/2021 notes + later author clarification.
+- **Candidate IDs:** AP-C01–AP-C04 (all pending review). No existing approved principles changed.
+- **PDF blocker:** The official extract URL is verified by the author's website, but online PDF fetch (13.9 MB) and independent download failed. Do not mark AP-S01 as read until inspected.
+
 ## Scope and evidence policy
 
 This is a **source inventory and reading plan**, not a chapter summary or a claim that the entire book has been read.
