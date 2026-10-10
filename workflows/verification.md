@@ -81,6 +81,40 @@ Unclear implementation state or missing credentials are recorded as blockers, no
 | 6. Reconcile findings | Send findings to Implementation; retest affected behavior after fixes | Findings resolved, accepted with owner or blocked |
 | 7. Decide handoff | Determine verification state, residual risks and release-readiness handoff | Explicit decision and responsible human |
 
+## Prove it works — pstack and mattpocock adaptation (candidate for v1.0)
+
+Adopt the **evidence discipline** from [pstack Verify & Ship](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md), [pstack's adversarial review](https://github.com/cursor/plugins/blob/main/pstack/skills/interrogate/SKILL.md), [pstack verification-skill generator](https://github.com/cursor/plugins/blob/main/pstack/skills/create-verification-skill/SKILL.md) and [mattpocock two-axis code review](https://github.com/mattpocock/skills/blob/main/skills/engineering/code-review/SKILL.md). **These are techniques, not required vendor tools.**
+
+### 1. Prove the changed behavior on the matching surface
+
+Define the observable finish condition **before** implementation. For verification, distinguish proxies (build/typecheck/unit-test-only pass) from evidence through the relevant user or system interface:
+
+| Change | Stronger behavior evidence |
+| --- | --- |
+| CLI / job | Execute the real command/job using representative safe input; compare literal output, exit status and side effects |
+| API / data | Exercise contract/authorization/error semantics and read back the stored outcome when safe |
+| Web / UI | Walk the changed live flow and capture key states/errors; consider screenshots/video when they add actual evidence |
+| Refactor / migration | Replay representative before/after inputs and examine contract/data compatibility |
+| Performance | Vet baseline versus result under comparable runtime/configuration, repetitions, bottleneck and end-to-end impact |
+
+The required depth scales to risk; **not every change needs browser video or a full E2E suite**. When real execution is inaccessible, report **Inconclusive / Blocked / Not run** with why and who can resolve it; never replace it with an invented success claim.
+
+### 2. Review against two distinct axes (plus consequential risks)
+
+**Spec / Acceptance:** Does the diff actually satisfy the originating issue and observable scenarios without unauthorized scope expansion?
+
+**Repository Standards / Quality:** Does it respect documented repo patterns and relevant maintainability constraints? Separate verifiable violations from judgment calls; do not turn style preferences or generic code smells into mandatory bans.
+
+Add risk-focused lenses only when relevant: auth, privacy, data correctness, concurrency, retries, error handling, observability, migrations and cross-service contracts. Use a **fixed diff base and source-backed spec**; missing spec or unavailable environment is a gap, not something reviewers should hallucinate.
+
+An independent skeptical pass or second model can supplement a human reviewer where useful. Categorize findings as **Act on / Consider / Noted / Dismissed**, retaining rationale and evidence; no finding is auto-applied merely because multiple agents agree. Human reviewers determine applicability and sign-off under local policy.
+
+### 3. Make verification repeatable only when justified
+
+When repeated runs require manual UI/CLI/API operation, evaluate a **project-specific verification harness or Skill** built on existing tools. Candidate contract: **Launch → Doctor/health check → Drive real behavior → Capture Evidence → Cleanup owned resources**. Prefer repo-local existing test tools and safe seed fixtures; isolate parallel runs; prove generated instructions work once end-to-end before relying on them. Maintain a feature map only if it brings value.
+
+Do **not** automatically generate a `.cursor/skills` tree or mandate daily maintenance for My Engineer. A future `puen-stack` skill requires approved access, a successful pilot, ownership/maintenance plan and an evaluation against current verification practice. A skill that merely wraps the same unreliable steps does not create evidence.
+
 ## Evidence discipline
 
 Distinguish **Proposed** (suggested check), **Executed** (real test/observation), **Reviewed** (assessed evidence) and **Accepted** (authorized risk acceptance). Do not present one as another.
