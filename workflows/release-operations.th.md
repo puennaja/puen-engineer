@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft (ภาษาไทย)
 
-- **สถานะ:** Design Draft — **ยังไม่ Accepted**; Q1–Q6 ตกลงแล้ว รอ Final Review v1.0
+- **สถานะ:** Review Ready / Release Candidate — **ยังไม่ Accepted**; Q1–Q6 ตกลงแล้ว, ผ่าน Final Cross-document Review เมื่อ 2026-10-11 และรอ Owner Approve แยก
 - **วันที่:** 2026-10-10
 - **Track:** A — My Engineer, ออกแบบจาก Engineering Practices ไม่ผูกบริษัทหรือเครื่องมือ
 - **ก่อนหน้า:** [Implementation (Accepted)](./implementation.th.md), [Verification (Accepted)](./verification.th.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.th.md)
@@ -142,4 +142,17 @@ Q1–Q6 ทำงานเป็น **Iterative, Risk-adaptive Release Responsib
 5. **Learning & Proportionality:** Q6 แยก Technical Health จาก Product Outcome มี Owner ของ Actionable Gaps โดยไม่บังคับ Report/Ceremony ใหม่ทุกงาน
 6. **No Silent Authorization:** Q1–Q6 เป็น **Design Decisions เท่านั้น** Workflow ทั้งฉบับยังเป็น **Design Draft** จนกว่า Owner จะอนุมัติแยก Pilot, Skills, CI/CD Config และ Production Permissions ต้องขออนุญาตต่างหาก
 
-**Review Status:** ตกลง Design Decisions Q1–Q6 แล้ว แต่ Release & Operations v1.0 **ยังรอ Final Cross-document Review และ Owner Approve ชัดเจน**
+## Final Review — 2026-10-11
+
+**ผลตรวจ: พร้อมเสนอ Owner Review/Approve (Release Candidate, ยังไม่ Accepted)** ตรวจเทียบ Release Lifecycle กับ Feature Delivery Lifecycle, Implementation และ Verification ที่ Accepted แล้ว รวมทั้งความสอดคล้องภาษาไทย/อังกฤษ ไม่พบ Decision Conflict ที่เป็นตัวบล็อก:
+
+- **Upstream Handoff:** Work Item Verification เป็น Evidence ไม่ใช่สิทธิ์ Deploy โดย Release อาจรวมหลาย Work Items; MR Ready/Merge กับ Release เป็น Human Decisions แยกกัน
+- **Human & Automation Boundary:** Q1 Human Release Gate และ Q2 Bounded Authorization อนุญาต Routine Pipeline Steps ตาม Scope แต่ Q5 ให้ Human ยืนยันใหม่ทุก **Intervention ที่เกิดเพื่อตอบสนองเหตุผิดปกติ** Detection/Paging ไม่ใช่ Intervention
+- **Safety & Evidence:** Q3 เมื่อ Mandatory Evidence ขาดต้อง No-Go; Q4 ไม่อ้าง Pipeline เขียวแทน Production Health/Business Behavior; Q6 ต้องมี Owner ของผลลัพธ์ที่ยังไม่รู้และ Remaining Risks
+- **Risk-based, Lightweight:** ใช้ Records/Links เดิมและปรับความลึกตาม Risk ไม่สร้าง Jira Issue Type, Report, Runbook หรือ Ceremony บังคับใหม่ทุก Release ต้องตรวจ CI/CD, Owner และ Incident Policy ของ Project จริงตอน Adoption
+
+**ข้อควรระวังที่ยอมรับชัดเจน (Trade-off Q5):** รอ Human ก่อน Protective Pause อาจทำให้ Incident ลุกลาม หากติดต่อ Owner ไม่ได้ ระบบ High-risk ต้อง **ประเมินความพร้อม On-call และ Mandatory Independent Safety Mechanisms ก่อนนำ Workflow ไปใช้จริง** ห้ามปิด Fail-safe ของ Platform เพื่อให้เข้ากับ Policy ทั่วไป เรารักษา Human Confirmation ตามที่เลือก ไม่แอบเปลี่ยนเป็น Auto-pause
+
+**เรื่องที่ทำแยกจากการอนุมัติเอกสาร v1.0:** Pilot บนระบบจำลอง/Non-sensitive ที่ได้รับสิทธิ์, ระบุ Human Owners, Company/Platform Controls, Release/Recovery Permissions, CI/CD Implementation และ Metrics ไม่ได้อนุญาต Production, Skills หรือ Automation
+
+**Approval Status:** Release Candidate — **รอ Owner Approve อย่างชัดแจ้ง**
