@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft (ภาษาไทย)
 
-- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1, Q2 และ Q3 แล้ว ส่วน Q4 รอตัดสิน
+- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1–Q4 แล้ว ส่วน Q5 รอตัดสิน
 - **วันที่:** 2026-10-10
 - **Track:** A — My Engineer, ออกแบบจาก Engineering Practices ไม่ผูกบริษัทหรือเครื่องมือ
 - **ก่อนหน้า:** [Implementation (Accepted)](./implementation.th.md), [Verification (Accepted)](./verification.th.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.th.md)
@@ -71,11 +71,26 @@
 
 **การบันทึก:** ใช้ Release Ticket/Pipeline, CI Links และ Jira/MR Evidence ที่มีอยู่ ไม่สร้าง Markdown Report ใหม่เป็นข้อบังคับ และการตกลง Policy Design นี้ **ไม่ใช่การอนุญาต Deploy จริง** Verification Gate, Merge และ Release เป็นคนละ Decision
 
-## Q4 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+## Q4 — Risk-adaptive Production Validation & Observation (ตกลงเมื่อ 2026-10-11)
 
-**หลัง Pipeline Deploy สำเร็จ ต้องตรวจอะไรอีกก่อนจะถือว่า Release จบสมบูรณ์?**
+**Owner Decision: เลือก A — Risk-adaptive Production Validation & Observation สำหรับ Release & Operations v1.0** ต้องแยก **Deployment Completed**, **Service Health**, **Changed Business Behavior** และ **Release Outcome** ออกจากกัน Pipeline สำเร็จ **ยังไม่ใช่หลักฐานว่า Release Healthy** หลัง Deploy ที่อนุญาตแล้ว ต้องตรวจผลบน Production Observation Surface ที่ปลอดภัยและมีสิทธิ์ใช้งานก่อนเสนอปิด Release
 
-- **A. Risk-adaptive Production Validation & Observation (แนะนำ):** แยก **Deployment Completed** ออกจาก **Service Health** และ **Business Behavior** รันเฉพาะ Post-deploy Checks ที่ปลอดภัย/ได้รับอนุญาต, ตรวจ Health/Metrics/Logs/Traces กับ Dependencies, เฝ้าดูช่วงเวลาหรือ Signal Threshold ตาม Risk และใช้ Pause/Abort/Escalation Criteria ที่กำหนดก่อนหน้า บันทึกผล **Healthy / Degraded / Inconclusive / Recovery in progress**, Human Owner และ Residual Risks ไม่ตีความว่า Pipeline เขียวคือ Release ผ่าน
-- **B. Pipeline-success Closure:** Pipeline สำเร็จแล้วปิด Release ได้เลย โดยให้ Health/Behavior Checks เป็น Optional Follow-up
+**Minimum Post-deployment Contract — เพิ่มความเข้มตาม Risk:**
+1. **ตรวจ Version/Scope ที่ Deploy จริง:** Pipeline/Deployment Result, Artifact/Version, Target Environment/Region/Services และ Traffic/Feature Exposure **เทียบกับ Q2 Approval Envelope** ถ้า Partial Rollout, มี Drift หรือ Stage ไม่ได้รัน ต้องรายงานตรง ๆ
+2. **ตรวจ Operational Health:** Readiness/Availability, Error Rate, Latency, Saturation เมื่อเกี่ยวข้อง, Logs/Traces, Downstream Dependency และ Queue/Job Health เทียบกับ Baseline ที่มีจริงหรือ Threshold ที่ตกลงล่วงหน้า **ห้ามแต่ง Baseline หรือถือว่าไม่มี Error เมื่อไม่มีข้อมูล**
+3. **ตรวจ Changed Business Behavior:** รันเฉพาะ Smoke/Critical-flow Checks ที่ **ได้รับอนุญาตและไม่ทำลายข้อมูล** โดยอิง Acceptance รวมถึง Permission/Negative/Data-integrity Signals เมื่อเกี่ยวข้อง ถ้า Check มีโอกาสเขียนข้อมูลจริง, ตัดเงินจริง, ส่ง Event หรือกระทบผู้ใช้ ต้องใช้ Safe Procedure ที่อนุมัติแยกหรือ Synthetic/Isolated Alternative ที่ได้รับสิทธิ์ ถ้ายังตรวจไม่ได้ให้บันทึก Gap
+4. **Observe & Decide:** ใช้ **Observation Window หรือ Objective Signal Threshold ตาม Risk** ที่ตกลงไว้ก่อน Release มี Observer/On-call Owner, Evidence และ Stop/Abort/Escalation Trigger งาน Low-risk อาจดูช่วงสั้น ๆ ด้วย Focused Checks ส่วน High-risk เพิ่ม Depth/Progressive Exposure/Monitoring ผลกระทบที่เกิดช้าต้องมี Owner ติดตาม ไม่อ้างว่าผ่านครบเมื่อยังไม่เห็น
+5. **แยกผลลัพธ์:** Deployment (**Completed / Partial / Failed / Unknown**), Service (**Healthy / Degraded / Inconclusive**), Business Behavior (**Pass / Fail / Not run / Inconclusive**) และ Release Disposition (**Healthy / Degraded / Inconclusive / Recovery in progress**) พร้อม Owner, เวลาที่ตรวจ, Evidence และ Remaining Risks
 
-**หลัง Q4:** ออกแบบ Recovery/Incident Decision Authority และ Learning Loop ต่อ ก่อน Full Review และรอ Owner Approve v1.0 แยกอีกครั้ง
+**Safety & Escalation:** หาก Critical Threshold ผิด, Release Scope เบี่ยงจาก Approval, ข้อมูล/ผู้ใช้ได้รับผลเสีย หรือ Mandatory Evidence ยังไม่ชัด ให้ใช้ **Pause/Abort/Escalation Process ที่กำหนด** ห้ามตีตราว่า Healthy อัตโนมัติ Pipeline เขียว, Dashboard เขียว หรือ Pod Healthy ไม่ใช่ Business Acceptance และ **Q4 ไม่ได้เพิ่มสิทธิ์ให้ AI ไป Pause/Rollback/เปลี่ยน Exposure เอง** เพราะ Operational Authority จะตกลงแยกใน Q5
+
+**เงื่อนไขปิด Release:** Human Release/Outcome Owner (หรือ Process ที่มี Human Decision ถูกต้อง) ประเมิน Evidence และ Residual Risks จะสรุป Healthy ได้เมื่อ Health/Behavior Criteria ที่เกี่ยวข้องตาม Risk ผ่านจริง ถ้า Mandatory Evidence ไม่มีให้บันทึก **Inconclusive/Blocked** ไม่ใช่ Success ใช้ Release/Pipeline/Incident Record เดิม ไม่เพิ่ม Markdown Report หรือ Human Gate ต่อ Test
+
+## Q5 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+
+**เมื่อ Post-deploy Signals บอกว่ามีปัญหา ใครมีอำนาจ Pause Rollout, Rollback, Roll Forward หรือเริ่ม Incident Response?**
+
+- **A. Guardrailed Operational Response with Explicit Authority (กูแนะนำ):** Pipeline Safeguard ที่อนุมัติล่วงหน้าอาจ **Pause/Abort การ Rollout เพิ่มแบบอัตโนมัติ** เมื่อเจอ Stop Conditions ที่วัดได้และยังอยู่ใน Q2 Envelope; การ Rollback/Recovery ทำอัตโนมัติได้ **เฉพาะเมื่อ Action นั้นได้รับอนุญาตแยกชัดเจน ปลอดภัยกับ Schema/Data/Exposure ปัจจุบัน และมี Recovery Steps ที่เชื่อถือได้** มิฉะนั้นต้อง Escalate ไป Human Incident/Release Owner ยังคง Human Ownership, Incident Communication, Recovery Evidence และ Approval ใหม่เมื่อมีการเปลี่ยน Scope/Risk สำคัญ **ไม่เปิด Auto Destructive Rollback เป็นค่าเริ่มต้น**
+- **B. Human Confirmation Before Every Intervention:** ระบบตรวจ/Alert อัตโนมัติ แต่ทุก Pause/Abort/Rollback/Recovery ต้องรอ Human Confirm ใหม่ แม้เป็นการหยุด Rollout เพิ่มที่ปลอดภัยและอยู่ใน Scope เดิม
+
+**หลัง Q5:** ออกแบบ Outcome/Learning Loop แบบกระชับ ตรวจให้สอดคล้องกับ Workflow ที่ Accepted แล้ว และส่ง Release & Operations v1.0 ให้ Review/Approve แยกอีกครั้ง
