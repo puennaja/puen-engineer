@@ -7,7 +7,7 @@
 - **Track:** A — Build My Engineer
 - **พื้นฐาน:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.th.md)
 - **ก่อนหน้า:** [Requirement Discovery](./requirement-discovery.th.md), [Technical Discovery](./technical-discovery.th.md), [Solution Design](./solution-design.th.md)
-- **ถัดไป:** [Implementation & Verification v0.1 Draft](./implementation-verification.th.md)
+- **ถัดไป:** [Implementation v0.1 Draft](./implementation.th.md) → [Verification v0.1 Draft](./verification.th.md) (ทำวนซ้ำได้)
 - **ขนาดงาน:** Solo → Team → Product / Cross-team
 - **ตัวอย่าง:** แอปการเงินส่วนบุคคลสมมติ ไม่มีข้อมูลลับบริษัท
 
@@ -227,4 +227,4 @@ Pilot:
 4. Jira-first Source of Truth, Estimate ที่บอก Unknowns และ Decision Owners ใช้ได้ทั้ง Solo/Team หรือไม่?
 5. งาน Cross-repo ใช้ Feature-level View หลักและ Link ไป Issue ราย Repo โดยไม่ดูแลข้อมูลซ้ำได้หรือไม่?
 
-**Release Candidate pending explicit owner approval.** เอกสารนี้ยังไม่อนุมัติ Automated Staffing, Sprint Commitments, Jira Integration หรือ Skill ใหม่
+**Release Candidate pending explicit owner approval.** No automated staffing, sprint commitments, Jira integration, or new Skill is approved by this document.
