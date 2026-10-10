@@ -85,15 +85,26 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 **Recording rule:** Capture Feature approvals and individual Increment gate decisions in the existing Jira/issue/MR links with owner, scope, date and important residual risk. No mandatory duplicate document, global approver identity or assumed branch convention.
 
+## Track A — Verification-first and TDD-enabled loop (agreed direction, 2026-10-10)
+
+**Owner design decision:** Verification is a distinct responsibility that may **lead before code exists**, not merely a post-implementation QA step. Within the approved Feature design and plan, begin each Increment with **source-backed acceptance examples, observable expected outcomes, negative/boundary cases, test seams and an evidence strategy** proposed by Verification.
+
+**Execution sequence (iterative, no new gate):** Verification defines test intent → Implementation delivers small vertical slices with developer-owned unit/regression tests, using **TDD Red → Green → Refactor where a reliable test seam makes it worthwhile** → Verification independently executes actual behavior proof, evaluates test quality and challenges the diff → Findings return to scoped implementation/retest. An executable pre-code acceptance/contract test is useful when feasible but not required; a broken harness is not a valid red test. Do not let AI derive expected outputs only from its generated implementation.
+
+**Responsibilities remain distinct:** Verification owns *what must be proven* and *whether evidence is trustworthy*; Implementation owns *how code is written* and *developer tests*. A given person or AI may participate in both, but independent assessment must challenge author assumptions; multi-model agreement alone is not proof. Avoid forced TDD for low-signal/high-setup tasks.
+
+**Previously agreed gates and GitLab rules are unchanged:** Feature-level human Design/Planning approvals; per-Increment human Implementation/Verification gates; Scoped Rework and Git permissions; investigate real repo Git Flow and ask for **each Draft MR**; human-only Ready/Merge. Verification-first preparation does not itself pass any gate. Do not create Skills, change AGENTS.md or mark candidate workflows Accepted by recording this direction.
+
 ## Proposed AI-assisted sequence — aligned with agreed decisions
 
 1. **Intake and evidence** — clarify outcome, done checks, constraints and current behavior; AI routes relevant procedures.
 2. **Feature-level Solution Design Gate** — human accepts the feature's major technical/contract decisions.
 3. **Feature-level Delivery Planning Gate** — human agrees feature-wide scope/risks, a detailed initial increment and progressive refinement of later increments.
-4. **Per-Increment Implementation** — AI works within the agreed increment, performs developer checks and may make local commits; **Human Implementation Gate for that increment** reviews changed scope/diff/evidence.
-5. **Scoped publish + Draft MR** — with specific work-branch publish authorization, AI can push; **inspect actual Git Flow, propose source/target and ask human before creating each Draft MR**. No automatic branch assumptions.
-6. **Per-Increment Verification ↔ scoped rework** — actual evidence, independent review proportionate to risk, CI/MR feedback, fixes and targeted retests; **Human Verification Gate for that increment** confirms outcome. Only material changes reopen invalidated upstream gate(s).
-7. **Human MR completion** — human alone marks Draft as Ready and performs Merge. Release/operations approval is separate.
+4. **Verification-first for each Increment** — before writing code, define source-backed scenarios, expected results, a suitable test seam and proof strategy; this is preparation, not a new gate.
+5. **Per-Increment Implementation** — AI works within the agreed increment, performs developer checks and may make local commits; **Human Implementation Gate for that increment** reviews changed scope/diff/evidence.
+6. **Scoped publish + Draft MR** — with specific work-branch publish authorization, AI can push; **inspect actual Git Flow, propose source/target and ask human before creating each Draft MR**. No automatic branch assumptions.
+7. **Per-Increment Verification ↔ scoped rework** — actual evidence, independent review proportionate to risk, CI/MR feedback, fixes and targeted retests; **Human Verification Gate for that increment** confirms outcome. Only material changes reopen invalidated upstream gate(s).
+8. **Human MR completion** — human alone marks Draft as Ready and performs Merge. Release/operations approval is separate.
 
 This sequence is the proposed **AI-assisted adapter**, not a new mandatory waterfall for all engineering work. Tests and provisional reviewer feedback may begin during implementation, and revisions loop back as needed.
 
