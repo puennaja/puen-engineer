@@ -119,6 +119,19 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 **Findings loop:** Return defects to Implementation for scoped fixes and rerun affected developer unit tests/checks before formal independent re-verification. Retain the agreed per-Work-Item Human Verification Gate, human-specific Draft MR confirmation, scoped Git permissions and human-only MR Ready/Merge. **No new gate or autonomous release permission** is created by this ordering.
 
+## Track A — Independent Verification safety nets (agreed baseline for v1.0 design, 2026-10-10)
+
+**Owner decision:** After passing applicable developer-owned unit/regression tests and required local checks (with actual results), and the existing Human Implementation Gate, formal **Independent Verification** evaluates these **four baseline safety nets** for the assigned **Work Item**:
+
+1. **Requirement verification:** Compare actual implementation/behavior to source-backed Work Item acceptance and parent Story contracts; identify gaps, unexpected effects or changed requirements.
+2. **Independent code review:** Independently challenge the diff on both **spec correctness and codebase quality**, including architecture, critical edge/security/data cases and whether developer-test assertions genuinely detect incorrect behavior.
+3. **Risk-based behavioral/integration verification:** Execute appropriate checks against the changed observable API/DB/CLI/contract/integration boundary, with negative/failure scenarios proportional to risk. Record unavailable cross-repo integration as an explicitly owned gap, not a claimed pass.
+4. **Evidence and risk assessment:** Present reproducible commands, environments, actual outcomes, links, findings and remaining risks, including **Pass / Fail / Not run / Blocked / Inconclusive**; propose an explicit disposition for the authorized human.
+
+**Coverage is baseline; test intensity is risk-based.** Low risk gets focused acceptance, test-quality/diff review and trustworthy evidence (with appropriate behavior checks where useful). Medium risk adds stronger real-behavior/contract/integration checks. High risk warrants targeted security/concurrency/data/migration/failure checks and required accountable human reviewers. No universal Mutation Testing, fuzzing, load-testing or video mandate. A test suite passing does **not** alone prove correctness.
+
+**Responsibility/approval:** Verification may recommend Verified / Fix and reverify / Blocked / Stop; **the human retains the Work Item Verification Gate** and authority over residual risk. This is agreement on **the four-part baseline for the pending Verification v1.0**, **not acceptance of the whole workflow**, automation rights, MR Ready/Merge authority or a new Story-level gate. Reuse Jira/MR evidence records. See [Verification RC](./verification.md) and [Thai RC](./verification.th.md).
+
 ## Proposed AI-assisted sequence — aligned with agreed decisions
 
 1. **Intake and evidence** — clarify outcome, done checks, constraints and current behavior; AI routes relevant procedures.
