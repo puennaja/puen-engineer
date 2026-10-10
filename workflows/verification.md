@@ -46,6 +46,20 @@ Human Increment Verification Gate → separate release decisions
 
 **Scaling:** A trivial reversible change may record the whole loop in a short MR note; a multi-repo or security/data-critical feature needs explicit contract, test, review and release-risk evidence. Avoid duplicate tickets/docs.
 
+## Verification-first ownership (agreed design direction; v1.0 candidate)
+
+**Before Implementation:** Given confirmed requirements, domain rules and approved contracts, Verification defines observable **acceptance scenarios, expected results, negative/boundary cases, test seams and proof surfaces**. These are an independent oracle, not outcomes inferred from generated code. Discuss ambiguity with the authorized decision owner before tests encode it.
+
+When a reliable test harness exists, Verification may create a **small executable acceptance or contract test** ahead of implementation and demonstrate that it fails *for the intended missing behavior*. If no meaningful executable seam exists, use a reviewable example (e.g., Given–When–Then), trace or manual repro instead. A failing run caused by setup, missing credentials or broken fixtures is **Blocked/Inconclusive**, not a valid red test.
+
+**During Implementation:** Implementation owns code, unit/regression tests and the optional **TDD red → green → refactor** loop in small vertical slices. Verification may challenge test assertions, contracts and partial changes at any point without imposing a new gate or taking over developer tests.
+
+**After changes:** Verification executes the strongest proportionate checks on the real CLI/API/UI/data surface, tests negative cases and reviews the diff independently against the acceptance oracle and repo standards. Green unit tests or compiling are useful, **not sufficient proof alone**. Review must check whether tests would catch the actual wrong behavior. Findings return to scoped implementation/retest under Q7; material changes to acceptance or design reopen affected human gates.
+
+**Human authority:** Verification-first describes **when to reason/test**, not permission to bypass the existing per-Increment Implementation and Verification Human Gates. Record scenario/expected result/check/evidence in existing Jira/MR. No mandatory new document or Skill.
+
+**References:** [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md), [pstack verify-and-ship](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md).
+
 ## Entry and risk selection
 
 May start once a reviewable slice, test plan or interface contract exists. Read requirements/acceptance, solution constraints, diff, actual developer-check outputs, dependencies and relevant risk map.
