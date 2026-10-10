@@ -1,7 +1,7 @@
 # Software Engineering at Google — Chapter 8: Style Guides and Rules
 
 - **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
-- **Status:** Draft study notes, v0.1; candidate principles are **not approved**
+- **Status:** Accepted as study reference — principles are contextual guidance, not mandatory rules
 - **Read:** 2026-10-10
 - **Chapter author:** Shaindel Schwartz (editor: Tom Manshreck)
 - **Primary text, read in full:** https://abseil.io/resources/swe-book/html/ch08.html
