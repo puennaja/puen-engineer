@@ -22,16 +22,18 @@ Implementation รับผิดชอบการสร้าง Change แล
 Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Increment:
 
 ```text
-Delivery Planning (Increment ที่ตกลง)
+Feature Design/Plan ที่ Approved → Increment
    ↓
-Implementation: สำรวจ → แก้โค้ด → Developer Checks
-   ⇄ Verification: Acceptance / Tests / Contracts / Independent Review
-   ↳ Findings → แก้โค้ด → ตรวจส่วนที่ได้รับผลกระทบซ้ำ
+Verification-first: Acceptance, Expected Outcomes, Test Seams
    ↓
-Verification Decision → Release Review (Workflow อื่น)
+Implementation: Vertical Slice → TDD เมื่อเหมาะ → Developer Checks
+   ⇄ Verification: Test Quality, Behavior Evidence, Independent Review
+   ↳ Findings → Scoped Fix → Reverify
+   ↓
+Human Verification Gate → Release Review (แยก)
 ```
 
-**เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
+**Verification เริ่มได้ก่อนเขียนโค้ด:** กำหนดพฤติกรรมและหลักฐานจาก Requirement/Contract ที่ยืนยันก่อน ไม่ใช่เพิ่ม Approval Gate ใหม่ **เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
 
 **ส่งต่อผ่าน Jira/MR เดิมเพียงชุดเดียว** ไม่บังคับสร้างเอกสารใหม่:
 - **Identity / Scope:** Increment, Acceptance IDs, Repo/Diff Links, Exclusions
