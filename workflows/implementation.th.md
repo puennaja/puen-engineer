@@ -34,18 +34,24 @@
 Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Work Item:
 
 ```text
-Feature Design / Plan ที่ Approved → Work Item
+Work Item ภายใต้ Feature/Story Decisions ที่ Human อนุมัติ
    ↓
-Verification-first: Acceptance, Expected Outcomes, Test Seams
+Verification-first: Acceptance, Expected Behavior, Test Seams (ก่อน Code)
    ↓
-Implementation: Vertical Slice → TDD เมื่อเหมาะ → Unit Tests PASS + Developer Checks
-   ⇄ Verification: Test Quality, Behavior Evidence, Independent Review
-   ↳ Findings → Scoped Fix → Reverify
+Implementation: Vertical Slice + TDD เมื่อเหมาะ → Unit Tests PASS
+                + Developer Checks พร้อมผลรันจริง
    ↓
-Human Verification Gate → Release Review (แยก)
+HUMAN IMPLEMENTATION GATE: ตรวจ Scope, Diff, Tests, Publish Permission
+   ↓
+Scoped Publish / Draft MR (เมื่อจำเป็น; ขอ Human ยืนยันแต่ละ MR)
+   ↓
+FORMAL INDEPENDENT VERIFICATION: Test Quality + Behavior + Code Review
+   ↳ Findings → Scoped Fix → Unit Tests PASS → Reverify
+   ↓
+HUMAN VERIFICATION GATE → MR Completion / Release Decision (แยก)
 ```
 
-**Verification เริ่มก่อนเขียนโค้ดได้** เพื่อกำหนด Expected Behavior จาก Requirement/Contract; นี่เป็นการเตรียมและตรวจสอบระหว่างทาง ไม่ใช่ Approval Gate ใหม่ **เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
+**Verification-first เริ่มก่อนเขียนโค้ดได้** เพื่อกำหนด Expected Behavior จาก Requirement/Contract และรับ Preliminary Feedback ระหว่าง Implement ได้ แต่ **Formal Independent Verification** ที่ประเมิน Code, Test Quality และ Behavior จริงต้องรอผล Developer Checks ที่ผ่านและ **Human Implementation Gate** ก่อน Diagram แสดงลำดับอนุมัติที่ตกลง ไม่ได้ห้าม Review เบื้องต้นหรือ Test ระหว่างเขียนโค้ด ส่วน Bug เล็กแบบ Standalone ใช้เส้นทาง Design/Planning ที่กระชับได้ (ดูด้านล่าง) แต่ไม่ข้าม Human Decisions ที่จำเป็น
 
 **ส่งต่อผ่าน Jira/MR เดิมเพียงชุดเดียว** ไม่บังคับสร้างเอกสารใหม่:
 - **Identity / Scope:** Work Item, Acceptance IDs, Repo/Diff Links, Exclusions
@@ -80,14 +86,14 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 
 | กิจกรรม | ทำอะไร | หลักฐานขั้นต่ำ |
 | --- | --- | --- |
-| 1. Orient | อ่าน Codebase, AGENTS.md (ถ้ามี), Tests, Requirement/Design และ Git Working Tree | เข้าใจพฤติกรรมเดิมและ Files ที่มีหลักฐานว่ากระทบ |
-| 2. Bound | ระบุ Work Item, Acceptance, Non-goals และ Integration Boundary | Task/Plan Link และ Change Intent |
-| 3. Plan local edits | เลือกการแก้ที่เล็กและสอดคล้อง Architecture ระบุ Test/Migration/Error | แนวทางแก้และ Unknown สำคัญ |
-| 4. Implement | แก้โค้ดอย่างมีจุดประสงค์ แยก Refactor ที่ไม่เกี่ยวข้อง และรักษา Security/Compatibility | Diff ที่อ่าน Review ได้ |
+| 1. Orient + Protect Baseline | อ่าน Codebase/AGENTS.md/Tests/Requirement และตรวจ Branch/Upstream, Staged, Unstaged, Untracked **ก่อนแก้ไฟล์** | เข้าใจ Behavior เดิมและเจ้าของ Changes ที่ค้างอยู่ |
+| 2. Agree Test Intent | ใช้ Acceptance/Expected Outcomes/Test Seams จาก Requirement ที่ยืนยันร่วมกับ Verification พร้อมระบุ Non-goals | Linked Scenarios/Checks และ Unknowns ที่มี Owner |
+| 3. Plan local edits | เลือก Vertical Slice ขนาดเล็ก, Test-first Seam เมื่อเหมาะ และ Code Changes ที่ตรง Architecture/Migration/Error | Next Slice, Developer Test และ Unknown สำคัญ |
+| 4. Implement + Developer Tests | ใช้ Red → Green → Refactor เมื่อ Test Seam เหมาะ; รักษา Security/Compatibility และไม่ทับ Changes คนอื่น | Unit Test Failure/Pass ตามที่รันจริง และ Scoped Diff |
 | 5. Developer checks | รัน Test/Lint/Typecheck/Build ที่เกี่ยวข้องและเพิ่ม Regression Tests | คำสั่งที่รันจริง ผลและสิ่งที่ไม่ได้รัน |
-| 6. Handoff / Iterate | แก้ Findings ภายใน สรุป Contract, Risks, Unknowns ให้ Verification | Diff/Acceptance/Test Evidence/Remaining Gaps |
+| 6. Handoff / Iterate | ตรวจ Git Diff/Staging อีกครั้ง แก้ Findings ใน Scope และส่ง Contract/Tests/Gaps ให้ Verification | Scoped Diff, Acceptance/Test Evidence, Remaining Gaps |
 
-**ไม่ต้องรอถึงขั้นท้ายค่อย Test** Developer Checks เป็น Feedback ภายใน Implementation แต่ Independent Verification อยู่ใน Workflow แยก และสามารถเรียกตรวจระหว่างทำได้
+**ไม่ต้องรอถึงขั้นท้ายค่อย Test** Developer Checks เป็น Feedback ภายใน Implementation และขอ Preliminary Verification Feedback ได้ทุกเวลา แต่ **Formal Independent Verification** ต้องรอ Unit Tests/Checks ที่เกี่ยวข้องผ่านและ Human Implementation Gate
 
 ## ปรับแนวทาง Implementation จาก pstack + grill-me (เสนอสำหรับ v1.0)
 
@@ -116,7 +122,7 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 
 ### 4. เตรียม Diff ให้ Review ได้
 
-ตัด Unrelated Edits, Dead Compatibility Code และ Defensive Code ที่ไม่มีหลักฐานรองรับเมื่อปลอดภัย แต่ **ไม่เอากฎลบ Comments ทั้งหมดของ pstack มาใช้ตรง ๆ**: Comments ที่อธิบาย Invariant, External Constraints และ API Contract ที่จำเป็นยังมีคุณค่า เก็บ Decisions/Evidence ใน Jira/MR เดิม
+ตัดเฉพาะ Unrelated Edits ที่ AI สร้างเองและมีสิทธิ์แก้, Dead Compatibility Code และ Defensive Code ที่ไม่จำเป็นเมื่อปลอดภัย **ห้ามลบหรือล้าง Changes เดิมของ Developer** แต่ **ไม่เอากฎลบ Comments ทั้งหมดของ pstack มาใช้ตรง ๆ**: Comments ที่อธิบาย Invariant, External Constraints และ API Contract ที่จำเป็นยังมีคุณค่า เก็บ Decisions/Evidence ใน Jira/MR เดิม
 
 **Candidate Skills ในอนาคต (ยังไม่สร้าง):** Task Router (Goal/Done/Evidence → Procedure), Codebase Grounding, Implement by Slice และ Decision Interview ไม่ Copy `/poteto-mode`, `/architect`, `/grill-me` ไปเป็น Chain บังคับใน `AGENTS.md` ต้อง Pilot เทียบ No-skill Baseline ทั้งด้าน Quality, Overhead และ Token Cost ก่อน
 
@@ -124,7 +130,7 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 
 - รักษาพฤติกรรมนอก Scope; ระวัง Compatibility และ Side Effects
 - ลด Complexity ไม่ใช่เพียงลดจำนวนบรรทัด ใช้ Pattern เดิมถ้าไม่มีหลักฐานให้เปลี่ยน
-- เลือก Test-first / Test-after / แบบผสมตาม Risk ไม่บังคับ TDD หรือ Coverage %
+- **พิจารณา TDD ก่อน** เมื่อ Feature/Bug มี Test Seam ที่เหมาะและ Feedback เร็ว ถ้า Test Setup เปราะหรือ Evidence แบบอื่นมีคุณค่ากว่า ใช้ Test-after หรือ Real Behavior Proof พร้อมเหตุผลได้ ไม่บังคับ TDD/Coverage % ทุกงาน
 - พิจารณา Migration, Retry, Idempotency, Permission, Concurrency, Observability เมื่อเกี่ยวข้อง
 - บอกว่า Test ผ่านต่อเมื่อรันเห็นผลจริง ถ้ารันไม่ได้ให้ระบุ **Not run / Blocked**
 - ห้ามเผย Secrets และข้อมูลลับบริษัทใน Public Repo หรือ AI Tool ที่ไม่ได้รับอนุญาต
