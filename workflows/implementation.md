@@ -101,9 +101,19 @@ Use one feature-level work item and scoped repository tasks. Record actual provi
 
 AI may choose appropriate task skills (hybrid routing), propose edits and execute focused, non-destructive developer checks inside the approved scope. **Scoped autonomy** allows local edits and commits on the agreed work branch, without per-file approval; additional architecture/scope changes and privileged/destructive operations require fresh human authorization. A **Fixed Human Implementation Gate** still approves the completed increment before authorized remote publishing. Push and MR creation have different permissions. No mandatory Claude/Codex split is approved. Keep AGENTS.md short; create reusable skills only after pilots.
 
+## Approval granularity — feature decisions, increment execution (agreed for Track A)
+
+The human approves **Solution Design and Delivery Planning once at Feature level** for the agreed direction, major contracts/dependencies, risk boundaries and full-scope progressive plan. **Implementation and Verification each receive separate human gates per agreed Increment**; a single Feature may therefore have several Implement → Verify loops and decisions.
+
+Before implementing the next increment, refine its acceptance, repo/contracts, dependencies and checks **within the previously approved Feature plan**. This is progressive elaboration, not an automatic new Feature Design/Planning approval. Do not presume an increment is authorized when it changes the accepted scope or introduces unresolved critical risk.
+
+If evidence **materially changes** the accepted Feature design, scope, public/data contract, security/data risks, or delivery constraints, stop the affected direction and reopen **only the prior Design/Planning gate(s) that are invalidated**, with their appropriate human owner. Scoped fixes and tests under the approved increment continue through Q7 without reapproving every edit; retest them and obtain that increment's Verification Gate. Keep Feature-level and Increment-level approval records linked in the existing Jira/MR, including the authorized owner and scope.
+
+Multi-repo work can form one verifiable Increment with linked per-repo changes; **each Draft MR still needs its own human confirmation** of actual source/target Git Flow. This is a Track A AI-assisted policy candidate, not a blanket change to the already Accepted general lifecycle. See [Q1–Q9 and final gate decision](./ai-assisted-feature-delivery.md).
+
 ## Fixed Implementation Gate, scoped commits and rework (AI-assisted candidate)
 
-For each agreed increment, the authorized human reviews the changed scope, diff, completed developer checks, known gaps and relevant integration dependencies and **explicitly approves the Implementation Gate**. Preliminary Verification feedback is allowed before this gate; formal Verification completion remains a separate human decision.
+For each agreed **Increment**, the authorized human reviews the changed scope, diff, completed developer checks, known gaps and relevant integration dependencies and **explicitly approves the Implementation Gate**. Preliminary Verification feedback is allowed before this gate; formal Verification completion remains a separate human decision.
 
 Within the approved scope, AI may make **local commits** following repository conventions. **Normal pushes** to the specifically authorized, non-protected work branch require explicit **publish authorization at the Implementation Gate**; that authorization can cover later pushes of scoped fixes to the same branch. It never covers new destinations, protected branches, force-push, history rewrites, destructive Git actions, or unrelated changes. Company permissions override this candidate guidance.
 
@@ -132,10 +142,11 @@ Provide:
 
 ## Release-candidate review criteria
 
-1. Separate ownership without mandatory handoff for each edit.
-2. Evidence and findings shared through one existing issue/MR.
-3. Risk-proportional review and actual test evidence.
-4. AI permissions and skills remain separate decisions.
+1. Feature-level Design/Planning approvals are distinct from per-Increment Implementation/Verification gates, with only affected prior gates reopened on material change.
+2. Separate ownership without mandatory handoff for each edit.
+3. Evidence and findings shared through one existing issue/MR.
+4. Risk-proportional review and actual test evidence.
+5. Real repo access and Skill implementation remain separately authorized.
 
 ## Pilot / open decisions
 
