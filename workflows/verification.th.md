@@ -46,20 +46,6 @@ Verification Decision → Release Review (Workflow อื่น)
 
 **Scale:** งานเล็ก Reversible บันทึกใน MR สั้น ๆ ได้ งาน Cross-repo/Finance/Security ต้องมีหลักฐาน Contract, Tests, Review และ Release Risks มากขึ้น โดยไม่ต้องสร้าง Ticket ซ้ำ
 
-## Execution Loop และ Handoff ร่วมกัน
-
-ใช้วงจรร่วมกับ [Implementation](./implementation.th.md) และ **สามารถเริ่ม Verification ระหว่างเขียนโค้ดได้** ตั้งแต่มี Contract, Acceptance Scenario, Test Strategy หรือ Partial Diff
-
-```text
-Implementation (Code + Developer Checks) ↔ Verification (Evidence + Independent Review)
-Findings → Implementation Fix → Reverification ตาม Impact
-หลักฐานเพียงพอ → Release Review แยกต่างหาก
-```
-
-**บันทึกใน Jira/MR ชุดเดียว**: Increment/Acceptance, Diff ของ Repo, Contract/Data Changes, ผล Checks ที่รันจริงและ Environment, สิ่งที่ Not run, Findings พร้อม Severity/หลักฐาน/Owner, ผล Fix/Retest และ Human Risk Decision โดยไม่ต้องทำเอกสารซ้ำ
-
-เมื่อมีการแก้ไขให้ตรวจพฤติกรรมและ Dependencies ที่ได้รับผลกระทบซ้ำ ขยายขอบเขตถ้าผลกระทบกว้างขึ้น งาน Solo สามารถแยก Self-check กับ Review Pass; งานเสี่ยงสูงให้ขอ Reviewer อิสระตามความจำเป็นและ Policy AI Review ไม่ได้เท่ากับ Test ที่รันจริงหรือ Human Approval และไม่มี Workflow ใดอนุญาต Deploy
-
 ## เกณฑ์เริ่มและเลือกความลึก
 
 เริ่มเมื่อมี Slice, Test Plan หรือ Contract ให้ตรวจได้ อ่าน Requirement, Diff, ผลทดสอบที่รันจริง, Design Constraints และ Risks
@@ -121,6 +107,18 @@ Findings → Implementation Fix → Reverification ตาม Impact
 ใช้ Safe Fixtures, แยก Parallel Runs และต้องทดลองรันคำแนะนำที่ Skill สร้าง **End-to-end อย่างน้อยหนึ่ง Flow** ก่อนเชื่อถือ Feature Map ควรมีเมื่อช่วยการดูแลจริง
 
 **ไม่สร้าง `.cursor/skills` หรือบังคับ Maintenance ทุกวันตาม pstack ทันที** หากจะย้ายแนวทางไปเป็น Skill ใน `puen-stack` ต้องมี Approval, Pilot, Owner/Maintenance และวัดเทียบ Baseline แบบไม่ใช้ Skill ก่อน
+
+## Fixed Verification Gate, Risk-based Review และ Scoped Rework (เสนอสำหรับ AI-assisted v1.0)
+
+**Q4=B — Risk-based Independent Review:** งาน Low-risk ทำ Review Pass แยกด้วยตนเองได้เมื่อ Policy ทีมอนุญาต งาน Medium-risk ให้มี Independent Diff Review งาน High-risk ขอ Human Peer/Domain Reviewer ที่เหมาะสมตาม Risk และ Policy แต่ **Human Verification Gate ต้องมีทุก Increment ที่ตกลงแล้ว** ไม่ว่า Review จะเข้มแค่ไหน
+
+**Q5=B — Evidence by Change Type:** ต้องพิสูจน์ Acceptance บน Surface ที่ตรงกับงาน เช่น API/UI/CLI/Data พร้อม Checks และ Negative/Integration Cases ตาม Risk สิ่งที่ไม่ได้รันต้องระบุ **Not run / Blocked / Inconclusive** แยก Review ตาม Spec/Acceptance กับ Repo Standards/Quality ให้ชัด
+
+**Q7=B — Scoped Rework:** Finding ที่อยู่ใน Scope/Design/Risk เดิมกลับไปให้ Implementation แก้และ Retest ตาม Impact ได้โดยไม่ต้อง Approve ทุก Edit แต่ Human ต้องดู Evidence และยืนยัน **Verification Gate** สุดท้าย ถ้ามีการเปลี่ยน Requirement, Scope, Contract, Design, Security/Data Risk อย่างมีนัยสำคัญต้องกลับไป Approve **Fixed Gate ก่อนหน้าที่ได้รับผลกระทบ** ใหม่
+
+**Q6=A / Q8=B / Q9=A — MR Flow:** Formal Verification และ MR/CI Review อยู่หลัง Implementation Gate ที่ Human อนุมัติ AI อาจ Push Scoped Fix ไป Non-protected Work Branch ที่ได้รับ Publish Authorization แล้ว แต่ **ก่อนเปิด Draft MR ทุกครั้งต้องตรวจ Git Flow/Source/Target Branch ของ Repo และถาม Human ยืนยันเฉพาะ MR นั้น** ห้ามเดาว่า Target เป็น `master` และ **Human เท่านั้น** ที่เปลี่ยน Draft MR เป็น Ready หรือ Merge การ Deploy ต้องมี Approval แยก
+
+**ใช้ Jira/MR เดิมบันทึก Evidence/Findings/Resolution/Gate Approver** ไม่บังคับสร้างเอกสารซ้ำ ดู Q1–Q9 ที่ [AI-assisted delivery decisions](./ai-assisted-feature-delivery.md)
 
 ## หลักฐานต้องไม่ปนกัน
 
@@ -185,6 +183,6 @@ Human decision owner / known limitations:
 
 ทดลอง Tiny Change, Medium Integrated Feature และ Simulated Multi-repo Change วัด Defect Detection, Rework, Integration Surprises, False Positives, Time-to-feedback และ Overhead
 
-**รอ Review:** Solo ทำ Independent Review อย่างไร? งาน Medium/High-risk อะไรต้อง Sign-off มนุษย์? Evidence ขั้นต่ำใน GitLab/Jira คืออะไร? AI-assisted Diff Review ควรเป็น Default เมื่อไร?
+**จุดตรวจสุดท้าย:** ระบุ Human Verification Gate Owner ให้ตรงกับทีมจริง ใช้ Jira/MR เดิมเก็บ Evidence และ Remaining Risks และเคารพ CI/Reviewer/Branch Policy ของ Repo ทดลอง Review Depth ตาม Risk ก่อนทำ Skill บังคับ
 
 **Release Candidate รอ Owner Approve** ไม่อนุมัติ Release, Auto-merge, Repo Policy หรือ AI Skill ใหม่
