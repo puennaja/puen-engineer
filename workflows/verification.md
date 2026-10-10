@@ -7,7 +7,7 @@
 - **Related:** [Implementation](./implementation.md), [Delivery Planning v1.0](./delivery-planning.md)
 - **Foundation:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.md)
 - **Thai companion:** [Verification (Thai)](./verification.th.md)
-- **Next:** Release & Operations (to be designed)
+- **Next:** [Release & Operations v1.0 (Accepted)](./release-operations.md) — separately approved 2026-10-11
 
 ## Unit of verification: assigned Work Item (Track A decision)
 
