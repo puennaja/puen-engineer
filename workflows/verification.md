@@ -44,20 +44,6 @@ Verification decision → release review (a separate workflow)
 
 **Scaling:** A trivial reversible change may record the whole loop in a short MR note; a multi-repo or security/data-critical feature needs explicit contract, test, review and release-risk evidence. Avoid duplicate tickets/docs.
 
-## Shared execution loop and handoff
-
-This workflow shares the execution loop defined in [Implementation](./implementation.md). It can start **during implementation**, whenever there is a reviewable contract, acceptance scenario, test strategy or partial diff.
-
-```text
-Implementation (code + developer checks) ↔ Verification (acceptance + independent review)
-Findings → implementation fixes → targeted re-verification
-Sufficient verified evidence → separate release review
-```
-
-**One shared issue/MR record** should link the increment and acceptance, repository diffs, contract/data changes, actual executed checks (including environment and not-run tests), reviewer findings with evidence/severity/owner, fix/retest outcomes, and the responsible human's risk decision. Do not duplicate evidence in multiple mandatory documents.
-
-After a change, reverify affected behavior and dependent contracts; expand verification when impact broadens. For solo work, separate self-check from a deliberate review pass, obtaining a genuinely independent reviewer when risk or policy requires it. AI reviews are useful suggestions, **not evidence of test execution or human approval**. Both workflows remain iterative and neither grants deployment permission.
-
 ## Entry and risk selection
 
 May start once a reviewable slice, test plan or interface contract exists. Read requirements/acceptance, solution constraints, diff, actual developer-check outputs, dependencies and relevant risk map.
@@ -114,6 +100,18 @@ An independent skeptical pass or second model can supplement a human reviewer wh
 When repeated runs require manual UI/CLI/API operation, evaluate a **project-specific verification harness or Skill** built on existing tools. Candidate contract: **Launch → Doctor/health check → Drive real behavior → Capture Evidence → Cleanup owned resources**. Prefer repo-local existing test tools and safe seed fixtures; isolate parallel runs; prove generated instructions work once end-to-end before relying on them. Maintain a feature map only if it brings value.
 
 Do **not** automatically generate a `.cursor/skills` tree or mandate daily maintenance for My Engineer. A future `puen-stack` skill requires approved access, a successful pilot, ownership/maintenance plan and an evaluation against current verification practice. A skill that merely wraps the same unreliable steps does not create evidence.
+
+## Fixed Verification Gate, risk-based review and scoped rework (AI-assisted v1.0 candidate)
+
+**Q4=B — Risk-based independent review:** Low-risk changes may use a distinct self-review pass if the local team permits it; moderate changes benefit from an independent diff review; high-risk changes require qualified human peer/domain review when policy or risk demands. The **human Verification Gate is required for every agreed increment**, regardless of review depth.
+
+**Q5=B — Evidence by change type:** Show acceptance behavior on the appropriate API, UI, CLI, stored-data or other real surface, with applicable automated and negative/integration checks. Missing runs remain **Not run / Blocked / Inconclusive**, never silently treated as passes. Review the actual diff and the originating specification as two distinct axes.
+
+**Q7=B — Scoped Rework:** Reviewer findings within the approved Implementation scope/design/risk envelope return to Implementation for focused fixes and proportionate re-verification. Do **not** reapprove every edit; the human confirms residual findings/evidence at the Verification Gate. A material change to requirements, scope, contracts, design or security/data risk must **reopen affected earlier Fixed Gate(s)** before that new direction proceeds.
+
+**Q6=A / Q8=B / Q9=A — MR sequence:** Formal verification and MR/CI review follow the human-approved Implementation Gate. AI may push scoped follow-up fixes to the specifically authorized non-protected branch under its recorded publish permission; **every Draft MR creation requires a separate, explicit human confirmation of repo-specific source/target Git Flow**. No assumption of `master`. **Only a human** may mark a Draft MR Ready or Merge, and release/deploy still needs separate authorization.
+
+**Use existing Jira/MR evidence:** record actual checks, review findings, resolution/owners and gate approval without a duplicate required document. Consult [AI-assisted delivery decisions](./ai-assisted-feature-delivery.md) for Q1–Q9.
 
 ## Evidence discipline
 
@@ -176,17 +174,10 @@ No requirement to finish all implementation tasks before starting verification; 
 3. Are evidence, independence, risk acceptance and release authority distinguished?
 4. Are AI permissions left to separate explicit approval?
 
-## Release-candidate review criteria
-
-1. Independent verification remains distinct from developer checks without becoming a last-only phase.
-2. Shared evidence and findings fit one issue/MR, with no duplicated artifact requirement.
-3. Risk-based verification, retest scope, reviewer independence and human acceptance are clear.
-4. Release authorization and AI permissions remain separate decisions.
-
 ## Pilot and open decisions
 
 Pilot tiny reversible change, medium integrated feature and a simulated multi-repo contract change. Observe defect detection, rework, integration surprises, false-positive findings, time-to-feedback and paperwork burden.
 
-**Review:** What qualifies as independent review for solo work? Which medium/high-risk situations need explicit human sign-off? What exact evidence fits existing GitLab/Jira fields? When should AI-assisted diff review be used?
+**Final review focus:** Name the actual human Verification Gate owner per team and agreed increment; make evidence/risks accessible through existing Jira/MR; honor repository-specific required CI, reviewers and branch policies. Pilot the proposed solo/medium/high-risk review depth before turning it into an enforced Skill.
 
 **Release Candidate pending owner approval.** No release authority, automated merge, repository policy or AI skill created.
