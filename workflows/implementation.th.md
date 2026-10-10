@@ -48,28 +48,6 @@ Verification Decision → Release Review (Workflow อื่น)
 
 **Scale:** งานเล็ก Reversible บันทึกใน MR สั้น ๆ ได้ งาน Cross-repo/Finance/Security ต้องมีหลักฐาน Contract, Tests, Review และ Release Risks มากขึ้น โดยไม่ต้องสร้าง Ticket ซ้ำ
 
-## Execution Loop ร่วมกับ Verification
-
-Implementation กับ [Verification](./verification.th.md) มี **หน้าที่แยกกัน แต่ทำงานวนซ้ำร่วมกัน** ไม่ใช่ Waterfall ที่ต้องเขียนโค้ดทั้งหมดให้เสร็จก่อนตรวจ
-
-```text
-Delivery Planning → Implementation (Code + Developer Checks)
-                     ↕
-                 Verification (Acceptance + Independent Review)
-                     ↓ Findings → แก้ไข → ตรวจซ้ำ
-                     ↓ Evidence เพียงพอ → Release Review (แยก)
-```
-
-Verification เริ่มได้ตั้งแต่มี Acceptance Cases, API Contract, Test Strategy หรือ Partial Diff ไม่จำเป็นต้องรอ Feature เสร็จ ใช้ **Jira/MR เดิมเป็น Shared Handoff** โดยระบุ:
-
-- Increment, Acceptance, Repo และ Diff Links
-- Contracts/Data Changes, Critical Invariants, Failure Risks
-- Commands ที่รันจริง, Environment, ผลลัพธ์ และรายการ Not run
-- Findings, Severity, หลักฐาน, Owner, การแก้ไขและ Retest
-- Decision โดยมนุษย์: ทำต่อ / Fix & Reverify / Blocked / Ready for Release Review
-
-ทำ Verification ซ้ำเฉพาะส่วนที่ได้รับผลกระทบและ Dependencies ที่เกี่ยวข้อง แต่ขยายเมื่อ Impact มากขึ้น สำหรับงาน Solo สามารถแยก Self-check กับ Review Pass ได้ งานเสี่ยงสูงต้องพิจารณา Reviewer อิสระตาม Policy; AI เห็นตรงกันไม่เท่ากับมนุษย์อนุมัติ ทั้งสอง Workflow ไม่มีอำนาจ Deploy
-
 ## กิจกรรม (ทำซ้ำได้)
 
 | กิจกรรม | ทำอะไร | หลักฐานขั้นต่ำ |
@@ -130,7 +108,17 @@ Verification เริ่มได้ตั้งแต่มี Acceptance Case
 
 ## AI ช่วยได้อย่างไร (ยังเป็น Candidate)
 
-AI เสนอ Code, Tests, Explanation ได้ภายใต้สิทธิ์ที่อนุญาต Engineer รับผิดชอบการเปลี่ยน Architecture, Destructive Operations, การ Run Command ที่มีสิทธิ์พิเศษ, Commit/Push/MR ตาม Policy ท้องถิ่น ยังไม่ได้บังคับว่าต้องใช้ Claude หรือ Codex คู่กัน และไม่สร้าง Skill ก่อน Pilot
+AI เลือก Skill ตามงานแบบ Hybrid และแก้โค้ด/รัน Developer Checks ที่ปลอดภัยภายใน Scope ที่อนุมัติได้ (**Scoped Autonomy**) รวมทั้ง Local Commit บน Work Branch ที่ตกลง โดยไม่ต้องขออนุมัติทุกไฟล์ แต่การเปลี่ยน Scope/Architecture หรือใช้คำสั่งอันตราย/สิทธิ์พิเศษต้องได้รับอนุญาตเพิ่ม **Human Implementation Gate** ยังคงบังคับก่อน Publish ขึ้น Remote โดย Commit, Push และการเปิด Draft MR มี Permission แยกกัน ไม่บังคับใช้ Claude/Codex คู่กันหรือสร้าง Skill ก่อน Pilot
+
+## Fixed Implementation Gate, Scoped Git และ Rework (สำหรับ AI-assisted v1.0)
+
+ต่อ **Increment ที่ตกลงแล้ว** Human Owner ต้องดู Scope, Diff, ผล Developer Checks ที่รันจริง, Tests ที่ไม่ได้รัน, Contract/Integration Risk และอนุมัติ **Implementation Gate** อย่างชัดเจนก่อนให้ AI Publish งาน ส่วน Preliminary Verification Feedback ทำระหว่าง Implement ได้ แต่ไม่ได้แปลว่าผ่าน Formal Verification Gate
+
+**Q8=B — Scoped Git Autonomy:** AI ทำ Local Commit ใน Work Branch ที่ตกลงได้ตาม Convention ของ Repo หลังผ่าน Implementation Gate ต้องมี **Publish Authorization** ก่อนจึงจะ Push แบบปกติไป **Non-protected Work Branch ที่ระบุ** ได้ และสามารถ Push Scoped Fix รอบถัดไปบน Branch เดิมภายใต้สิทธิ์นั้นตาม Policy ห้าม Force Push, Rewrite History, Push Protected Branch, เปลี่ยน Remote/ปลายทาง หรือลบข้อมูลโดยไม่ได้อนุญาต
+
+**Q7=B — Scoped Rework:** Finding ที่แก้ใน Scope/Design/Risk เดิมสามารถย้อนกลับไป Implement และ Retest ตาม Impact ได้ โดยไม่ต้อง Approve ทุก Edit แต่ **Human ต้อง Approve Verification Gate** หลังดู Evidence สุดท้าย ถ้า Scope, Design, Contract, Security/Data Risk หรือ Plan เปลี่ยนอย่างมีนัยสำคัญ ต้องกลับไปขออนุมัติ Gate ก่อนหน้าที่ได้รับผลกระทบใหม่
+
+**Q9=A — Human Controlled MR:** AI ช่วยรายงาน CI/Review Status ได้ แต่ **มนุษย์เท่านั้น** ที่เปลี่ยน Draft MR เป็น Ready และ Merge; ห้าม Auto-merge/Deploy ดู Q1–Q9 ใน [AI-assisted Delivery Decisions](./ai-assisted-feature-delivery.md)
 
 ## GitLab Draft MR — Human Confirmation ทุกครั้ง (ข้อตกลงสำหรับ Review v1.0)
 
@@ -138,7 +126,7 @@ AI เสนอ Code, Tests, Explanation ได้ภายใต้สิทธ
 
 **ก่อนสร้าง Draft MR ทุกครั้ง AI ต้องแสดง Repo + Source → Target Branch + เหตุผล + Jira Link แล้วถาม Human เพื่อยืนยัน MR นั้นโดยเฉพาะ** แม้เคยอนุมัติ Implementation Gate หรือมี Scoped Git Permission แล้วก็ตาม ห้ามเปิดก่อนมีคำตอบ การแก้ Target Branch ภายหลังก็ต้องยืนยันใหม่
 
-Commit/Push Permissions ยังเป็นคำถามใน Grill-me รอบถัดไป และ **การอนุมัติให้เปิด MR ไม่ใช่สิทธิ์ Merge/Deploy** อ้างอิง [AI-assisted feature delivery — Draft](./ai-assisted-feature-delivery.md)
+Local Commit/Push ใช้กติกา Scoped Git ด้านบน ส่วน **Draft MR ต้องมี Human Confirmation แยกทุกครั้ง** แม้ได้รับสิทธิ์ Push แล้ว การเปิด MR ไม่ใช่การอนุมัติ Ready/Merge/Deploy
 
 ## ส่งอะไรให้ Verification
 
@@ -159,17 +147,10 @@ Commit/Push Permissions ยังเป็นคำถามใน Grill-me ร�
 3. เกณฑ์ Independent Review และผล Verify เพียงพอตาม Risk หรือไม่?
 4. ขอบเขต AI Permissions ยังรอออกแบบแยกจาก Workflow อย่างเหมาะสมหรือไม่?
 
-## Checklist ก่อนอนุมัติ v1.0
-
-1. แยกความรับผิดชอบชัด โดยไม่ต้อง Handoff ทุกครั้งที่แก้ Code
-2. เก็บ Evidence/Findings ไว้ใน Jira/MR ชุดเดียว
-3. Review และ Test Evidence เข้มตาม Risk
-4. AI Permissions และ Skills รอแยกออกแบบต่อ
-
 ## ทดลองและคำถามที่ยังเปิด
 
 ลอง Tiny Regression, Medium Feature และ Simulated Cross-repo Contract Change; วัด First Feedback, Rework, ความตรงไปตรงมาของ Test Evidence และ Overhead
 
-**รอ Review:** AI แก้/Commit ได้ภายใต้ขอบเขต Permission แบบไหน? Handoff ขั้นต่ำใน Jira/GitLab เท่าไร? งานใหญ่ควรเริ่ม Independent Review เมื่อไร?
+**จุดตรวจสุดท้าย:** ระบุ Human Gate Owner และ Increment Boundary ให้ชัดตามทีมจริง ตรวจว่า Publish Authorization เก็บใน Jira/MR เดิมและไม่มีขั้นตอน Review ที่ข้าม Fixed Gates ส่วน Target Branch, CI และ Reviewer Requirements ต้องตรวจจาก Git Flow/Policy ของ Repo จริง
 
 **Release Candidate รอ Owner Approve** ยังไม่เปลี่ยน AGENTS.md, Skills, Automation หรือ Permissions
