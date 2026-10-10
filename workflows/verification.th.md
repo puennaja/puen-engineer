@@ -7,7 +7,7 @@
 - **คู่กับ:** [Implementation](./implementation.th.md), [Delivery Planning v1.0](./delivery-planning.th.md)
 - **พื้นฐาน:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.th.md)
 - **ต้นฉบับอังกฤษ:** [Verification](./verification.md)
-- **ถัดไป:** Release & Operations (ยังไม่ได้ออกแบบ)
+- **ถัดไป:** [Release & Operations v1.0 (Accepted)](./release-operations.th.md) — อนุมัติแยกเมื่อ 2026-10-11
 
 ## หน่วยที่ต้อง Verify: Work Item ตาม Jira (ข้อตกลง Track A)
 
