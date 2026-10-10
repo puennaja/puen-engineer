@@ -111,6 +111,14 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 **Previously agreed gates and GitLab rules are unchanged:** Feature-level human Design/Planning approvals; per-Work-Item human Implementation/Verification gates; Scoped Rework and Git permissions; investigate real repo Git Flow and ask for **each Draft MR**; human-only Ready/Merge. Verification-first preparation does not itself pass any gate. Do not create Skills, change AGENTS.md or mark candidate workflows Accepted by recording this direction.
 
+## Track A — Unit-test-green before formal Independent Verification (agreed 2026-10-10)
+
+**Owner design decision:** For a code-changing Work Item, **Implementation must first run and pass the applicable unit/regression tests** and required local developer checks (such as lint/build/typecheck per repo), with observable command/results/environment, **before formal Independent Verification begins**. Failed tests go back to Implementation. Tests not run or unavailable are **Not run / Blocked**, never assumed passing. When a Work Item truly has no suitable unit-test seam, record why and agree on risk-appropriate alternative developer evidence at the existing Human Implementation Gate.
+
+**Preserve Verification-first:** Defining source-backed acceptance and test strategy ahead of coding, and optional provisional feedback during coding, **do not require passing unit tests**; they are distinct from the formal independent quality/evidence assessment. Implementation owns the TDD/developer-check loop. After unit-green **and the existing Human Implementation Gate**, Independent Verification assesses test quality, actual behavior/contracts, diff and risk. Green tests are **an entry condition, not a correctness guarantee**.
+
+**Findings loop:** Return defects to Implementation for scoped fixes and rerun affected developer unit tests/checks before formal independent re-verification. Retain the agreed per-Work-Item Human Verification Gate, human-specific Draft MR confirmation, scoped Git permissions and human-only MR Ready/Merge. **No new gate or autonomous release permission** is created by this ordering.
+
 ## Proposed AI-assisted sequence — aligned with agreed decisions
 
 1. **Intake and evidence** — clarify outcome, done checks, constraints and current behavior; AI routes relevant procedures.
