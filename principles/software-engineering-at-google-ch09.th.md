@@ -11,31 +11,31 @@
 
 ## สรุปและวิเคราะห์เนื้อหาทั้งบท
 
-### 1. Review ตรวจ Correctness, Comprehension, Ownership และ Convention โดยหลายบทบาทอาจรวมในคนเดียว โค้ดใหม่สร้างภาระดูแลจึงควรดูว่าของเดิมใช้ซ้ำได้ไหม
+### 1. Review is more than bug finding
 
 Review ตรวจ Correctness, Comprehension, Ownership และ Convention โดยหลายบทบาทอาจรวมในคนเดียว โค้ดใหม่สร้างภาระดูแลจึงควรดูว่าของเดิมใช้ซ้ำได้ไหม
 
 **ข้อจำกัดและวิจารณญาณ:** Approval สามชั้นของ Google ไม่ควรยกมาบังคับทีมเล็ก
 
-### 2. Greenfield ต้องดู Design และ API, Behavior Change ต้องดู Test/Benchmark, Bug Fix ต้องเล็กและมี Regression, งาน Generated Change ต้องตรวจผลและวิธีสร้าง
+### 2. Different review goals require different evidence
 
 Greenfield ต้องดู Design และ API, Behavior Change ต้องดู Test/Benchmark, Bug Fix ต้องเล็กและมี Regression, งาน Generated Change ต้องตรวจผลและวิธีสร้าง
 
 **ข้อจำกัดและวิจารณญาณ:** อย่าถก Architecture ที่ตกลงแล้วใหม่ทุกคอมเมนต์ ให้ Escalate เมื่อมีข้อมูลสำคัญ
 
-### 3. Review เป็นพื้นที่แลกเปลี่ยนความรู้ ไม่ใช่ด่านอย่างเดียว คำถามช่วยเผยจุดที่ Code เข้าใจยาก ผู้เขียนควรมีสิทธิ์เลือกระหว่างทางที่ดีเท่ากัน และประวัติ Review มีค่า
+### 3. Respect, knowledge and ownership
 
 Review เป็นพื้นที่แลกเปลี่ยนความรู้ ไม่ใช่ด่านอย่างเดียว คำถามช่วยเผยจุดที่ Code เข้าใจยาก ผู้เขียนควรมีสิทธิ์เลือกระหว่างทางที่ดีเท่ากัน และประวัติ Review มีค่า
 
 **ข้อจำกัดและวิจารณญาณ:** ความไม่สุภาพ Style War และการรอคนอนุมัติอาจทำลายประโยชน์
 
-### 4. Change เล็กช่วยให้อ่าน แก้ปัญหา และ Rollback ง่าย คำอธิบายต้องบอก What/Why กรณีตัวเลข ~200 บรรทัดและตอบใน 24 ชั่วโมงเป็น Practice ของ Google
+### 4. Small, reviewable changes and meaningful descriptions
 
 Change เล็กช่วยให้อ่าน แก้ปัญหา และ Rollback ง่าย คำอธิบายต้องบอก What/Why กรณีตัวเลข ~200 บรรทัดและตอบใน 24 ชั่วโมงเป็น Practice ของ Google
 
 **ข้อจำกัดและวิจารณญาณ:** อย่ากำหนดจำนวนบรรทัดตายตัว งาน Generated หรือ Feature ที่ต้องมองเป็นก้อนอาจใหญ่กว่า
 
-### 5. Presubmit ช่วยตรวจ Format, Lint และ Test ให้คน Review Intent และ Design ลด Reviewer ที่ไม่จำเป็นแต่ยังต้องมี Owner ในงานข้าม Boundary
+### 5. Automation and responsive review
 
 Presubmit ช่วยตรวจ Format, Lint และ Test ให้คน Review Intent และ Design ลด Reviewer ที่ไม่จำเป็นแต่ยังต้องมี Owner ในงานข้าม Boundary
 
