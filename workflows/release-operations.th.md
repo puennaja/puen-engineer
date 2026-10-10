@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft (ภาษาไทย)
 
-- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1 และ Q2 แล้ว ส่วน Q3 รอตัดสิน
+- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1, Q2 และ Q3 แล้ว ส่วน Q4 รอตัดสิน
 - **วันที่:** 2026-10-10
 - **Track:** A — My Engineer, ออกแบบจาก Engineering Practices ไม่ผูกบริษัทหรือเครื่องมือ
 - **ก่อนหน้า:** [Implementation (Accepted)](./implementation.th.md), [Verification (Accepted)](./verification.th.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.th.md)
@@ -44,13 +44,38 @@
 
 **เมื่อ Approval ใช้ต่อไม่ได้:** เปลี่ยน Artifact/Manifest, เปลี่ยน Production Target/Services/Exposure, ขยาย Rollout, เพิ่ม Migration/Contract Risk, Approval หมดอายุ หรือ Assumptions ที่สำคัญเปลี่ยน → **หยุด Action ที่กระทบและขอ Human Approval ใหม่** ส่วนการรัน Check เดิมที่อนุญาตแล้วแบบไม่มีผลเสี่ยงเพิ่มไม่จำเป็นต้องขอใหม่ทุกครั้ง ห้ามอ้าง CI เขียว, Work Item Verify ผ่าน, Merge แล้ว หรือ Approval จาก Release เก่าแทนการอนุมัติครั้งนี้
 
-**ขอบเขต Decision:** Q1/Q2 เป็นการตกลง **หลักการออกแบบ Policy** ไม่ใช่อนุญาตให้เข้าถึง Production, ใช้ Credentials, Deploy จริง หรือสร้าง Automation ใหม่ Workflow ทั้งฉบับยังเป็น Draft
+**ขอบเขต Decision:** Q1–Q3 เป็นการตกลง **หลักการออกแบบ Policy** ไม่ใช่อนุญาตให้เข้าถึง Production, ใช้ Credentials, Deploy จริง หรือสร้าง Automation ใหม่ Workflow ทั้งฉบับยังเป็น Draft
 
-## Q3 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+## Q3 — Risk-adaptive Release Readiness (ตกลงเมื่อ 2026-10-10)
 
-**ก่อน Human กดอนุมัติ Production Release ตาม Q1/Q2 ต้องมี Readiness Evidence ระดับไหน?**
+**Owner Decision: เลือก A — Risk-adaptive Release Readiness พร้อม Safety Boundaries ที่ห้ามข้าม สำหรับ Release & Operations v1.0** ก่อนเข้าสู่ **Q1 Human Release Gate** ทุก Production Release ต้องมีหลักฐาน Readiness ที่เชื่อถือได้เป็นขั้นต่ำ แล้วเพิ่มความเข้มตาม **Risk จริง** ไม่ใช่จำนวนไฟล์หรือขนาดทีม
 
-- **A. Risk-adaptive Readiness พร้อม Safety Boundaries ที่ห้ามข้าม (แนะนำ):** มี Artifact/Scope ที่ตรึงแน่นอน, Verification/CI Evidence ที่เกี่ยวข้อง, ประเมิน Dependencies/Contracts และ Recovery, Release Owner, Target Permissions, Validation/Observation Plan และ Blockers ที่ระบุชัด เพิ่มความเข้มการตรวจ Migration, Security, Integration, Progressive Rollout และ Monitoring ตาม Risk หาก Required Check ขาดหรือ Critical Risk ยังไม่ยอมรับได้ → **No-Go** จนแก้หรือมี Alternative ตาม Policy ที่ได้รับอนุมัติ AI ยกเว้นเองไม่ได้
-- **B. Uniform Heavyweight Checklist:** ทุก Release ต้องใช้ Checklist/Tests/Runbook ฉบับหนักเท่ากันไม่ว่างานเล็กใหญ่หรือ Risk ต่างกัน
+**Minimum Readiness Contract — ทุก Release บันทึกให้กระชับตามบริบท:**
 
-**หลัง Q3:** ค่อยออกแบบ Post-deploy Observation, Stop/Recovery Authority และ Learning Loop ก่อนส่ง Workflow v1.0 ให้ Review/Approve
+| สิ่งที่ต้องประเมิน | คำถาม/หลักฐานขั้นต่ำก่อน Human Go / No-Go |
+| --- | --- |
+| **Release Identity & Bounds** | จะ Deploy Artifact/Manifest, Build/Commit ไหน, Services อะไร, Production Target และ Exposure Scope ใด? ต้องตรงกับ Q2 ที่ขออนุมัติ |
+| **Quality Evidence** | มี Verification Evidence ของ Work Items, CI/Build/Tests ที่เกี่ยวข้อง, Blocking Findings และ Gaps อะไรบ้าง? ต้องประเมิน **ภาพรวมของ Changes ที่จะ Release ร่วมกัน** ไม่ใช่ดู CI เขียวอย่างเดียว |
+| **Compatibility & Dependencies** | มีผลกระทบ API/Data Contracts, Config, Schema, Services ไหนบ้าง? Integration/Migration Order จำเป็นหรือไม่ ใครเป็น Owner? ถ้าไม่เกี่ยวข้องให้ระบุ N/A ตามข้อเท็จจริง |
+| **Recovery Readiness** | หยุด, Mitigate, Rollback หรือ Roll Forward อย่างปลอดภัยได้อย่างไร? Data Migration ส่วนไหนย้อนกลับไม่ได้? มี Trigger, Action และ Owner ชัดหรือไม่ |
+| **Execution & Ownership** | ใครมีอำนาจ Approve/Execute, Pipeline/Environment Permissions อะไรจำเป็น และมี Downstream Effects อะไร |
+| **Validation & Observation** | จะตรวจ Smoke/Critical Behavior, Health, Metrics/Logs/Traces และเฝ้าดูตามระยะเวลา/เกณฑ์ใด? มี Pause/Abort Criteria ที่ระบุไว้หรือไม่ |
+| **Risks & Decision** | Checks ไหน **Pass / Fail / Not run / Blocked / Inconclusive**? อันไหนเป็น Mandatory/Critical? เหลือ Risk อะไร ใครรับผิดชอบ และ Human ตัดสิน **Go / No-Go** อย่างไร |
+
+**ปรับความลึกตาม Risk:**
+- **Low-risk / Reversible:** ใช้ Jira/Release Ticket/Pipeline Links สั้น ๆ พร้อม Focused Checks, Recovery/Validation Owner ไม่ต้องสร้าง Heavyweight Checklist ใหม่
+- **Moderate / Multi-service:** เพิ่ม Compatibility, Configuration/Integration Checks และ Recovery/Operational Validation ที่ใกล้ของจริง
+- **High-risk / Authorization, Sensitive Data, Money, Schema Migration, Destructive หรือย้อนกลับยาก:** ต้องมี Human/Domain Review และ Targeted Security/Data/Migration/Failure/Dependency/Recovery Proof ตาม Risk และ Policy ของ Project จริง **Diff เล็กก็อาจเสี่ยงสูง**
+
+**Hard Stop:** ถ้า **Mandatory Check ไม่ครบ**, Critical Acceptance/Contract ไม่ได้รับการพิสูจน์, มี Blocking Defect, Permission/Environment ไม่ปลอดภัย หรือ Critical Risk ไม่ถูกจำกัดให้รับได้ → **No-Go / Blocked** Human Owner ยอมรับได้เฉพาะ **Equivalent Evidence หรือ Exception ที่ Policy อนุญาตจริง** พร้อมเหตุผล ข้อจำกัด และ Residual Risk Owner; **AI ยกเว้นเองไม่ได้** และ Test ที่ไม่รันห้ามรายงานว่า Pass หากไม่มีทางเลือกที่ถูกต้องตาม Policy ก็ **ไม่ Release** ต้องประเมิน Release ทั้งชุด ไม่ใช่เพียง Work Item แยกส่วน
+
+**การบันทึก:** ใช้ Release Ticket/Pipeline, CI Links และ Jira/MR Evidence ที่มีอยู่ ไม่สร้าง Markdown Report ใหม่เป็นข้อบังคับ และการตกลง Policy Design นี้ **ไม่ใช่การอนุญาต Deploy จริง** Verification Gate, Merge และ Release เป็นคนละ Decision
+
+## Q4 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+
+**หลัง Pipeline Deploy สำเร็จ ต้องตรวจอะไรอีกก่อนจะถือว่า Release จบสมบูรณ์?**
+
+- **A. Risk-adaptive Production Validation & Observation (แนะนำ):** แยก **Deployment Completed** ออกจาก **Service Health** และ **Business Behavior** รันเฉพาะ Post-deploy Checks ที่ปลอดภัย/ได้รับอนุญาต, ตรวจ Health/Metrics/Logs/Traces กับ Dependencies, เฝ้าดูช่วงเวลาหรือ Signal Threshold ตาม Risk และใช้ Pause/Abort/Escalation Criteria ที่กำหนดก่อนหน้า บันทึกผล **Healthy / Degraded / Inconclusive / Recovery in progress**, Human Owner และ Residual Risks ไม่ตีความว่า Pipeline เขียวคือ Release ผ่าน
+- **B. Pipeline-success Closure:** Pipeline สำเร็จแล้วปิด Release ได้เลย โดยให้ Health/Behavior Checks เป็น Optional Follow-up
+
+**หลัง Q4:** ออกแบบ Recovery/Incident Decision Authority และ Learning Loop ต่อ ก่อน Full Review และรอ Owner Approve v1.0 แยกอีกครั้ง
