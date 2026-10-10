@@ -108,6 +108,16 @@ Verification Decision → Release Review (Workflow อื่น)
 
 **ไม่สร้าง `.cursor/skills` หรือบังคับ Maintenance ทุกวันตาม pstack ทันที** หากจะย้ายแนวทางไปเป็น Skill ใน `puen-stack` ต้องมี Approval, Pilot, Owner/Maintenance และวัดเทียบ Baseline แบบไม่ใช้ Skill ก่อน
 
+## ระดับการอนุมัติและการวนกลับอย่างปลอดภัย (Track A ตกลงแล้ว)
+
+**Feature-level Human Gates:** Solution Design อนุมัติแนวทางเทคนิคและ Contracts หลัก ส่วน Delivery Planning อนุมัติ Full Feature Scope, Critical Dependencies/Risks และแผนแบบ Progressive Detail สำหรับ Increment ถัด ๆ ไป **Per-Increment Human Gates:** Implementation อนุมัติ Scope/Diff ของ Increment ก่อน Publish อย่างเป็นทางการ และ Verification อนุมัติ **Acceptance Evidence, Review Findings และ Remaining Risks ของแต่ละ Increment** แยกกัน
+
+Increment ถัดไปที่อยู่ใน **Feature Scope ที่อนุมัติแล้ว** สามารถแตก Acceptance และ Verification Checks ให้ละเอียดเพิ่มได้โดยไม่ต้องขอ Approve Design/Planning ซ้ำเพียงเพราะเริ่มงานรอบใหม่ Increment เดียวอาจครอบคลุมหลาย Repos: ใช้ Feature-level Source of Truth เชื่อม Repo Diff/MRs และ Integration Evidence
+
+**Q7=B — Loopback:** Finding ที่แก้ใน Scope/Design/Risk เดิมของ Increment ส่งกลับ Implementation เพื่อ Fix และ Retest ตาม Impact ได้ **ไม่ต้อง Approve ทุก Edit หรือเริ่ม Feature Gate ใหม่** แต่ Human ยังคงต้องตัดสิน Verification Gate ของ Increment นั้น ถ้า Finding ส่งผลให้ Requirement/Feature Scope, Architecture, API/Data Contract สำคัญ, Security/Data Risk หรือ Delivery Constraints เปลี่ยนอย่างมีนัยสำคัญ ให้ย้อนกลับไป Approve **เฉพาะ Gate ก่อนหน้าที่ได้รับผลกระทบ**
+
+เก็บ Feature/Increment Approval พร้อม Human Owner และ Risk ใน Jira/MR เดิม **ก่อนเปิด Draft MR แต่ละอัน** ต้องตรวจ Git Flow ของ Repo/งานและถาม Human แยกเสมอ แม้ Increment มีหลาย Repos การ Verify ผ่านไม่ได้อนุญาตให้ Mark Ready, Merge หรือ Deploy แทนมนุษย์
+
 ## Fixed Verification Gate, Risk-based Review และ Scoped Rework (เสนอสำหรับ AI-assisted v1.0)
 
 **Q4=B — Risk-based Independent Review:** งาน Low-risk ทำ Review Pass แยกด้วยตนเองได้เมื่อ Policy ทีมอนุญาต งาน Medium-risk ให้มี Independent Diff Review งาน High-risk ขอ Human Peer/Domain Reviewer ที่เหมาะสมตาม Risk และ Policy แต่ **Human Verification Gate ต้องมีทุก Increment ที่ตกลงแล้ว** ไม่ว่า Review จะเข้มแค่ไหน
@@ -174,10 +184,11 @@ Human decision owner / known limitations:
 
 ## Checklist ก่อนอนุมัติ v1.0
 
-1. Verification แยกจาก Developer Checks แต่เริ่มตรวจระหว่าง Implementation ได้
-2. Shared Handoff อยู่ใน Jira/MR โดยไม่เพิ่ม Artifact บังคับ
-3. Evidence, Review, Retest และ Human Risk Decision ชัดตาม Risk
-4. Release Authorization และ AI Permissions รออนุมัติแยก
+1. Design/Planning Approve ระดับ Feature และ Implementation/Verification Approve ราย Increment ชัดเจน โดยไม่ขออนุมัติซ้ำหรือข้าม Gate
+2. Verification แยกจาก Developer Checks แต่เริ่มตรวจระหว่าง Implementation ได้
+3. Shared Handoff อยู่ใน Jira/MR โดยไม่เพิ่ม Artifact บังคับ
+4. Evidence, Review, Retest และ Human Risk Decision ชัดตาม Risk
+5. Release Authorization และ Permission ของระบบจริงต้องแยกอนุมัติ
 
 ## Pilot และคำถามรอ Review
 
