@@ -1,5 +1,6 @@
 # Software Engineering at Google — Chapter 15: Deprecation
 
+- **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
 - **Status:** Draft v0.1 — candidate principles are **not accepted**
 - **Chapter author(s):** Hyrum Wright
 - **Primary full chapter:** https://abseil.io/resources/swe-book/html/ch15.html
