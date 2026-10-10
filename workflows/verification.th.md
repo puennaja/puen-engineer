@@ -46,6 +46,20 @@ Verification Decision → Release Review (Workflow อื่น)
 
 **Scale:** งานเล็ก Reversible บันทึกใน MR สั้น ๆ ได้ งาน Cross-repo/Finance/Security ต้องมีหลักฐาน Contract, Tests, Review และ Release Risks มากขึ้น โดยไม่ต้องสร้าง Ticket ซ้ำ
 
+## Execution Loop และ Handoff ร่วมกัน
+
+ใช้วงจรร่วมกับ [Implementation](./implementation.th.md) และ **สามารถเริ่ม Verification ระหว่างเขียนโค้ดได้** ตั้งแต่มี Contract, Acceptance Scenario, Test Strategy หรือ Partial Diff
+
+```text
+Implementation (Code + Developer Checks) ↔ Verification (Evidence + Independent Review)
+Findings → Implementation Fix → Reverification ตาม Impact
+หลักฐานเพียงพอ → Release Review แยกต่างหาก
+```
+
+**บันทึกใน Jira/MR ชุดเดียว**: Increment/Acceptance, Diff ของ Repo, Contract/Data Changes, ผล Checks ที่รันจริงและ Environment, สิ่งที่ Not run, Findings พร้อม Severity/หลักฐาน/Owner, ผล Fix/Retest และ Human Risk Decision โดยไม่ต้องทำเอกสารซ้ำ
+
+เมื่อมีการแก้ไขให้ตรวจพฤติกรรมและ Dependencies ที่ได้รับผลกระทบซ้ำ ขยายขอบเขตถ้าผลกระทบกว้างขึ้น งาน Solo สามารถแยก Self-check กับ Review Pass; งานเสี่ยงสูงให้ขอ Reviewer อิสระตามความจำเป็นและ Policy AI Review ไม่ได้เท่ากับ Test ที่รันจริงหรือ Human Approval และไม่มี Workflow ใดอนุญาต Deploy
+
 ## เกณฑ์เริ่มและเลือกความลึก
 
 เริ่มเมื่อมี Slice, Test Plan หรือ Contract ให้ตรวจได้ อ่าน Requirement, Diff, ผลทดสอบที่รันจริง, Design Constraints และ Risks
@@ -121,6 +135,13 @@ Human decision owner / known limitations:
 - **Stop/Defer:** Risk รับไม่ได้หรือข้อมูลยังไม่พอให้รับรอง
 
 แต่ละ Increment เข้า-ออก Workflow นี้หลายรอบได้ ไม่ต้องรอโค้ดทั้ง Feature เสร็จ
+
+## Checklist ก่อนอนุมัติ v1.0
+
+1. Verification แยกจาก Developer Checks แต่เริ่มตรวจระหว่าง Implementation ได้
+2. Shared Handoff อยู่ใน Jira/MR โดยไม่เพิ่ม Artifact บังคับ
+3. Evidence, Review, Retest และ Human Risk Decision ชัดตาม Risk
+4. Release Authorization และ AI Permissions รออนุมัติแยก
 
 ## Pilot และคำถามรอ Review
 
