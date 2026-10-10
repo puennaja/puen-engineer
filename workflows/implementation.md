@@ -1,6 +1,6 @@
-# Implementation Workflow — v1.0 Release Candidate
+# Implementation Workflow — v1.0 (Accepted)
 
-- **Status:** Review Ready / Release Candidate — not Accepted
+- **Status:** Accepted — approved by repository owner on 2026-10-10 (My Engineer Track A)
 - **Decision (2026-10-10):** separate Implementation and Verification workflows; one shared iterative execution loop.
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
@@ -199,7 +199,7 @@ Provide:
 
 **Exit options:** Ready for Verification; Needs More Implementation; Blocked — Discovery/Design; Stop/Defer. **Ready for Verification is not release authorization.**
 
-## Release-candidate review criteria
+## Approval criteria — accepted v1.0
 
 1. Feature-level Design/Planning approvals are distinct from per-Work-Item Implementation/Verification gates, with only affected prior gates reopened on material change.
 2. Separate ownership without mandatory handoff for each edit.
@@ -215,4 +215,4 @@ Try a tiny regression, a medium feature and a simulated cross-repo contract chan
 
 **Review focus:** Confirm that human gate owners and accepted-work item boundaries can be identified in each actual team, that publish authorization is recorded once in the existing issue/MR, and that early feedback does not bypass fixed gates. Git Flow, target branch and mandatory CI checks remain repository/task-specific.
 
-**Release Candidate — awaiting explicit approval.** No AGENTS.md policy, automation, skills or repository permissions are changed.
+**Accepted v1.0 — explicitly approved by repository owner on 2026-10-10.** Approval of this workflow does **not** change AGENTS.md policy, automation, skills, GitLab permissions, individual Human Gates, publish authorization or per-Draft-MR approval. The companion Verification v1.0 remains a Release Candidate until separately approved.
