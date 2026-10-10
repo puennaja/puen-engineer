@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft
 
-- **Status:** Design Draft — **not Accepted**; Q1–Q5 agreed; Q6 pending
+- **Status:** Design Draft — **not Accepted**; Q1–Q6 explicitly agreed; final v1.0 review pending
 - **Date:** 2026-10-10
 - **Track:** A — My Engineer, vendor/tool-neutral engineering practices
 - **Upstream:** [Implementation (Accepted)](./implementation.md), [Verification (Accepted)](./verification.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.md)
@@ -102,11 +102,44 @@ Every **production release** must receive **explicit approval by an authorized h
 
 **Trade-off acknowledged:** Requiring human confirmation for even protective pauses can increase response time and customer/data impact while waiting. Compensate with actionable alerts, staffed escalation and credible safe recovery procedures. This is a deliberate human-control choice, **not a claim that it is always the fastest or safest emergency response model**.
 
-## Q6 — Proposed next decision (not yet agreed)
+## Q6 — Lightweight Outcome & Learning Loop (agreed 2026-10-11)
 
-**How should a release be closed and how should operational findings flow back into engineering work?**
+**Owner decision: A — Lightweight Outcome & Learning Loop for Release & Operations v1.0.** A release closes with honest operational evidence and accountable next steps; it should not become a mandatory retrospective meeting or report for every small deployment. **Technical release closure and longer-term business outcome confirmation are distinct.**
 
-- **A. Lightweight Outcome & Learning Loop (recommended):** after Q4 validation and any Q5 incident, the human release/outcome owner records **actual health/behavior outcome, supporting evidence, residual risks, follow-up owner and any later customer/business outcome check** in existing release/Jira/incident records. Create new Work Items only for actionable defects or improvements. Use a focused incident review when impact warrants it, without mandating a ceremony or new Markdown report for every release.
-- **B. Close at Technical Health:** record operational health and outstanding critical incidents, while leaving business outcome tracking and release learning to separate processes.
+**Minimum closeout, recorded in existing release ticket/pipeline/Jira/incident tooling:**
 
-**After Q6:** reconcile the complete lifecycle with the Accepted upstream workflows, review the v1.0 candidate and seek explicit separate owner approval. This Draft does not grant deployment, production or AI automation rights.
+1. **Actual release disposition:** record the released artifact/targets/exposure, actual deployment result and Q4 health/critical-behavior observations, distinguishing **Healthy / Degraded / Inconclusive / Recovery in progress** with timestamps and source-linked evidence. Never replace unrun or asynchronous checks with a success claim.
+2. **Human outcome decision and risk:** an authorized human release/outcome owner decides whether to close as **Healthy**, keep open/escalated for degradation, or hand off outstanding follow-up. Required Q3/Q4 checks remain mandatory; closure cannot waive missing critical evidence or ongoing unsafe conditions.
+3. **Owner for every meaningful gap:** note unresolved defects, dependency/compatibility issues, incident links, operational risks and any long-tail monitoring with a concrete **owner and next checkpoint**. Make pending business/customer acceptance visible without falsely keeping the deployment in an endless “pending” state.
+4. **Feed work back proportionately:** create or link **new Work Items only for actionable defects, reliability improvements or missing behavior**, tied to actual evidence. Material scope/contract changes re-enter the relevant upstream Design/Planning gates; routine follow-ups do not reopen past approvals without cause.
+5. **Learn when the impact warrants it:** a consequential outage, regression, rollback, security/data event or recurring failure should receive a **focused incident review**, using an evidence-backed timeline, contributing factors and prevention actions. For tiny healthy releases, the linked release record is enough; no mandatory meeting, new Markdown artifact or universal ceremony.
+
+**Business outcome boundary:** technical health means the shipped service meets its measured technical/critical-flow criteria; it does **not prove** users adopted the feature or that product outcomes improved. If those signals mature later, assign their appropriate product/feature owner and a future observation checkpoint. Reassess poor outcomes as fresh evidence, not automatically as a failed deploy.
+
+**AI assistance:** AI may prepare release summaries, identify unowned gaps, propose actionable Work Items and synthesize authorized incident evidence. AI **cannot silently close a degraded release, accept residual risk, change product priorities, create production privileges or declare human approval**. The original human-controlled release and intervention rules remain in force.
+
+## Proposed cohesive Release & Operations lifecycle — review candidate (not yet Accepted)
+
+The six owner decisions form one **iterative, risk-adaptive release responsibility**, not a mandatory waterfall and not a new set of approvals for every test:
+
+1. **Select release scope:** collect Work Items that have applicable **Human Verification Gate** decisions and compatible release dependencies. Pin immutable artifact(s)/manifest, included source/build versions and production exposure; a Work Item may be verified while a cross-team Story still lacks integration evidence.
+2. **Assess readiness (Q3):** verify the combined release against CI/verification evidence, contract/configuration/migration compatibility, environment access, release/incident owners, realistic stop/recovery plan and risk-appropriate production validation plan. **Critical or policy-mandated gaps yield No-Go**, never a manufactured Pass.
+3. **Request bounded approval (Q1 + Q2):** the authorized human Release Owner gives an explicit **Go / No-Go** for the specific artifact, targets, rollout/exposure and constraints, recorded in existing release tooling. This is independent of MR Ready/Merge, Work Item Implementation/Verification and protected-environment execution rights.
+4. **Execute approved ordinary stages:** an authorized pipeline/human deploys only inside that exact envelope. Record artifact, target, step and execution outcome. An approved routine pipeline stage need not prompt the human again; **a new anomaly-driven operational intervention does (Q5)**.
+5. **Validate & observe (Q4):** separately assess deployment completion, service/dependency health, changed business/critical-flow evidence, objective stop triggers and risk-appropriate observation. **Automatic detection/alerts** may run; pause/abort/rollback/roll-forward or other remedial intervention needs **fresh human confirmation under Q5** and existing stronger safety rules.
+6. **Close or escalate and learn (Q6):** the authorized human records an evidence-backed status; unresolved incidents/critical missing evidence are not stamped Healthy. Assign residual risks, long-tail/customer outcome follow-ups and actionable engineering improvements. Re-enter upstream decisions only for material change.
+
+**Minimum shared record:** release identity / manifest and affected Work Items + MRs; CI/verification and dependency evidence; risk and recovery plan; release human decision (who/when/scope); deployed artifact and safe validation/observation results; Q5 intervention decisions if any; release disposition and remaining owners. These can be short links/fields in existing tooling, with no required new document.
+
+**Authority boundary:** approval of this *workflow design* authorizes **no actual Production deployment**, GitLab Ready/Merge, new production access, recovery command, AI skill or automation. Protected environments and emergency/incident policy remain authoritative. If the stated Human-confirmation policy conflicts with a mandatory independent safety mechanism, **do not disable that mechanism**; reconcile under the system's responsible owner.
+
+## Candidate final-review checklist — before explicit v1.0 approval
+
+1. **Boundary & unit:** Work Items and release bundles remain distinct; Verification Gate passing is not permission to merge, deploy or enable a feature; no guessed target or artifact.
+2. **Human authority:** Q1 explicit release approval, Q2 bounded scope, and Q5 fresh human authorization before *each anomaly-driven intervention* coexist with ordinary authorized pipeline automation and mandatory independent fail-safes.
+3. **Readiness & proof:** Q3 covers full-release compatibility and policy-required checks; Q4 proves observed post-deploy technical and critical-flow behavior rather than pipeline status; missing critical evidence blocks a Healthy claim.
+4. **Recovery safety:** realistic rollback/roll-forward or mitigation owner, migration irreversibility and data/user impacts are examined before deployment; AI has no autonomous production privileges.
+5. **Learning & proportionality:** Q6 differentiates health from product outcomes and assigns concrete owners to actionable residual gaps without a report/ceremony mandate.
+6. **No accidental rollout authorization:** all Q1–Q6 decisions are approved **design inputs only**. This overall workflow is **still a Design Draft** until separate explicit owner acceptance; actual pilot, skills, CI/CD configuration and production permissions are separate.
+
+**Review status:** Q1–Q6 owner decisions agreed; complete v1.0 **awaits final cross-document review and explicit acceptance**.
