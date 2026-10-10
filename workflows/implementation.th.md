@@ -48,6 +48,28 @@ Verification Decision → Release Review (Workflow อื่น)
 
 **Scale:** งานเล็ก Reversible บันทึกใน MR สั้น ๆ ได้ งาน Cross-repo/Finance/Security ต้องมีหลักฐาน Contract, Tests, Review และ Release Risks มากขึ้น โดยไม่ต้องสร้าง Ticket ซ้ำ
 
+## Execution Loop ร่วมกับ Verification
+
+Implementation กับ [Verification](./verification.th.md) มี **หน้าที่แยกกัน แต่ทำงานวนซ้ำร่วมกัน** ไม่ใช่ Waterfall ที่ต้องเขียนโค้ดทั้งหมดให้เสร็จก่อนตรวจ
+
+```text
+Delivery Planning → Implementation (Code + Developer Checks)
+                     ↕
+                 Verification (Acceptance + Independent Review)
+                     ↓ Findings → แก้ไข → ตรวจซ้ำ
+                     ↓ Evidence เพียงพอ → Release Review (แยก)
+```
+
+Verification เริ่มได้ตั้งแต่มี Acceptance Cases, API Contract, Test Strategy หรือ Partial Diff ไม่จำเป็นต้องรอ Feature เสร็จ ใช้ **Jira/MR เดิมเป็น Shared Handoff** โดยระบุ:
+
+- Increment, Acceptance, Repo และ Diff Links
+- Contracts/Data Changes, Critical Invariants, Failure Risks
+- Commands ที่รันจริง, Environment, ผลลัพธ์ และรายการ Not run
+- Findings, Severity, หลักฐาน, Owner, การแก้ไขและ Retest
+- Decision โดยมนุษย์: ทำต่อ / Fix & Reverify / Blocked / Ready for Release Review
+
+ทำ Verification ซ้ำเฉพาะส่วนที่ได้รับผลกระทบและ Dependencies ที่เกี่ยวข้อง แต่ขยายเมื่อ Impact มากขึ้น สำหรับงาน Solo สามารถแยก Self-check กับ Review Pass ได้ งานเสี่ยงสูงต้องพิจารณา Reviewer อิสระตาม Policy; AI เห็นตรงกันไม่เท่ากับมนุษย์อนุมัติ ทั้งสอง Workflow ไม่มีอำนาจ Deploy
+
 ## กิจกรรม (ทำซ้ำได้)
 
 | กิจกรรม | ทำอะไร | หลักฐานขั้นต่ำ |
@@ -97,6 +119,13 @@ AI เสนอ Code, Tests, Explanation ได้ภายใต้สิทธ
 2. Shared Loop และหลักฐาน Jira/MR เพียงชุดเดียวเหมาะกับ Solo และ Multi-repo หรือไม่?
 3. เกณฑ์ Independent Review และผล Verify เพียงพอตาม Risk หรือไม่?
 4. ขอบเขต AI Permissions ยังรอออกแบบแยกจาก Workflow อย่างเหมาะสมหรือไม่?
+
+## Checklist ก่อนอนุมัติ v1.0
+
+1. แยกความรับผิดชอบชัด โดยไม่ต้อง Handoff ทุกครั้งที่แก้ Code
+2. เก็บ Evidence/Findings ไว้ใน Jira/MR ชุดเดียว
+3. Review และ Test Evidence เข้มตาม Risk
+4. AI Permissions และ Skills รอแยกออกแบบต่อ
 
 ## ทดลองและคำถามที่ยังเปิด
 
