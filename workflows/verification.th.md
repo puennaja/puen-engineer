@@ -70,6 +70,14 @@ Human Verification Gate → Release Review (แยก)
 
 Human Implementation/Verification Gates ราย Work Item ยังมีอยู่ ใช้ Jira/MR เดิมเก็บ Scenario/Expected Outcome/Check/Result ไม่บังคับเอกสารหรือ Skill เพิ่ม อ้างอิง [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md) และ [pstack Verification](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md)
 
+## Formal Independent Verification เริ่มหลัง Unit Tests ผ่าน (ตกลง 2026-10-10)
+
+**มีสองช่วงที่ต่างกัน:** Verification-first เริ่มก่อนเขียนโค้ดเพื่อกำหนด Acceptance, Expected Behavior และ Test Seams ส่วน Preliminary Feedback ตรวจ Partial Diff/Contract ระหว่าง Implementation ได้ แต่ **ยังไม่ถือว่าเข้า Formal Independent Verification**
+
+**Formal Independent Verification ต้องมีหลักฐานว่า Unit/Regression Tests ที่เกี่ยวข้องและ Developer Checks ตาม Repo ผ่านจริงก่อน** พร้อม Command, Environment และ Result รวมถึงผ่าน Human Implementation Gate ตามที่ตกลงไว้ ถ้า Tests Fail ให้กลับไปแก้ที่ Implementation; ถ้ารันไม่ได้ให้รายงาน **Not run / Blocked** ห้ามสรุปว่าเขียว ถ้างานไม่มี Unit Test Seam ที่เหมาะจริง ให้มีเหตุผลและ Alternative Proof ซึ่ง Human รับทราบใน Implementation Gate เดิม ไม่ใช่ข้าม Tests เฉย ๆ
+
+เมื่อเข้า Formal Independent Verification แล้วจึง **ท้าทาย Tests ที่ผ่าน** ว่า Assertions จับ Behavior ตาม Requirement ได้จริงหรือไม่ พร้อม Negative/Edge Cases, API/DB/BFF Contract Evidence และ Independent Diff Review **Unit Tests ผ่านไม่เท่ากับโค้ดถูกต้อง** หากพบ Finding ส่งกลับ Implementation → แก้ไข → รัน Unit Tests ที่เกี่ยวข้องใหม่ → Independent Reverify และผ่าน Human Verification Gate เดิม ไม่มี Gate ใหม่เพิ่ม
+
 ## เกณฑ์เริ่มและเลือกความลึก
 
 เริ่มเมื่อมี Slice, Test Plan หรือ Contract ให้ตรวจได้ อ่าน Requirement, Diff, ผลทดสอบที่รันจริง, Design Constraints และ Risks
