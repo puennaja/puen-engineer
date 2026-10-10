@@ -1,7 +1,7 @@
 # Software Engineering at Google — บทที่ 24: Continuous Delivery
 
 - **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
-- **สถานะ:** Draft Study Notes v0.1; Candidate Principles **ยังไม่ Approved**
+- **สถานะ:** Accepted — สรุปผ่านการอนุมัติ หลักการเป็นแนวทาง ไม่ใช่กฎบังคับ
 - **ผู้เขียนบท:** Radha Narayan, Bobbi Jones, Sheri Shipe, David Owens
 - **แหล่งต้นฉบับ:** https://abseil.io/resources/swe-book/html/ch24.html
 - **ฉบับหลักภาษาอังกฤษ:** [English](./software-engineering-at-google-ch24.md)
