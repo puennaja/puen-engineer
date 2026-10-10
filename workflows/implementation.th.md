@@ -88,7 +88,7 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 
 - **ห้ามทำลายงานเดิม:** ห้าม Reset, Clean, Stash, Discard, Rebase, Switch Branch ทับ Changes, ลบ Untracked Files หรือแก้ทับงานเดิมเพื่อให้ Workspace สะอาด หากต้องใช้ Git Action ที่เสี่ยง/ทำลาย ต้องขออนุญาตแยกตาม Scoped Git Policy ถ้าไฟล์ที่ AI จะทำซ้อนกับงานที่คนอื่นแก้ค้างไว้ ให้ **หยุดและถามเพื่อระบุ Owner/วิธีแยกงานที่ปลอดภัยก่อน**
 - **ทำงานแยก Scope:** ใช้ Work Branch หรือ Git Worktree เมื่อทีมอนุญาตและทำได้ปลอดภัย ไม่ย้าย/Stash/ลบงานของคนอื่นโดยพลการ ถ้าระบุ Ownership หรือ Isolation ไม่ได้ ให้ **Block แล้วถาม** ไม่เดาว่าไฟล์ไหนลบทิ้งได้
-- **ก่อน Commit:** ตรวจ Git Status, Staged/Unstaged Diff ใหม่และยืนยันว่า Change ทุกอันอยู่ใน Scope ของ Work Item; Stage/Commit เฉพาะไฟล์หรือ Hun​​ks ที่ AI ได้รับอนุญาต ไม่ Stage ทั้งหมดแบบเหมา (เช่น `git add -A`) เมื่อมี Changes นอก Scope ห้ามอ้างว่า Diff สะอาดถ้าไม่ได้ตรวจจริง
+- **ก่อน Commit:** ตรวจ Git Status, Staged/Unstaged Diff ใหม่และยืนยันว่า Change ทุกอันอยู่ใน Scope ของ Work Item; Stage/Commit เฉพาะการแก้ไขของ AI ที่ได้รับอนุญาต ไม่ Stage ทั้งหมดแบบเหมา (เช่น `git add -A`) เมื่อมี Changes นอก Scope ห้ามอ้างว่า Diff สะอาดถ้าไม่ได้ตรวจจริง
 
 **การตรวจ Safety นี้ไม่ใช่การขออนุมัติทุกไฟล์** AI ยังแก้ไฟล์ปกติภายใน Scope ที่อนุมัติได้ แต่ไม่มีสิทธิ์ทับงานคนอื่น หรือได้สิทธิ์ Push/Open MR เพิ่มเอง
 
@@ -151,12 +151,13 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 - **พิจารณา TDD ก่อน** เมื่อ Feature/Bug มี Test Seam ที่เหมาะและ Feedback เร็ว ถ้า Test Setup เปราะหรือ Evidence แบบอื่นมีคุณค่ากว่า ใช้ Test-after หรือ Real Behavior Proof พร้อมเหตุผลได้ ไม่บังคับ TDD/Coverage % ทุกงาน
 - พิจารณา Migration, Retry, Idempotency, Permission, Concurrency, Observability เมื่อเกี่ยวข้อง
 - บอกว่า Test ผ่านต่อเมื่อรันเห็นผลจริง ถ้ารันไม่ได้ให้ระบุ **Not run / Blocked**
+- ต้องตรวจ Git Working Tree และรักษา Changes ที่มีอยู่ก่อน AI แก้หรือ Commit; ห้าม Stage/ทับ/ล้างงานนอก Scope
 - ห้ามเผย Secrets และข้อมูลลับบริษัทใน Public Repo หรือ AI Tool ที่ไม่ได้รับอนุญาต
 - ใช้ Jira/MR เป็น Source of Truth โดยไม่สร้าง Document ซ้ำถ้าไม่จำเป็น
 
 ## การทำงานหลาย Repos
 
-หนึ่ง Feature-level Work Item เชื่อม Task แยก Repo กำหนด Contract Owner และ Integration Checkpoint จากข้อมูลจริง **Agent ที่เปิด Repo เดียวไม่ได้แปลว่าเห็น Repo อื่น** ต้องยืนยัน Producer/Consumer Contract และลำดับ Deploy ตาม Compatibility ไม่เดา
+ใช้ **Parent Jira Story** (หรือ Standalone Work Item) เป็น Source of Truth ระดับ Feature แยก Work Item ตาม Repo/Owner จริง กำหนด Contract Owner และ Integration Checkpoint จากข้อมูลจริง **Agent ที่เปิด Repo เดียวไม่ได้แปลว่าเห็น Repo อื่น** และการผ่าน Verify เฉพาะ BE/BFF ไม่ได้แปลว่า FE/Story ทั้งหมดผ่าน ต้องยืนยัน Producer/Consumer Contract และลำดับ Deploy ตาม Compatibility ไม่เดา
 
 ## AI ช่วยได้อย่างไร (ยังเป็น Candidate)
 
@@ -204,10 +205,12 @@ Local Commit/Push ใช้กติกา Scoped Git ด้านบน ส่�
 
 ## Checklist ก่อนอนุมัติ — v1.0 Release Candidate
 
-1. Implementation กับ Verification แยก Responsibility ชัด และไม่สร้าง Waterfall หรือบังคับ Handoff ทุกครั้งหรือไม่?
-2. Shared Loop และหลักฐาน Jira/MR เพียงชุดเดียวเหมาะกับ Solo และ Multi-repo หรือไม่?
-3. เกณฑ์ Independent Review และผล Verify เพียงพอตาม Risk หรือไม่?
-4. ขอบเขต AI Permissions ยังรอออกแบบแยกจาก Workflow อย่างเหมาะสมหรือไม่?
+1. **Human Implementation Gate** อยู่หลัง Unit Tests/Developer Checks ที่ผ่านจริง และอยู่ก่อน Formal Independent Verification ชัดหรือไม่ (Preliminary Review เริ่มก่อนได้)?
+2. English/Thai ใช้ **Work Item, Verification-first Test Intent, TDD เมื่อเหมาะ, Scope และ Evidence** ตรงกันหรือไม่?
+3. **Working Tree Safety** ป้องกันการทับ/Stage/ลบ Changes ของคนอื่นก่อนเริ่มแก้และก่อน Commit หรือไม่?
+4. **Low-risk Bug Path** ลดขั้นตอนซ้ำ แต่ยังรักษา Design/Planning Decisions และ Human Gates ที่เกี่ยวข้องหรือไม่?
+5. ใช้ Jira/MR เดิมเก็บ Evidence, Finding และ Approval โดยไม่สร้างเอกสารใหม่บังคับหรือไม่?
+6. Git/Pushing/การขออนุญาตก่อน **ทุก Draft MR** และ Human-only Ready/Merge ยังเหมือนเดิมหรือไม่?
 
 ## ทดลองและคำถามที่ยังเปิด
 
