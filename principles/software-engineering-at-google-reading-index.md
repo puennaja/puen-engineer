@@ -16,6 +16,26 @@ Previous:
 - [Chapter 1 — EN](./software-engineering-at-google-ch01.md) · [TH](./software-engineering-at-google-ch01.th.md) — EF-G01–06
 - [Chapter 8 — EN](./software-engineering-at-google-ch08.md) · [TH](./software-engineering-at-google-ch08.th.md) — EF-G07–12
 
+## Additional full-chapter study set — Chapters 14, 15, 16, 21, 24
+
+| Suggested order | Chapter | English | Thai | Candidate IDs |
+| --- | --- | --- | --- | --- |
+| 1 | [14 — Larger Testing](https://abseil.io/resources/swe-book/html/ch14.html) | [EN](./software-engineering-at-google-ch14.md) | [TH](./software-engineering-at-google-ch14.th.md) | EF-G25–27 |
+| 2 | [15 — Deprecation](https://abseil.io/resources/swe-book/html/ch15.html) | [EN](./software-engineering-at-google-ch15.md) | [TH](./software-engineering-at-google-ch15.th.md) | EF-G28–30 |
+| 3 | [16 — Version Control and Branch Management](https://abseil.io/resources/swe-book/html/ch16.html) | [EN](./software-engineering-at-google-ch16.md) | [TH](./software-engineering-at-google-ch16.th.md) | EF-G31–33 |
+| 4 | [21 — Dependency Management](https://abseil.io/resources/swe-book/html/ch21.html) | [EN](./software-engineering-at-google-ch21.md) | [TH](./software-engineering-at-google-ch21.th.md) | EF-G34–36 |
+| 5 | [24 — Continuous Delivery](https://abseil.io/resources/swe-book/html/ch24.html) | [EN](./software-engineering-at-google-ch24.md) | [TH](./software-engineering-at-google-ch24.th.md) | EF-G37–39 |
+
+### New candidate inventory
+
+- **Larger Testing:** EF-G25 Test Fidelity by Risk; EF-G26 Smallest Sufficient SUT; EF-G27 Owned, Diagnosable Integration Tests.
+- **Deprecation:** EF-G28 Retirement Is Engineering; EF-G29 Staffed Migration Deadlines; EF-G30 Prevent New Uses During Retirement.
+- **Version Control:** EF-G31 Integration Source of Truth; EF-G32 Early Integration with Verification; EF-G33 Contain Version Divergence.
+- **Dependency Management:** EF-G34 Dependency Graph Risk; EF-G35 Version Promises Need Tests; EF-G36 Update/Provider Ownership.
+- **Continuous Delivery:** EF-G37 Safe On-demand Release Capability; EF-G38 Small Isolated Progressive Releases; EF-G39 User Impact and Health Guardrails.
+
+**Current study count:** 11 chapters with English and Thai notes; 39 **unreviewed candidate** principles. These are candidates to deduplicate and validate, **not 39 accepted rules**.
+
 ## Candidate inventory from the four chapters
 
 - **Documentation:** EF-G13 Owned and Changeable Documentation; EF-G14 Reader/Purpose; EF-G15 Deprecate Stale Sources
