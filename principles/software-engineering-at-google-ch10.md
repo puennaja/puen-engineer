@@ -1,7 +1,7 @@
 # Software Engineering at Google — Chapter 10: Documentation
 
 - **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
-- **Status:** Accepted as study reference — principles are contextual guidance, not mandatory rules
+- **Status:** Accepted — reference knowledge; non-mandatory guidance
 - **Evidence:** Full publicly published chapter reviewed including examples and conclusion; original analytical paraphrase, not a translation
 - **Author(s):** Tom Manshreck
 - **Primary source:** https://abseil.io/resources/swe-book/html/ch10.html
