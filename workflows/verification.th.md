@@ -78,6 +78,23 @@ Human Implementation/Verification Gates ราย Work Item ยังมีอ�
 
 เมื่อเข้า Formal Independent Verification แล้วจึง **ท้าทาย Tests ที่ผ่าน** ว่า Assertions จับ Behavior ตาม Requirement ได้จริงหรือไม่ พร้อม Negative/Edge Cases, API/DB/BFF Contract Evidence และ Independent Diff Review **Unit Tests ผ่านไม่เท่ากับโค้ดถูกต้อง** หากพบ Finding ส่งกลับ Implementation → แก้ไข → รัน Unit Tests ที่เกี่ยวข้องใหม่ → Independent Reverify และผ่าน Human Verification Gate เดิม ไม่มี Gate ใหม่เพิ่ม
 
+## Independent Verification v1.0 — Safety Net 4 ด้าน (ข้อตกลง 2026-10-10)
+
+หลัง **Unit/Regression Tests ที่เกี่ยวข้องและ Developer Checks ผ่านจริง** และผ่าน Human Implementation Gate เดิมแล้ว Formal Independent Verification ประเมิน **4 ด้าน** ต่อ Work Item ที่รับผิดชอบ **ทุกงานต้องพิจารณาทั้ง 4 ด้าน แต่ความลึกของ Tests/Review แตกต่างตาม Risk และความเกี่ยวข้อง** Unit Tests เขียวเป็นเงื่อนไขเข้า ไม่ใช่หลักฐานว่าทุกอย่างถูกต้อง
+
+| Safety Net | ต้องตอบอะไร / ผลลัพธ์ขั้นต่ำ | ตัวอย่าง BE / BFF |
+| --- | --- | --- |
+| **1. Requirement Verification** | โค้ดตรง Acceptance และ Parent Story Contract ไหม? ผูก Scenario กับ Evidence ระบุ Case ที่ตกหล่น หรือความเข้าใจที่ไม่ตรง Requirement | Activity Log เก็บ Actor/Action/Timestamp, Permission, Error Semantics |
+| **2. Independent Code Review** | Diff ถูกต้อง ปลอดภัย และสอดคล้อง Codebase ไหม? Review เทียบ Spec และ Quality/Architecture **แยกสองแกน** ตรวจคุณภาพ Assertions ของ Developer Tests ด้วย | Transaction, Data Integrity, Error Handling, Security, Side Effects, Complex Code |
+| **3. Risk-based Behavioral / Integration Proof** | รันแล้ว Behavior จริงบน Boundary ที่เปลี่ยนเป็นอย่างไร? เลือก API/DB/Contract/Integration Tests ตาม Risk และรายงานสิ่งที่ไม่ได้รัน | Update Status แล้วอ่าน Log จาก DB, Mapping ของ BFF↔BE, Negative Cases ตามความเสี่ยง |
+| **4. Evidence & Risk Assessment** | ตรวจอะไรจริง ผ่าน/ไม่ผ่าน/ไม่ได้รันอะไร เหลือความเสี่ยงอะไรให้ใครรับผิดชอบ? | Command/Result/Environment, Finding/Resolution, Owner และ Recommendation |
+
+**เลือกความลึกตาม Risk:** งาน Low-risk มี Acceptance Mapping, Test-quality/Diff Review และ Evidence Decision แบบกระชับ พร้อม Focused Behavior Check เมื่อมี Seam เหมาะสม งาน Medium-risk เพิ่มการพิสูจน์ Behavior/Contract/Integration และ Review ที่แยกจาก Implementer งาน High-risk เช่น Authorization, Sensitive Data, Concurrency, Migration, Money หรือการเปลี่ยนที่ย้อนกลับยาก ต้องมี Negative/Security/Data/Integration Checks และ Human Reviewer ที่เหมาะตาม Policy **จำนวนบรรทัดที่แก้ไม่ใช่ตัวกำหนด Risk**
+
+**อย่าแค่ติ๊กว่าผ่าน:** Build/Lint/Unit Tests ที่เขียวเป็น Developer Evidence แต่ไม่ใช่ผล Independent Verification ถ้า Test Assertions ไม่สามารถจับ Behavior ที่ผิดได้ ต้องระบุ Finding ห้ามใช้คำอธิบายจาก AI แทนหลักฐานรันจริง ส่วน Mutation, Property-based, Fuzzing, Load และ Security Testing ขั้นสูงเป็น **ทางเลือกตาม Risk** ไม่บังคับทุก Work Item และการ Verify BE ผ่านไม่ได้แปลว่าทั้ง Story ที่มี FE ของคนอื่นผ่าน Integration แล้ว
+
+**การตัดสิน:** Verification เสนอ Verified for Release Review / Fix & Reverify / Blocked / Stop-Defer จากหลักฐาน ส่วน Human ยังเป็นผู้ตัดสิน **Verification Gate ต่อ Work Item** การผ่าน Gate ไม่ได้อนุญาต Auto Ready/Merge/Deploy ใช้ Jira/MR เดิมเก็บผล ไม่สร้างไฟล์รายงานบังคับใหม่
+
 ## เกณฑ์เริ่มและเลือกความลึก
 
 เริ่มเมื่อมี Slice, Test Plan หรือ Contract ให้ตรวจได้ อ่าน Requirement, Diff, ผลทดสอบที่รันจริง, Design Constraints และ Risks
@@ -219,7 +236,7 @@ Human decision owner / known limitations:
 1. Design/Planning Approve ระดับ Feature และ Implementation/Verification Approve ราย Work Item ชัดเจน โดยไม่ขออนุมัติซ้ำหรือข้าม Gate
 2. Verification แยกจาก Developer Checks แต่เริ่มตรวจระหว่าง Implementation ได้
 3. Shared Handoff อยู่ใน Jira/MR โดยไม่เพิ่ม Artifact บังคับ
-4. Evidence, Review, Retest และ Human Risk Decision ชัดตาม Risk
+4. ครบ **Safety Net 4 ด้าน**: Requirement, Independent Code Review/Test Quality, Risk-based Behavior Proof และ Evidence/Risk Decision
 5. Release Authorization และ Permission ของระบบจริงต้องแยกอนุมัติ
 
 ## Pilot และคำถามรอ Review
