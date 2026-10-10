@@ -44,6 +44,20 @@ Verification decision → release review (a separate workflow)
 
 **Scaling:** A trivial reversible change may record the whole loop in a short MR note; a multi-repo or security/data-critical feature needs explicit contract, test, review and release-risk evidence. Avoid duplicate tickets/docs.
 
+## Shared execution loop and handoff
+
+This workflow shares the execution loop defined in [Implementation](./implementation.md). It can start **during implementation**, whenever there is a reviewable contract, acceptance scenario, test strategy or partial diff.
+
+```text
+Implementation (code + developer checks) ↔ Verification (acceptance + independent review)
+Findings → implementation fixes → targeted re-verification
+Sufficient verified evidence → separate release review
+```
+
+**One shared issue/MR record** should link the increment and acceptance, repository diffs, contract/data changes, actual executed checks (including environment and not-run tests), reviewer findings with evidence/severity/owner, fix/retest outcomes, and the responsible human's risk decision. Do not duplicate evidence in multiple mandatory documents.
+
+After a change, reverify affected behavior and dependent contracts; expand verification when impact broadens. For solo work, separate self-check from a deliberate review pass, obtaining a genuinely independent reviewer when risk or policy requires it. AI reviews are useful suggestions, **not evidence of test execution or human approval**. Both workflows remain iterative and neither grants deployment permission.
+
 ## Entry and risk selection
 
 May start once a reviewable slice, test plan or interface contract exists. Read requirements/acceptance, solution constraints, diff, actual developer-check outputs, dependencies and relevant risk map.
@@ -127,6 +141,13 @@ No requirement to finish all implementation tasks before starting verification; 
 2. Can the shared handoff fit existing Jira/MR without separate mandatory artifacts?
 3. Are evidence, independence, risk acceptance and release authority distinguished?
 4. Are AI permissions left to separate explicit approval?
+
+## Release-candidate review criteria
+
+1. Independent verification remains distinct from developer checks without becoming a last-only phase.
+2. Shared evidence and findings fit one issue/MR, with no duplicated artifact requirement.
+3. Risk-based verification, retest scope, reviewer independence and human acceptance are clear.
+4. Release authorization and AI permissions remain separate decisions.
 
 ## Pilot and open decisions
 
