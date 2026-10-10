@@ -1,7 +1,8 @@
-# Release & Operations Workflow — v1.0 Design Draft (ภาษาไทย)
+# Release & Operations Workflow — v1.0 (Accepted — ภาษาไทย)
 
-- **สถานะ:** Review Ready / Release Candidate — **ยังไม่ Accepted**; Q1–Q6 ตกลงแล้ว, ผ่าน Final Cross-document Review เมื่อ 2026-10-11 และรอ Owner Approve แยก
+- **สถานะ:** Accepted — Repository Owner อนุมัติเมื่อ 2026-10-11 (My Engineer Track A); Q1–Q6
 - **วันที่:** 2026-10-10
+- **Approved:** 2026-10-11 โดย Repository Owner
 - **Track:** A — My Engineer, ออกแบบจาก Engineering Practices ไม่ผูกบริษัทหรือเครื่องมือ
 - **ก่อนหน้า:** [Implementation (Accepted)](./implementation.th.md), [Verification (Accepted)](./verification.th.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.th.md)
 - **ภาษาอังกฤษ:** [Release & Operations (EN)](./release-operations.md)
@@ -19,16 +20,16 @@
 - Pipeline ที่ได้รับอนุมัติไม่ได้ให้ AI มีสิทธิ์ Production อัตโนมัติ Credentials, Release Owner, Protected Environment, Incident Authority และนโยบายบริษัท/Repo ต้องกำหนดแยกใน Project จริง
 - **ไม่ได้บังคับให้ Human กดทุกขั้นของ Pipeline** บังคับให้ Human อนุมัติ Production Release แต่ละครั้งก่อน ส่วนระบบ Automation ทำต่อภายในขอบเขตที่อนุมัติได้
 - การ Deploy Code, เปิด Feature Flag หรือเปลี่ยน Exposure ของผู้ใช้ เป็นคนละการกระทำ **Q2 กำหนดแล้วว่า Approval ต้องระบุ Scope ที่อนุญาตไว้ชัด** ถ้าไม่รวมการเปิด Flag ห้ามตีความว่าเปิด Flag ได้
-- การตกลง Q1 **ไม่อนุญาต** Deploy, เข้าถึง Production, เปลี่ยน Policy, สร้าง Automation หรือ AI Skill ใหม่
+- การอนุมัติ **Workflow Design นี้** ไม่ได้ให้สิทธิ์ Deploy, เข้าถึง Production, เปลี่ยน Repo/Company Policy หรือสร้าง Automation/AI Skill ใหม่
 
-## Responsibilities ที่เสนอ (ยังไม่อนุมัติเป็น Workflow)
+## Release & Operations Responsibilities (Accepted v1.0)
 
 1. **Release Candidate & Readiness:** ระบุ Artifact/Build/Version ให้แน่นอน, Included Changes, Dependencies, CI Evidence, Migration และข้อจำกัด Rollback/Roll-forward
 2. **Release Coordination & Go/No-Go:** กำหนด Release Owner, Services/Targets, Rollout/Risk/Stop Criteria, Communication และ Authorization
 3. **Controlled Deployment & Validation:** Execute โดย Pipeline/บุคคลที่ได้รับสิทธิ์ ตรวจว่า Deploy สำเร็จจริงและ Critical Behavior ยังถูกต้อง
 4. **Operations, Recovery & Learning:** ติดตาม Metrics/Logs/Signals, ตรวจ Regression, Mitigate/Rollback/Roll-forward เมื่อปลอดภัย ประสาน Incident Owner และบันทึกผลจริง
 
-**ความลึกตาม Risk:** Low-risk/Reversible ทำแบบกระชับได้; High-risk, Multi-service, Data Changes หรือย้อนกลับยาก ต้องตรวจ Compatibility, Recovery, Monitoring และ Human Owner เข้มขึ้น เป็นแนวทางเสนอ **ไม่ใช่ Gate ใหม่ที่อนุมัติแล้ว**
+**ความลึกตาม Risk:** Low-risk/Reversible ทำแบบกระชับได้; High-risk, Multi-service, Data Changes หรือย้อนกลับยาก ต้องตรวจ Compatibility, Recovery, Monitoring และ Human Owner เข้มขึ้น เป็น Practices ตาม Risk ที่ **Accepted ใน v1.0 แต่ไม่ใช่การเพิ่ม Human Gate ใหม่**
 
 ## Q2 — Bounded Release Authorization (ตกลงเมื่อ 2026-10-10)
 
@@ -44,7 +45,7 @@
 
 **เมื่อ Approval ใช้ต่อไม่ได้:** เปลี่ยน Artifact/Manifest, เปลี่ยน Production Target/Services/Exposure, ขยาย Rollout, เพิ่ม Migration/Contract Risk, Approval หมดอายุ หรือ Assumptions ที่สำคัญเปลี่ยน → **หยุด Action ที่กระทบและขอ Human Approval ใหม่** ส่วนการรัน Check เดิมที่อนุญาตแล้วแบบไม่มีผลเสี่ยงเพิ่มไม่จำเป็นต้องขอใหม่ทุกครั้ง ห้ามอ้าง CI เขียว, Work Item Verify ผ่าน, Merge แล้ว หรือ Approval จาก Release เก่าแทนการอนุมัติครั้งนี้
 
-**ขอบเขต Decision:** Q1–Q3 เป็นการตกลง **หลักการออกแบบ Policy** ไม่ใช่อนุญาตให้เข้าถึง Production, ใช้ Credentials, Deploy จริง หรือสร้าง Automation ใหม่ Workflow ทั้งฉบับยังเป็น Draft
+**ขอบเขต Decision:** Q1–Q6 เป็น **หลักการออกแบบ Workflow ที่ Accepted แล้ว** ไม่ใช่สิทธิ์เข้าถึง Production, ใช้ Credentials, Deploy จริง หรือสร้าง Automation ใหม่
 
 ## Q3 — Risk-adaptive Release Readiness (ตกลงเมื่อ 2026-10-10)
 
@@ -118,7 +119,7 @@
 
 **บทบาท AI:** AI สรุป Release Evidence, ชี้ Gaps ที่ไม่มี Owner, เสนอ Actionable Work Items และวิเคราะห์ Incident Evidence ที่ได้รับสิทธิ์ได้ แต่ **ห้ามปิด Degraded Release เอง, รับ Residual Risk แทนคน, เปลี่ยน Priority, เพิ่ม Production Privilege หรืออ้าง Human Approval** ข้อตกลง Release/Intervention ของ Q1–Q5 ยังอยู่ครบ
 
-## Proposed Release & Operations Lifecycle — Review Candidate (ยังไม่ Accepted)
+## Release & Operations Lifecycle — Accepted v1.0
 
 Q1–Q6 ทำงานเป็น **Iterative, Risk-adaptive Release Responsibility** ไม่ใช่ Waterfall บังคับหรือเพิ่ม Human Approval ทุกครั้งที่รัน Test:
 
@@ -133,18 +134,18 @@ Q1–Q6 ทำงานเป็น **Iterative, Risk-adaptive Release Responsib
 
 **Authority Boundary:** การอนุมัติ **Workflow Design** นี้ **ไม่ได้ให้สิทธิ์ Deploy Production, GitLab Ready/Merge, เข้าถึง Production, สั่ง Recovery, สร้าง AI Skill หรือ Automation** Protected Environment และ Emergency/Incident Policy จริงยังเป็นหลัก ถ้ากติกา Human Confirmation ขัดกับ Independent Safety Fail-safe ที่ระบบมีเป็นข้อบังคับ **ห้ามไปปิด Fail-safe นั้น** ต้องให้ System Owner จัดการความสอดคล้อง
 
-## Candidate Final-review Checklist — ก่อน Approve v1.0 อย่างชัดแจ้ง
+## Approval Checklist — Release & Operations v1.0 (Accepted)
 
 1. **Release Unit:** Work Item กับ Release Bundle ไม่ใช่หน่วยเดียวกัน Verification ผ่านไม่ได้อนุญาตให้ Merge/Deploy/Enable Flag และไม่เดา Branch/Artifact
 2. **Human Authority:** Q1 Human Release Gate, Q2 Bounded Envelope และ Q5 Human Confirmation **ทุก Anomaly-driven Intervention** ทำงานร่วมกับ Routine Pipeline Automation และ Mandatory Platform Fail-safe ได้
 3. **Readiness & Proof:** Q3 ตรวจ Compatibility และ Mandatory Checks ของทั้ง Release; Q4 ตรวจ Production Health/Behavior ด้วยหลักฐานจริง ไม่ใช่ Pipeline เขียว และ Critical Gap ทำให้สรุป Healthy ไม่ได้
 4. **Recovery Safety:** มี Owner และทางเลือก Mitigation/Rollback/Roll Forward ที่ทำได้จริง ประเมิน Irreversible Migration และ Data/User Impact ก่อน Deploy ไม่ให้ AI มี Autonomous Production Privilege
 5. **Learning & Proportionality:** Q6 แยก Technical Health จาก Product Outcome มี Owner ของ Actionable Gaps โดยไม่บังคับ Report/Ceremony ใหม่ทุกงาน
-6. **No Silent Authorization:** Q1–Q6 เป็น **Design Decisions เท่านั้น** Workflow ทั้งฉบับยังเป็น **Design Draft** จนกว่า Owner จะอนุมัติแยก Pilot, Skills, CI/CD Config และ Production Permissions ต้องขออนุญาตต่างหาก
+6. **No Silent Authorization:** Q1–Q6 และ Workflow นี้ **Accepted อย่างชัดแจ้งเมื่อ 2026-10-11** ในฐานะ Design Policy **ไม่ใช่สิทธิ์ Deploy จริงหรือเพิ่ม Production Permissions** ส่วน Pilot, Skills, CI/CD Config และ Operational Access ยังต้องตกลงแยก
 
 ## Final Review — 2026-10-11
 
-**ผลตรวจ: พร้อมเสนอ Owner Review/Approve (Release Candidate, ยังไม่ Accepted)** ตรวจเทียบ Release Lifecycle กับ Feature Delivery Lifecycle, Implementation และ Verification ที่ Accepted แล้ว รวมทั้งความสอดคล้องภาษาไทย/อังกฤษ ไม่พบ Decision Conflict ที่เป็นตัวบล็อก:
+**ผลตรวจ (ก่อนการอนุมัติ): พร้อมเสนอ Owner Approve** ตรวจเทียบ Release Lifecycle กับ Feature Delivery Lifecycle, Implementation และ Verification ที่ Accepted แล้ว รวมทั้งความสอดคล้องภาษาไทย/อังกฤษ ไม่พบ Decision Conflict ที่เป็นตัวบล็อก:
 
 - **Upstream Handoff:** Work Item Verification เป็น Evidence ไม่ใช่สิทธิ์ Deploy โดย Release อาจรวมหลาย Work Items; MR Ready/Merge กับ Release เป็น Human Decisions แยกกัน
 - **Human & Automation Boundary:** Q1 Human Release Gate และ Q2 Bounded Authorization อนุญาต Routine Pipeline Steps ตาม Scope แต่ Q5 ให้ Human ยืนยันใหม่ทุก **Intervention ที่เกิดเพื่อตอบสนองเหตุผิดปกติ** Detection/Paging ไม่ใช่ Intervention
@@ -155,4 +156,4 @@ Q1–Q6 ทำงานเป็น **Iterative, Risk-adaptive Release Responsib
 
 **เรื่องที่ทำแยกจากการอนุมัติเอกสาร v1.0:** Pilot บนระบบจำลอง/Non-sensitive ที่ได้รับสิทธิ์, ระบุ Human Owners, Company/Platform Controls, Release/Recovery Permissions, CI/CD Implementation และ Metrics ไม่ได้อนุญาต Production, Skills หรือ Automation
 
-**Approval Status:** Release Candidate — **รอ Owner Approve อย่างชัดแจ้ง**
+**Approval Status: Accepted v1.0 — Repository Owner อนุมัติอย่างชัดแจ้งเมื่อ 2026-10-11** เป็นการอนุมัติ **เอกสาร/แนวทางปฏิบัติ** ไม่ได้เปิดสิทธิ์ Production/GitLab, อนุญาต Deploy หรือ Intervention จริง, ให้ AI เข้าถึง Production หรือสร้าง Skills/Automation ส่วน Pilot กับ Project จริงและการปรับตาม Policy ของระบบ ต้องดำเนินการแยก
