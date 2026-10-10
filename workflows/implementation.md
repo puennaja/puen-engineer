@@ -1,6 +1,7 @@
-# Implementation Workflow — v0.1
+# Implementation Workflow — v1.0 Release Candidate
 
-- **Status:** Proposed / Draft — not approved
+- **Status:** Review Ready / Release Candidate — not Accepted
+- **Decision (2026-10-10):** separate Implementation and Verification workflows; one shared iterative execution loop.
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **Upstream:** [Delivery Planning v1.0](./delivery-planning.md), [Solution Design v1.0](./solution-design.md)
@@ -15,6 +16,28 @@ Turn one agreed, sufficiently understood increment into **reviewable code** with
 **Inputs:** acceptance scenarios, current slice from the Delivery Plan, approved design decisions, verified repo boundaries, key contracts, risks, local coding conventions and access approvals.
 
 **Stop and revisit discovery/design/planning** when unverified assumptions could cause unsafe authorization, data loss, incompatible contracts, or incorrect domain behavior. A bounded spike is valid implementation work if it has a question and evidence output.
+
+## Shared execution loop
+
+Implementation and [Verification](./verification.md) are distinct responsibilities working in a shared iterative loop, **not sequential waterfall gates**:
+
+```text
+Delivery Planning → Implementation (code + developer checks)
+                     ↕
+                 Verification (acceptance + independent review)
+                     ↓ findings → implement fixes → reverify
+                     ↓ sufficient evidence → release review (separate)
+```
+
+Verification may start on acceptance examples, contracts, test strategy or partial diffs; it need not wait for implementation to finish. Handoff information belongs in the **same issue/MR**, not mandatory duplicate documents:
+
+- Scope and links: increment, acceptance, repository diffs.
+- Change boundaries: contracts, schema, critical invariants and operational risks.
+- Actual evidence: commands executed, environment, observed results, not-run checks.
+- Feedback: findings, severity, evidence, owner, resolution and relevant retest.
+- Human decision: continue, fix-and-reverify, blocked or ready for release review.
+
+Scale the checks and independent review to risk. Solo work may use separate self-check and review passes; AI agreement alone is not independent human approval. After a fix, reverify affected behavior and dependencies, widening checks if impact expands. Neither workflow authorizes deployment.
 
 ## Activities (repeat as necessary)
 
@@ -58,10 +81,17 @@ Provide:
 
 **Exit options:** Ready for Verification; Needs More Implementation; Blocked — Discovery/Design; Stop/Defer. **Ready for Verification is not release authorization.**
 
+## Release-candidate review criteria
+
+1. Separate ownership without mandatory handoff for each edit.
+2. Evidence and findings shared through one existing issue/MR.
+3. Risk-proportional review and actual test evidence.
+4. AI permissions and skills remain separate decisions.
+
 ## Pilot / open decisions
 
 Try a tiny regression, a medium feature and a simulated cross-repo contract change. Measure first useful feedback, rework, developer-test honesty and documentation overhead.
 
 **Review:** Should edits and commits by an agent need per-action consent or a bounded approved permission? What minimum handoff fits Jira/GitLab? When should a review start during a longer implementation?
 
-**Draft only. No AGENTS.md policy, automation, skills or repository permissions are changed.**
+**Release Candidate — awaiting explicit approval.** No AGENTS.md policy, automation, skills or repository permissions are changed.
