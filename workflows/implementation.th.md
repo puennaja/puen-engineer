@@ -82,6 +82,24 @@ Verification กลับมาตรวจคุณภาพ Tests และร
 
 **แยกเวลาให้ชัด:** Verification-first ช่วยกำหนด Acceptance/Test Intent ก่อน Code และให้ Preliminary Feedback ระหว่าง Implement ได้ แต่ **Formal Independent Verification** ที่ตรวจ Test Quality, Behavior, Contract และ Diff เริ่มเมื่อ Developer Checks ผ่านและ Human Implementation Gate อนุมัติแล้ว **Tests ผ่านเป็นแค่เงื่อนไขเข้า ไม่ใช่เครื่องยืนยันว่าโค้ดถูกต้อง** ถ้าพบ Finding ส่งกลับ Implementation แก้และรัน Unit Tests ที่เกี่ยวข้องใหม่ก่อน Reverify โดย Human Verification Gate ยังอยู่เหมือนเดิม ไม่เพิ่ม Gate ใหม่
 
+## ปกป้อง Working Tree และ Changes ที่มีอยู่ (แก้ตาม Review v1.0)
+
+**ก่อน AI แก้ไฟล์ครั้งแรก:** ตรวจ Repository ที่เปิด, Branch/Upstream และ Git Status รวมทั้งไฟล์ **Staged, Unstaged, Untracked** พร้อมอ่าน Diff ที่เกี่ยวข้องโดยไม่แก้ไข เพื่อแยกว่าอะไรเป็น **งานที่ Human หรือ Agent ตัวอื่นแก้ค้างไว้** และอะไรอยู่ใน Scope ของ Work Item
+
+- **ห้ามทำลายงานเดิม:** ห้าม Reset, Clean, Stash, Discard, Rebase, Switch Branch ทับ Changes, ลบ Untracked Files หรือแก้ทับงานเดิมเพื่อให้ Workspace สะอาด หากต้องใช้ Git Action ที่เสี่ยง/ทำลาย ต้องขออนุญาตแยกตาม Scoped Git Policy ถ้าไฟล์ที่ AI จะทำซ้อนกับงานที่คนอื่นแก้ค้างไว้ ให้ **หยุดและถามเพื่อระบุ Owner/วิธีแยกงานที่ปลอดภัยก่อน**
+- **ทำงานแยก Scope:** ใช้ Work Branch หรือ Git Worktree เมื่อทีมอนุญาตและทำได้ปลอดภัย ไม่ย้าย/Stash/ลบงานของคนอื่นโดยพลการ ถ้าระบุ Ownership หรือ Isolation ไม่ได้ ให้ **Block แล้วถาม** ไม่เดาว่าไฟล์ไหนลบทิ้งได้
+- **ก่อน Commit:** ตรวจ Git Status, Staged/Unstaged Diff ใหม่และยืนยันว่า Change ทุกอันอยู่ใน Scope ของ Work Item; Stage/Commit เฉพาะไฟล์หรือ Hun​​ks ที่ AI ได้รับอนุญาต ไม่ Stage ทั้งหมดแบบเหมา (เช่น `git add -A`) เมื่อมี Changes นอก Scope ห้ามอ้างว่า Diff สะอาดถ้าไม่ได้ตรวจจริง
+
+**การตรวจ Safety นี้ไม่ใช่การขออนุมัติทุกไฟล์** AI ยังแก้ไฟล์ปกติภายใน Scope ที่อนุมัติได้ แต่ไม่มีสิทธิ์ทับงานคนอื่น หรือได้สิทธิ์ Push/Open MR เพิ่มเอง
+
+## เส้นทางกระชับสำหรับ Bug เล็ก / Standalone Work Item (แก้ตาม Review v1.0)
+
+**Bug เล็กที่อยู่ภายใต้ Feature/Story ที่อนุมัติไว้แล้ว:** ใช้ Design/Planning Decisions เดิมได้ ไม่ต้องขอ Approve Feature Gate ใหม่เพียงเพราะเริ่ม Work Item ถัดไป บันทึก Reproduction หรือ Expected Behavior, Scope, Risk, Owner, Developer Checks และ Change Intention ใน Jira Work Item เดิมให้พอทำงานได้
+
+**Bug เล็กที่ไม่ได้อยู่ใน Feature Plan ที่เคยอนุมัติ:** ให้ Human Owner ยืนยัน **Design และ Planning Decisions แบบกระชับ** ใน Jira/Issue เดิม จะ Review สอง Decision ในบทสนทนาหรือ Checkpoint เดียวกันได้เมื่อ Risk ต่ำ แต่ **ห้ามตีความว่างานเล็กจึงผ่าน Fixed Human Gates เอง** ต้องระบุ Expected Behavior, แนวทางแก้และขอบเขต, Risk/Rollback, Owner ให้ชัด ถ้าเสี่ยงสูง, มี API/Data Contract หรือ Architecture เปลี่ยน, มี Requirement ไม่ชัด ต้องใช้ Discovery/Design/Planning ที่ลึกขึ้นและ Human Approval ที่เกี่ยวข้อง
+
+**ทั้งสองกรณี:** ยังต้องมี Verification-first, Implementation ภายใน Scope, Unit/Regression Tests และ Developer Checks ที่เกี่ยวข้องผ่านจริง → **Human Implementation Gate** → Formal Independent Verification → **Human Verification Gate** สิทธิ์ Git/Push และ Human Confirmation ก่อน **ทุก Draft MR** คงเดิม ไม่เพิ่มไฟล์, Workflow Stage หรือ Gate บังคับใหม่
+
 ## กิจกรรม (ทำซ้ำได้)
 
 | กิจกรรม | ทำอะไร | หลักฐานขั้นต่ำ |
