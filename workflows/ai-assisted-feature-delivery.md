@@ -62,18 +62,37 @@ Build features efficiently with AI assistance while retaining developer ownershi
 ### Consistency review — matters for v1.0 review, not unresolved choices yet
 
 - **No direct conflict** among Q1–Q9 after distinguishing: *fixed human gate* versus *risk-proportionate evidence*, *scoped push* versus *per-MR permission*, and *preliminary review* versus *formal Verification Gate*.
-- **Clarify implementation boundaries in the v1.0 candidates:** who has authority to sign each gate under the actual team policy; whether an accepted feature contains multiple separately gated increments; what constitutes a material rework that reopens earlier approval; and where approval/evidence is recorded. Use the existing Jira/MR, not an additional mandatory document.
+- **Gate granularity resolved:** Design/Planning approvals are at Feature level; Implementation/Verification approvals are at Increment level. Material change reopens only invalidated prior gate(s). Human approver identity and repository-specific evidence storage are resolved per actual team/work item, reusing Jira/MR.
 - **Repository-specific, not framework-global decisions:** actual target branch/Git Flow, reviewer requirements, mandatory CI checks, commit convention, allowed push credentials and target branch protections. Discover from the repo/task when executing; **ask the human if absent or ambiguous**. Do not assume them in a public generic workflow.
 - **Separate future work, not a blocker for these two v1.0 workflow reviews:** detailed Release & Operations workflow, exact GitLab connector/permission enforcement, and design/evaluation of `puen-stack` skills. Nothing here changes real GitLab settings or grants access.
+
+## Track A final gate-granularity decision — agreed 2026-10-10
+
+**Owner decision:** In the **AI-assisted Track A workflow**, **Solution Design and Delivery Planning receive explicit human approvals at the Feature level**, while **Implementation and Verification receive explicit human approvals for each agreed, independently verifiable Increment**. This resolves the remaining gate-granularity question. It does **not** approve the Implementation or Verification v1.0 Release Candidates.
+
+| Gate | Approval unit | What the human agrees to |
+| --- | --- | --- |
+| Solution Design | **Feature** | Overall technical direction, relevant boundaries/contracts, major risks and decision ownership |
+| Delivery Planning | **Feature** | Whole-feature scope, critical dependencies/integration and rollout constraints, initial implementable increment and the **progressive-detail rule for later increments** |
+| Implementation | **Each Increment** | Its agreed scope, actual diff and developer checks, known gaps and readiness for authorized publishing and formal verification |
+| Verification | **Each Increment** | Its acceptance/evidence, contract and review findings, resolved/blocking issues and owned residual risks |
+
+**Subsequent increments:** Before implementing an increment, refine its details against the **already approved Feature plan**, documenting its acceptance, impacted contracts, responsible owner and verification approach in the existing work item. This **does not require repeating the Feature Design/Planning gates** when it is a faithful elaboration within approved boundaries. If readiness, scope or ownership is ambiguous, ask the responsible human rather than claiming that old approval covers new requirements.
+
+**Material change / reopen rule:** If new evidence alters approved feature scope, outcome, architecture, critical API/data contract, security/privacy/risk assumptions, dependencies or release constraints **materially**, stop the affected change and obtain renewed approval of **only the upstream Gate(s) whose decisions are invalidated**. Do not restart every gate merely because a scoped bug fix, test addition or planned increment progresses. Scoped findings after an Implementation Gate remain fixable under Q7, with targeted retest and the normal Increment Verification Gate.
+
+**Cross-repo / multiple-MR rule:** An Increment may span more than one repository. Implementation/Verification evidence may be coordinated at the Increment level with repo-specific links and integration outcomes, but **each separate GitLab Draft MR still requires its own explicit human confirmation after investigating that repository/work item's Git Flow**. Publication, Ready/Merge and release permissions remain separate.
+
+**Recording rule:** Capture Feature approvals and individual Increment gate decisions in the existing Jira/issue/MR links with owner, scope, date and important residual risk. No mandatory duplicate document, global approver identity or assumed branch convention.
 
 ## Proposed AI-assisted sequence — aligned with agreed decisions
 
 1. **Intake and evidence** — clarify outcome, done checks, constraints and current behavior; AI routes relevant procedures.
-2. **Solution Design Gate** — human accepts major technical/contract decisions.
-3. **Delivery Planning Gate** — human agrees feature-wide scope/risks and the next increment in executable detail.
-4. **Implementation** — AI works within approved scope, performs developer checks and may make local commits; **Human Implementation Gate** reviews changed scope/diff/evidence.
+2. **Feature-level Solution Design Gate** — human accepts the feature's major technical/contract decisions.
+3. **Feature-level Delivery Planning Gate** — human agrees feature-wide scope/risks, a detailed initial increment and progressive refinement of later increments.
+4. **Per-Increment Implementation** — AI works within the agreed increment, performs developer checks and may make local commits; **Human Implementation Gate for that increment** reviews changed scope/diff/evidence.
 5. **Scoped publish + Draft MR** — with specific work-branch publish authorization, AI can push; **inspect actual Git Flow, propose source/target and ask human before creating each Draft MR**. No automatic branch assumptions.
-6. **Verification ↔ scoped rework** — actual evidence, independent review proportionate to risk, CI/MR feedback, fixes and targeted retests; **Human Verification Gate** confirms outcome. Material scope/design changes reopen affected earlier approval.
+6. **Per-Increment Verification ↔ scoped rework** — actual evidence, independent review proportionate to risk, CI/MR feedback, fixes and targeted retests; **Human Verification Gate for that increment** confirms outcome. Only material changes reopen invalidated upstream gate(s).
 7. **Human MR completion** — human alone marks Draft as Ready and performs Merge. Release/operations approval is separate.
 
 This sequence is the proposed **AI-assisted adapter**, not a new mandatory waterfall for all engineering work. Tests and provisional reviewer feedback may begin during implementation, and revisions loop back as needed.
