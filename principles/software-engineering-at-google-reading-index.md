@@ -1,54 +1,49 @@
-# Software Engineering at Google — Selected Chapter Reading Index (v0.1)
+# Software Engineering at Google — Chapter Reading Index (v0.2)
 
 - **Status:** Draft study library — candidate principles not approved
-- **Reviewed:** 2026-10-10
-- **Primary source:** https://abseil.io/resources/swe-book/html/toc.html
-- **How to read:** Each chapter has canonical English notes and a Thai companion. The notes are original paraphrases based on chapter text, not full reproductions.
+- **Updated:** 2026-10-10
+- **Original book table of contents:** https://abseil.io/resources/swe-book/html/toc.html
+- **Coverage:** 11 selected chapters with English canonical notes and Thai companions; 39 candidate principles (EF-G01–39), **none automatically accepted**
+- **Selection rule:** This index lists **all chapters currently summarized by My Engineer**, not all 25 chapters of the book.
 
-| Priority | Chapter | English | Thai | Candidates |
-| --- | --- | --- | --- | --- |
-| 1 | [10 — Documentation](https://abseil.io/resources/swe-book/html/ch10.html) | [EN](./software-engineering-at-google-ch10.md) | [TH](./software-engineering-at-google-ch10.th.md) | EF-G13–15 |
-| 2 | [7 — Measuring Engineering Productivity](https://abseil.io/resources/swe-book/html/ch07.html) | [EN](./software-engineering-at-google-ch07.md) | [TH](./software-engineering-at-google-ch07.th.md) | EF-G16–18 |
-| 3 | [11 — Testing Overview](https://abseil.io/resources/swe-book/html/ch11.html) | [EN](./software-engineering-at-google-ch11.md) | [TH](./software-engineering-at-google-ch11.th.md) | EF-G19–21 |
-| 4 | [9 — Code Review](https://abseil.io/resources/swe-book/html/ch09.html) | [EN](./software-engineering-at-google-ch09.md) | [TH](./software-engineering-at-google-ch09.th.md) | EF-G22–24 |
+## Select a Chapter — All Summarized Chapters
 
-Previous:
-- [Chapter 1 — EN](./software-engineering-at-google-ch01.md) · [TH](./software-engineering-at-google-ch01.th.md) — EF-G01–06
-- [Chapter 8 — EN](./software-engineering-at-google-ch08.md) · [TH](./software-engineering-at-google-ch08.th.md) — EF-G07–12
+| Chapter | Topic / original chapter | English summary | Thai summary | Candidate IDs | Focus |
+| --- | --- | --- | --- | --- | --- |
+| 1 | [What Is Software Engineering?](https://abseil.io/resources/swe-book/html/ch01.html) | [English](./software-engineering-at-google-ch01.md) | [ภาษาไทย](./software-engineering-at-google-ch01.th.md) | EF-G01–06 | Engineering foundations |
+| 7 | [Measuring Engineering Productivity](https://abseil.io/resources/swe-book/html/ch07.html) | [English](./software-engineering-at-google-ch07.md) | [ภาษาไทย](./software-engineering-at-google-ch07.th.md) | EF-G16–18 | Measurement |
+| 8 | [Style Guides and Rules](https://abseil.io/resources/swe-book/html/ch08.html) | [English](./software-engineering-at-google-ch08.md) | [ภาษาไทย](./software-engineering-at-google-ch08.th.md) | EF-G07–12 | Rules and standards |
+| 9 | [Code Review](https://abseil.io/resources/swe-book/html/ch09.html) | [English](./software-engineering-at-google-ch09.md) | [ภาษาไทย](./software-engineering-at-google-ch09.th.md) | EF-G22–24 | Review and collaboration |
+| 10 | [Documentation](https://abseil.io/resources/swe-book/html/ch10.html) | [English](./software-engineering-at-google-ch10.md) | [ภาษาไทย](./software-engineering-at-google-ch10.th.md) | EF-G13–15 | Engineering documentation |
+| 11 | [Testing Overview](https://abseil.io/resources/swe-book/html/ch11.html) | [English](./software-engineering-at-google-ch11.md) | [ภาษาไทย](./software-engineering-at-google-ch11.th.md) | EF-G19–21 | Testing foundations |
+| 14 | [Larger Testing](https://abseil.io/resources/swe-book/html/ch14.html) | [English](./software-engineering-at-google-ch14.md) | [ภาษาไทย](./software-engineering-at-google-ch14.th.md) | EF-G25–27 | Integration and larger-scale verification |
+| 15 | [Deprecation](https://abseil.io/resources/swe-book/html/ch15.html) | [English](./software-engineering-at-google-ch15.md) | [ภาษาไทย](./software-engineering-at-google-ch15.th.md) | EF-G28–30 | System retirement and migration |
+| 16 | [Version Control and Branch Management](https://abseil.io/resources/swe-book/html/ch16.html) | [English](./software-engineering-at-google-ch16.md) | [ภาษาไทย](./software-engineering-at-google-ch16.th.md) | EF-G31–33 | Integration and branching |
+| 21 | [Dependency Management](https://abseil.io/resources/swe-book/html/ch21.html) | [English](./software-engineering-at-google-ch21.md) | [ภาษาไทย](./software-engineering-at-google-ch21.th.md) | EF-G34–36 | Dependency and compatibility |
+| 24 | [Continuous Delivery](https://abseil.io/resources/swe-book/html/ch24.html) | [English](./software-engineering-at-google-ch24.md) | [ภาษาไทย](./software-engineering-at-google-ch24.th.md) | EF-G37–39 | Safe release and delivery |
 
-## Additional full-chapter study set — Chapters 14, 15, 16, 21, 24
+All links in the English/Thai columns point to notes in this repository. Chapter title links point to the freely available original source.
 
-| Suggested order | Chapter | English | Thai | Candidate IDs |
-| --- | --- | --- | --- | --- |
-| 1 | [14 — Larger Testing](https://abseil.io/resources/swe-book/html/ch14.html) | [EN](./software-engineering-at-google-ch14.md) | [TH](./software-engineering-at-google-ch14.th.md) | EF-G25–27 |
-| 2 | [15 — Deprecation](https://abseil.io/resources/swe-book/html/ch15.html) | [EN](./software-engineering-at-google-ch15.md) | [TH](./software-engineering-at-google-ch15.th.md) | EF-G28–30 |
-| 3 | [16 — Version Control and Branch Management](https://abseil.io/resources/swe-book/html/ch16.html) | [EN](./software-engineering-at-google-ch16.md) | [TH](./software-engineering-at-google-ch16.th.md) | EF-G31–33 |
-| 4 | [21 — Dependency Management](https://abseil.io/resources/swe-book/html/ch21.html) | [EN](./software-engineering-at-google-ch21.md) | [TH](./software-engineering-at-google-ch21.th.md) | EF-G34–36 |
-| 5 | [24 — Continuous Delivery](https://abseil.io/resources/swe-book/html/ch24.html) | [EN](./software-engineering-at-google-ch24.md) | [TH](./software-engineering-at-google-ch24.th.md) | EF-G37–39 |
+## Recommended reading path (optional)
 
-### New candidate inventory
+For building My Engineer's principles, a useful sequence is **1 → 8 → 10 → 7 → 11 → 9 → 14 → 15 → 16 → 21 → 24**. The table above intentionally remains in **chapter-number order** so every completed chapter is easy to find. Read only areas relevant to the current engineering decision.
 
-- **Larger Testing:** EF-G25 Test Fidelity by Risk; EF-G26 Smallest Sufficient SUT; EF-G27 Owned, Diagnosable Integration Tests.
-- **Deprecation:** EF-G28 Retirement Is Engineering; EF-G29 Staffed Migration Deadlines; EF-G30 Prevent New Uses During Retirement.
-- **Version Control:** EF-G31 Integration Source of Truth; EF-G32 Early Integration with Verification; EF-G33 Contain Version Divergence.
-- **Dependency Management:** EF-G34 Dependency Graph Risk; EF-G35 Version Promises Need Tests; EF-G36 Update/Provider Ownership.
-- **Continuous Delivery:** EF-G37 Safe On-demand Release Capability; EF-G38 Small Isolated Progressive Releases; EF-G39 User Impact and Health Guardrails.
+## Consolidation notes — candidates, not rules
 
-**Current study count:** 11 chapters with English and Thai notes; 39 **unreviewed candidate** principles. These are candidates to deduplicate and validate, **not 39 accepted rules**.
-
-## Candidate inventory from the four chapters
-
-- **Documentation:** EF-G13 Owned and Changeable Documentation; EF-G14 Reader/Purpose; EF-G15 Deprecate Stale Sources
-- **Measurement:** EF-G16 Actionable Measurement; EF-G17 Goals–Signals–Metrics; EF-G18 Balanced & Triangulated Productivity
-- **Testing:** EF-G19 Tests Preserve Changeability; EF-G20 Reliable Actionable Feedback; EF-G21 Behavior over Coverage Targets
-- **Code Review:** EF-G22 Correctness/Comprehension/Maintainability; EF-G23 Reviewable/Reversible Changes; EF-G24 Respectful Knowledge Exchange
+- **EF-G01–06 (Chapter 1):** expected software lifetime, changeability, observable compatibility, scalable recurring work, automated expectations, full-cost trade-offs.
+- **EF-G07–12 (Chapter 8):** rules worth their cost, reader focus, contextual consistency, exceptions, rule revision, objective enforcement.
+- **EF-G13–15 (Chapter 10):** documentation ownership, audience and purpose, eliminating stale competing sources.
+- **EF-G16–18 (Chapter 7):** actionable measures, Goals–Signals–Metrics, balanced qualitative/quantitative evidence.
+- **EF-G19–21 (Chapter 11):** tests support change, reliable feedback, meaningful behavior over coverage targets.
+- **EF-G22–24 (Chapter 9):** review comprehensibility, reviewable changes, respectful knowledge sharing.
+- **EF-G25–27 (Chapter 14):** test fidelity proportional to risk, smallest sufficient system under test, owned integration tests.
+- **EF-G28–30 (Chapter 15):** retirement work, resourced migration, no new deprecated dependencies.
+- **EF-G31–33 (Chapter 16):** integration source of truth, early verified integration, version-skew management.
+- **EF-G34–36 (Chapter 21):** dependency graphs, version compatibility evidence, dependency ownership.
+- **EF-G37–39 (Chapter 24):** deploy-on-demand capability, progressive exposure, release health safeguards.
 
 ## Research-to-registry boundary
 
-These labels are **My Engineer synthesis**, not named standards established by Google. Each candidate needs independent corroboration, counterexamples, applicability and risk review before owner approval. Do not change accepted workflows, AGENTS.md, CI gates or the still-Draft Delivery Planning workflow automatically.
+These IDs and labels are **My Engineer syntheses**, not formally named Google standards. Check current independent evidence, counterexamples, context and overlap before accepting a candidate. Do **not** change accepted workflows, AGENTS.md, CI gates or the still-Draft Delivery Planning workflow merely because a book recommends an approach.
 
-### Reading guidance
-1. Read the Thai summary to establish vocabulary, then use the English primary notes and linked original chapter for disputed claims.
-2. Identify what changes for solo versus team/multi-team.
-3. Record whether the principle is actionable without adding bureaucracy.
-4. Review cross-chapter overlap (e.g. Chapter 8 deterministic enforcement and Chapter 9/11 CI) before accepting duplicate entries.
+**Reading guidance:** Start with the Thai note to learn the concepts, refer to the English note and original chapter for attribution, then assess applicability to solo/team/multi-repo contexts. The reading notes are original summaries, not full reproductions of the book.
