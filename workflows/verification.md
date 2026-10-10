@@ -131,7 +131,7 @@ Do **not** automatically generate a `.cursor/skills` tree or mandate daily maint
 
 **Feature-level human gates:** Solution Design approves the agreed technical direction/major contracts; Delivery Planning approves whole-feature scope, critical risks/dependencies and progressive detail of upcoming work items. **Per-Work-Item human gates:** Implementation approves each reviewable change scope/diff before formal publication; Verification approves **each Work Item's** actual acceptance evidence, review and residual risks.
 
-For later work items within the **approved Feature scope**, progressively refine acceptance and verification checks without reopening Design or Planning just because the next work item starts. An Work Item can cover coordinated changes across multiple repositories: retain one feature-level work view with repo-specific diffs/MRs and evidence of integration.
+For later work items within the **approved Feature scope**, progressively refine acceptance and verification checks without reopening Design or Planning just because the next work item starts. A Work Item can cover coordinated changes across multiple repositories: retain one feature-level work view with repo-specific diffs/MRs and evidence of integration.
 
 **Q7=B loopback:** Verification findings inside that Work Item's approved scope/design/risk can go to Implementation for fixes and proportionate retesting, **without reapproval of each edit or another feature-level gate**. The human still decides the Work Item Verification Gate. When a finding materially alters approved requirements/scope, architecture, critical API/data contract, security/data risk or delivery constraints, **reopen only the invalidated upstream human gate(s)** before proceeding.
 
