@@ -1,6 +1,6 @@
-# Verification Workflow — v1.0 Release Candidate
+# Verification Workflow — v1.0 (Accepted)
 
-- **Status:** Review Ready / Release Candidate — awaiting owner approval; not Accepted
+- **Status:** Accepted — explicitly approved by repository owner on 2026-10-10 (My Engineer Track A)
 - **Decision:** Separate Implementation and Verification with one shared execution loop (2026-10-10)
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
@@ -268,7 +268,7 @@ The independent reviewer **recommends** a status; only the authorized human deci
 
 No requirement to finish an entire Feature/Story before **preliminary feedback or formal verification of an individually ready Work Item**. Formal assessment of that Work Item still requires its actual green developer checks and Human Implementation Gate; scoped fixes loop back through affected tests before re-verification.
 
-## Approval checklist — v1.0 Release Candidate
+## Approval criteria — accepted v1.0
 
 1. Are Feature Design/Planning and Work Item Human Implementation/Verification Gates clear, and is **Preliminary vs Formal Verification** unambiguous?
 2. Does **Execution Safety Preflight** require authorized environments, fixture isolation, data/side-effect limits and safe ownership-based cleanup without adding a gate?
@@ -282,4 +282,4 @@ Pilot tiny reversible change, medium integrated feature and a simulated multi-re
 
 **Final review focus:** Confirm acceptance expected results are source-backed, not generated from implementation; TDD is preferred where useful but not mandatory. Name the actual human Verification Gate owner per team and agreed work item; make evidence/risks accessible through existing Jira/MR; honor repository-specific required CI, reviewers and branch policies. Pilot the proposed solo/medium/high-risk review depth before turning it into an enforced Skill.
 
-**Release Candidate pending owner approval.** No release authority, automated merge, repository policy or AI skill created.
+**Accepted v1.0 — explicitly approved by repository owner on 2026-10-10.** Approval of this workflow does **not** authorize production or other environment access, GitLab publishing, MR creation/Ready/Merge, deployment, AI Skills, automation, or changes to company/repository policy. All required per-Work-Item Human Gates and separate per-Draft-MR confirmation remain in force. Verification has not yet been piloted on an actual user-supplied project.
