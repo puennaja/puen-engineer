@@ -8,6 +8,13 @@
 - **เป้าหมาย:** เติม Architecture & System Design กับ Code Quality & Maintainability ใน My Engineer
 
 
+## Chapter 6 — อ่าน Extract ฉบับ 2 บางส่วนและ Stanford Lecture
+
+- **[อ่านภาษาไทย](./a-philosophy-of-software-design-ch06-extract.th.md)** · **[English](./a-philosophy-of-software-design-ch06-extract.md)**
+- 🟡 **Draft / Partial Chapter:** ข้อความต้นฉบับที่ตรวจได้คือช่วงเปิดบทและ §6.1 พร้อม Lecture เรื่อง General-purpose API และ Text Editor ของผู้เขียน **ยังไม่เรียกว่าอ่านเต็มบท**
+- **Candidates ใหม่:** AP-C07, AP-C08 ยังไม่ Approved; ต้องตรวจความซ้ำกับ AP-C01–06 และ EF-G01–39
+- **ขั้นต่อไป:** หา Extract ที่เปิดได้ครบและตรวจหัวข้ออื่นของ Chapter 6
+
 ## งานใหม่จากหนังสือฉบับที่ 2 (Chapter 21 บางส่วน)
 
 - **[อ่านสรุปภาษาไทย — Decide What Matters](./a-philosophy-of-software-design-ch21-extract.th.md)** · **[English](./a-philosophy-of-software-design-ch21-extract.md)**
