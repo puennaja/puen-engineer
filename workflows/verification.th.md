@@ -114,7 +114,7 @@ Human Implementation/Verification Gates ราย Work Item ยังมีอ�
 
 ## เกณฑ์เริ่มและเลือกความลึก
 
-**Verification-first / Preliminary Review** เริ่มได้ทันทีที่มี Acceptance Example, Test Plan, Contract หรือ Partial Diff ที่ Review ได้ ส่วน **Formal Independent Verification** เริ่ม **เฉพาะเมื่อ** Unit/Regression Tests และ Developer Checks ที่เกี่ยวข้องผ่านจริง พร้อม **Human Implementation Gate** (หรือ Alternative Checks ที่ Human อนุมัติตามข้อยกเว้นที่ระบุไว้ก่อนหน้า) ก่อนเริ่ม Formal Checks ต้องอ่าน Requirement ที่ยืนยัน, **Diff Base/Commit ที่แน่นอน**, ผลรันทดสอบจริง, Dependencies, Risks และ Execution Safety Preflight ด้านล่าง
+**Verification-first / Preliminary Review** เริ่มได้ทันทีที่มี Acceptance Example, Test Plan, Contract หรือ Partial Diff ที่ Review ได้ ส่วน **Formal Independent Verification** เริ่ม **เฉพาะเมื่อ** Unit/Regression Tests และ Developer Checks ที่เกี่ยวข้องผ่านจริง พร้อม **Human Implementation Gate** (หรือ Alternative Checks ที่ Human อนุมัติตามข้อยกเว้นที่ระบุไว้ก่อนหน้า) ก่อนเริ่ม Formal Checks ต้องอ่าน Requirement ที่ยืนยัน, **Diff Base/Commit ที่แน่นอน**, ผลรันทดสอบจริง, Dependencies และ Risks; **ทำ Execution Safety Preflight ที่นิยามไว้ด้านบน** ก่อนรัน Live Checks หรือ Checks ที่มี Side Effects
 
 เลือกความลึกตาม Impact, Reversibility, Privacy, Concurrency, External Contract และ Operational Risk
 
