@@ -8,6 +8,13 @@
 - **Scope:** Prioritize architecture/system design and code quality/maintainability in My Engineer.
 
 
+## Chapter 6 — Partial Second-Edition Extract + Complete Stanford Modular Design Lecture
+
+- **[English study](./a-philosophy-of-software-design-ch06-extract.md)** · **[Thai study](./a-philosophy-of-software-design-ch06-extract.th.md)**
+- 🟡 **Draft / Partial Chapter:** Official indexed text confirms Chapter 6 opening and §6.1; the author lecture covers general-purpose API, text editor and information hiding. **Do not mark as full-chapter reviewed.**
+- **New candidates:** AP-C07, AP-C08 — not approved; examine overlap with AP-C01–06 and EF-G01–39.
+- **Next check:** Obtain and inspect complete official extract; validate the remainder of Chapter 6.
+
 ## New second-edition source study (partial Chapter 21)
 
 - **[Decide What Matters — English](./a-philosophy-of-software-design-ch21-extract.md)** · **[Thai](./a-philosophy-of-software-design-ch21-extract.th.md)**
