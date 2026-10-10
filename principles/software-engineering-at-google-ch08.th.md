@@ -1,5 +1,6 @@
 # Software Engineering at Google — บทที่ 8: Style Guides and Rules
 
+- **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
 - **สถานะ:** Draft v0.1 — สรุปเพื่อศึกษา; Candidate Principles **ยังไม่ได้รับการ Approve**
 - **วันที่อ่าน:** 2026-10-10
 - **ผู้เขียนบท:** Shaindel Schwartz (บรรณาธิการ Tom Manshreck)
