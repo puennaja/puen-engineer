@@ -17,7 +17,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 | Q2 — Coding permissions | **B: Scoped autonomy** | Within an explicitly approved increment/scope, AI may make focused code edits and run authorized, non-destructive checks without seeking permission for every line. New scope, architecture changes, privileged/destructive actions, external publishing and access expansion require appropriate approval. Git rights are specified in Q8; command allowlists and repository-specific enforcement still require local policy. |
 | Q3 — Human checkpoints | **A: Fixed gates** | For this AI-assisted flow, a human explicitly approves **Solution Design → Delivery Planning → Implementation → Verification** at each corresponding checkpoint before proceeding to the next responsibility. These are **stage-boundary approvals**, not per-file or per-test approvals; Implementation ↔ Verification can exchange early *read-only or provisional* feedback, but advancing past a required approval is not implicit. Follow any stricter local/company policy. |
 
-**Important tension to resolve in later rounds:** the shared Implementation/Verification loop remains iterative, while the selected Fixed Gates require formal stage completion approval. Distinguish early review and developer checks from formal entry/exit decisions; decide how findings that force rework affect previously granted approvals. A fixed gate is not release authorization; merge/deploy permissions remain separate.
+**Loop and gate interpretation (resolved in Q7):** preliminary review and developer checks may iterate before formal exit; the Implementation and Verification Gate approvals remain fixed. Rework within approved scope does not require reapproval for each edit; material change reopens affected earlier gate(s). Fixed gates do not authorize merge/deploy.
 
 ## Track A design decisions — grill-me round 2 (agreed 2026-10-10)
 
@@ -27,7 +27,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 | --- | --- | --- |
 | Q4 — Independent review | **B: Risk-based independent review** | Low-risk changes may use deliberate self-review when local policy permits; medium-risk changes use a separate review pass; high-risk changes require appropriate human peer/domain review under local policy. Independent AI review can supplement, never replace required human sign-off. **The fixed human Verification gate still applies for every increment.** |
 | Q5 — Verification evidence | **B: Evidence by change type** | Verify changed observable behavior on the relevant CLI, API, UI, data or other execution surface, plus appropriate automated checks and risk-driven negative/integration scenarios. Record actual commands/results and **not run / blocked / inconclusive** gaps. No universal requirement for full E2E/video on every change. |
-| Q6 — GitLab Draft MR timing | **A: After Implementation Gate; per-MR human confirmation required (clarified 2026-10-10)** | Human approves the Implementation Gate first. AI then checks the actual repository/work-item branching and merge strategy and **asks the human every time before creating each Draft MR**, explicitly confirming the source branch, target branch and relevant task/release context. Only after that specific human approval and the separately authorized publish rights (Q8 still pending) may AI create that Draft MR. Never assume `master`, `main`, or `develop` as target; no prior/general approval substitutes for per-MR confirmation. The Draft MR is not merge or deployment approval. |
+| Q6 — GitLab Draft MR timing | **A: After Implementation Gate; per-MR human confirmation required (clarified 2026-10-10)** | Human approves the Implementation Gate first. AI then checks the actual repository/work-item branching and merge strategy and **asks the human every time before creating each Draft MR**, explicitly confirming the source branch, target branch and relevant task/release context. Only after that specific human approval and the separately authorized publish rights (Q8: scoped publish authorization) may AI create that Draft MR. Never assume `master`, `main`, or `develop` as target; no prior/general approval substitutes for per-MR confirmation. The Draft MR is not merge or deployment approval. |
 
 **Consistency note:** Q3 Fixed Gates and Q4 Risk-based Review answer different questions. The **human approval checkpoint is fixed**, while **verification/reviewer depth is risk-proportional**. Risk-based self-review does not silently waive the fixed human gate. Q6 does not imply unrestricted push rights; Q8 limits pushing to authorized scope and work branches.
 
@@ -66,14 +66,17 @@ Build features efficiently with AI assistance while retaining developer ownershi
 - **Repository-specific, not framework-global decisions:** actual target branch/Git Flow, reviewer requirements, mandatory CI checks, commit convention, allowed push credentials and target branch protections. Discover from the repo/task when executing; **ask the human if absent or ambiguous**. Do not assume them in a public generic workflow.
 - **Separate future work, not a blocker for these two v1.0 workflow reviews:** detailed Release & Operations workflow, exact GitLab connector/permission enforcement, and design/evaluation of `puen-stack` skills. Nothing here changes real GitLab settings or grants access.
 
-## Proposed stages
-1. **Intake** — read requirement, identify ambiguity, establish acceptance criteria and use cases.
-2. **Explore** — identify impacted repositories, architecture, dependencies, and existing patterns.
-3. **Plan** — split tasks, compare feasible approaches, enumerate edge cases, create implementation/test plan.
-4. **Implement** — apply focused changes and track assumptions.
-5. **Verify** — unit/integration tests as applicable, independent checks, and relevant manual validation.
-6. **Review** — separate diff review; developer independently validates findings and final behavior.
-7. **Deliver** — agreed commit format, draft merge/pull request, and traceability to the work item.
+## Proposed AI-assisted sequence — aligned with agreed decisions
+
+1. **Intake and evidence** — clarify outcome, done checks, constraints and current behavior; AI routes relevant procedures.
+2. **Solution Design Gate** — human accepts major technical/contract decisions.
+3. **Delivery Planning Gate** — human agrees feature-wide scope/risks and the next increment in executable detail.
+4. **Implementation** — AI works within approved scope, performs developer checks and may make local commits; **Human Implementation Gate** reviews changed scope/diff/evidence.
+5. **Scoped publish + Draft MR** — with specific work-branch publish authorization, AI can push; **inspect actual Git Flow, propose source/target and ask human before creating each Draft MR**. No automatic branch assumptions.
+6. **Verification ↔ scoped rework** — actual evidence, independent review proportionate to risk, CI/MR feedback, fixes and targeted retests; **Human Verification Gate** confirms outcome. Material scope/design changes reopen affected earlier approval.
+7. **Human MR completion** — human alone marks Draft as Ready and performs Merge. Release/operations approval is separate.
+
+This sequence is the proposed **AI-assisted adapter**, not a new mandatory waterfall for all engineering work. Tests and provisional reviewer feedback may begin during implementation, and revisions loop back as needed.
 
 ## Multi-repository consideration
 When a feature spans multiple repositories, maintain one shared feature design but identify per-repository changes, version/contract dependencies, and test responsibilities. Do not assume a tool can automatically see repositories outside its workspace.
@@ -81,8 +84,15 @@ When a feature spans multiple repositories, maintain one shared feature design b
 ## Agent instructions
 Prefer a short project-level `AGENTS.md` describing local conventions and entry points. Keep procedural skills outside the file, loaded on demand from `puen-stack`.
 
-## Open decisions
-- Which actions should be automated versus require approval?
-- Which skills should be implemented first?
-- How will skills be installed or synchronized into individual workspaces?
-- What commit conventions and PR/MR template should be used?
+## Execution-specific inputs and deferred decisions
+
+The **Q1–Q9 design choices are now recorded**. Before piloting in an actual team or repository, determine from the team and work item:
+
+- **Human gate owner and approval record** for the feature/increment, including how formal approvals are recorded in existing Jira/MR. Default policy is not assumed from a person's job title.
+- **Work-item Git Flow**, actual source/target branch and MR dependencies, required CI checks and peer-review rules. These are discovered per repository/task, and MR target requires per-MR human confirmation.
+- **Publish authority/credentials**, permitted work branch and execution environment; document the scope rather than assuming a generic bot may push.
+- **Team-specific commit convention and MR content**, from repository rules, without imposing a global template.
+
+Deferred and **not required to approve the two workflow documents**: `puen-stack` skill authoring/evaluation, GitLab automation integrations and Release & Operations workflow. Approval of workflow documents does **not** grant real repository permissions.
+
+**Status:** Draft / design decisions agreed for further review; Implementation and Verification v1.0 remain awaiting explicit owner approval.
