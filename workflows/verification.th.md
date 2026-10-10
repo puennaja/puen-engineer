@@ -1,6 +1,6 @@
-# Verification Workflow — v1.0 Release Candidate (ภาษาไทย)
+# Verification Workflow — v1.0 (Accepted — ภาษาไทย)
 
-- **สถานะ:** Review Ready / Release Candidate — รอ Owner Approve; ยังไม่ Accepted
+- **สถานะ:** Accepted — Repository Owner อนุมัติเมื่อ 2026-10-10 (My Engineer Track A)
 - **Decision:** แยก Implementation และ Verification เป็นสอง Workflow โดยใช้ Execution Loop ร่วมกัน (2026-10-10)
 - **วันที่:** 2026-10-10
 - **Track:** A — Build My Engineer
@@ -274,7 +274,7 @@ AI/Independent Reviewer ทำได้เพียง **Recommend Status** ผ�
 
 ไม่ต้องรอทั้ง Feature/Story Implement เสร็จจึงค่อย **Preliminary Feedback หรือ Formal Verification ของ Work Item ที่พร้อมแล้ว** แต่ Formal Verification ของ Work Item นั้นยังต้องผ่าน Developer Checks และ Human Implementation Gate ก่อนเสมอ เมื่อแก้ Finding ให้รัน Unit Tests ที่กระทบใหม่ แล้ว Reverify
 
-## Checklist ก่อนอนุมัติ v1.0
+## Approval Checklist — Verification v1.0 (Accepted)
 
 1. Feature Design/Planning กับ Work Item Implementation/Verification Gates ชัด และแยก **Preliminary กับ Formal Verification** ไม่กำกวมหรือไม่?
 2. **Execution Safety Preflight** ป้องกันการรันผิด Environment/Permission, ข้อมูลจริง, Side Effects และ Cleanup ของคนอื่นโดยไม่เพิ่ม Human Gate หรือไม่?
@@ -288,4 +288,4 @@ AI/Independent Reviewer ทำได้เพียง **Recommend Status** ผ�
 
 **จุดตรวจสุดท้าย:** ระบุ Human Verification Gate Owner ให้ตรงกับทีมจริง ใช้ Jira/MR เดิมเก็บ Evidence และ Remaining Risks และเคารพ CI/Reviewer/Branch Policy ของ Repo ทดลอง Review Depth ตาม Risk ก่อนทำ Skill บังคับ
 
-**Release Candidate รอ Owner Approve** ไม่อนุมัติ Release, Auto-merge, Repo Policy หรือ AI Skill ใหม่
+**Accepted v1.0 — Repository Owner อนุมัติเมื่อ 2026-10-10** การอนุมัติ Workflow นี้ **ไม่ใช่** การให้สิทธิ์เข้าถึง Production/Environment, GitLab Publish, เปิด Draft MR, Mark Ready/Merge, Deploy, เปลี่ยน Repo/Company Policy, สร้าง AI Skills หรือ Automation และไม่ได้ข้าม Human Gates ราย Work Item หรือกติกาขอ Human ยืนยันทุก Draft MR ส่วน Pilot กับ Project จริงยังไม่ได้เริ่ม
