@@ -1,7 +1,7 @@
 # Software Engineering at Google — บทที่ 11: Testing Overview
 
 - **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
-- **สถานะ:** Draft Study Notes v0.1 — Candidate ยังไม่ได้รับรอง
+- **สถานะ:** Accepted — สรุปผ่านการอนุมัติ หลักการเป็นแนวทาง ไม่ใช่กฎบังคับ
 - **ขอบเขต:** อ่านจากตัวบทเผยแพร่ของ Google ครบทั้งบท (รวมบทสรุปและตัวอย่าง); สรุปใหม่ ไม่ใช่คำแปลแบบคัดลอก
 - **ผู้เขียน:** Adam Bender
 - **อ้างอิงหลัก:** https://abseil.io/resources/swe-book/html/ch11.html
@@ -57,7 +57,7 @@ Orientation, Test Certified และ Testing on the Toilet ทำให้ Test
 - **Layer A — ความหมาย / เมื่อไรควรใช้:** รักษา Business Invariants และ Compatibility ระหว่าง Refactoring
 - **Layer B — Trade-offs / ข้อควรระวัง:** Test ที่ยึด Implementation เกินไปทำให้ Refactor ยาก
 - **Layer C — หลักฐานและสถานะ:** อ้างอิงเฉพาะหัวข้อข้างต้นจากบทเต็ม แต่ยังไม่ได้ตรวจหลักฐานอิสระหรือลองใช้จริง; Confidence: สูงสำหรับการระบุแนวคิดในบท ต่ำ/ยังไม่ประเมินสำหรับการยกเป็นกฎสากล; ทบทวนเมื่อมีหลักฐานใหม่หรือ Pilot ไม่สนับสนุน
-- **Status:** Candidate
+- **Status:** Accepted as study reference — principles are contextual guidance, not mandatory rules
 
 ### EF-G20 — ให้ผล Test เร็ว เชื่อถือได้ และนำไปแก้ได้
 
