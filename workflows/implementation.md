@@ -65,6 +65,14 @@ Scale the checks and independent review to risk. Solo work may use separate self
 
 **Related references:** [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md), [pstack Build & Clean](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/05-build-and-clean.md) and [pstack Prove It Works](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md).
 
+## Developer-check precondition for formal Independent Verification (agreed 2026-10-10)
+
+**Implementation must first reach a credible Unit Test green state** for the assigned Work Item: run the relevant existing and new unit/regression tests plus required repo developer checks (e.g. build, lint, typecheck) and capture their **real results and environment**. Do not present a test that was not run as passing; no claimed success without actual runner output. If a required check fails, fix the cause inside Implementation and rerun it **before starting formal Independent Verification**. If tests cannot run, record **Blocked / Not run**, the reason and owner; do not silently advance as green.
+
+**When unit tests genuinely do not apply**, e.g. a documentation-only change or a work type without a viable unit-test seam, explicitly justify that and agree on appropriate alternative developer checks with the authorized human at the existing Implementation Gate. This is an exception, not a license to skip tests for ordinary BE/BFF code.
+
+**Timing distinction:** Verification-first **acceptance/test-intent design** and provisional review/feedback can happen before or during coding. The **formal Independent Verification assessment** (test quality, external behavior, contracts, independent diff review) happens only after the Implementation developer-check precondition and the already agreed Human Implementation Gate. Green unit tests **are an entry condition, not a correctness verdict**. Any findings return to scoped Implementation: rerun impacted unit tests first, then independently reverify and complete the Human Verification Gate. No additional approval gate is introduced.
+
 ## Activities (repeat as necessary)
 
 | Activity | Action | Minimal evidence |
