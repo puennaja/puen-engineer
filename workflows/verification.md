@@ -9,6 +9,16 @@
 - **Thai companion:** [Verification (Thai)](./verification.th.md)
 - **Next:** Release & Operations (to be designed)
 
+## Unit of verification: assigned Work Item (Track A decision)
+
+**Work Item = existing Jira Story, Sub-task, Bug or Task that the engineer actually owns**, with explicit acceptance and observable proof. A backend engineer may own only Merchant Service (BE), only Admin BFF, or an agreed BE+BFF task; FE may belong to another developer. Verification **must assess the assigned Work Item**, not silently expand the actor's coding responsibility to FE or all sibling repos.
+
+**Before code:** derive expected behavior, negative cases and a realistic proof seam from the parent Story's approved acceptance/contracts, but make assertions specific to the owned Work Item. A BE-only task can verify persistence/API semantics, access control, idempotency and the exposed contract **without pretending that FE integration ran**. A BFF task can verify mapping, error semantics and consumer/provider contracts with controlled fixtures or actual integration as appropriate.
+
+**After code:** local Work Item verification includes actual behavior, unit-test quality, scoped integration/contract evidence and independent diff review proportionate to risk. **Story-level integration verification** of BE ↔ BFF ↔ FE is a separate **coordination/evidence responsibility** when applicable, owned by the relevant team and scoped through Jira; it is **not a universal extra Human Gate** and does not automatically force the backend engineer or AI to implement unassigned FE work. Record **Not run / Blocked / external owner** for missing end-to-end evidence. A passed Work Item **does not** mean the full Story is accepted.
+
+**Fixed approvals:** Feature/Story Design and Planning provide shared direction; **each agreed Work Item** receives Implementation and Verification Human Gates under Track A. When a Work Item is itself a standalone Story, record distinct decisions against that same Jira item; accepted Delivery Planning may still use *increment* as a delivery-slice planning term. See [Track A decisions](./ai-assisted-feature-delivery.md).
+
 ## Purpose, timing, separation
 
 Establish **credible evidence that the change meets acceptance, respects important system boundaries and has been critically reviewed**. Verification is a distinct workflow with its own responsibilities and exit decision. It may begin **during implementation** and repeatedly send findings back; it is not a final waterfall phase.
@@ -17,10 +27,10 @@ Implementation owns making the change and developer checks. Verification owns ev
 
 ## Shared execution loop — normative coordination contract (v1.0 candidate)
 
-The two workflows remain **separate responsibilities**, but use **one iterative execution loop** for each coherent increment:
+The two workflows remain **separate responsibilities**, but use **one iterative execution loop** for each coherent work item:
 
 ```text
-Approved Feature design / plan → agreed Increment
+Approved Feature design / plan → agreed Work Item
    ↓
 Verification-FIRST: acceptance examples, expected outcomes, test seams
    ↓
@@ -28,13 +38,13 @@ Implementation: vertical slice → TDD when useful → developer checks
    ⇄ Verification: independent behavior proof, test quality, review
    ↳ Findings → scoped fix → targeted re-verification
    ↓
-Human Increment Verification Gate → separate release decisions
+Human Work Item Verification Gate → separate release decisions
 ```
 
 **Start before code:** Verification first defines trustworthy expected behavior, example cases and observable proof based on confirmed requirements; it may then review API/contracts, test strategy or partial diff; a "Ready for Verification" label is a convenience, **not** a mandatory wait-for-all-code gate. Developer tests remain part of Implementation; independent evaluation and evidence judgment are Verification's responsibility.
 
 **One shared handoff in the existing issue/MR** (not a new obligatory artifact):
-- **Identity & scope:** increment, acceptance IDs, repo/diff links and known exclusions.
+- **Identity & scope:** work item, acceptance IDs, repo/diff links and known exclusions.
 - **Changes & risks:** touched boundaries, contract/data changes, migration and critical failure cases.
 - **Evidence:** actual executed checks, outcomes, environment, explicitly *not run / blocked* checks.
 - **Feedback:** findings with severity/evidence/owner; changed-file/test impact; retest outcomes.
@@ -56,7 +66,7 @@ When a reliable test harness exists, Verification may create a **small executabl
 
 **After changes:** Verification executes the strongest proportionate checks on the real CLI/API/UI/data surface, tests negative cases and reviews the diff independently against the acceptance oracle and repo standards. Green unit tests or compiling are useful, **not sufficient proof alone**. Review must check whether tests would catch the actual wrong behavior. Findings return to scoped implementation/retest under Q7; material changes to acceptance or design reopen affected human gates.
 
-**Human authority:** Verification-first describes **when to reason/test**, not permission to bypass the existing per-Increment Implementation and Verification Human Gates. Record scenario/expected result/check/evidence in existing Jira/MR. No mandatory new document or Skill.
+**Human authority:** Verification-first describes **when to reason/test**, not permission to bypass the existing per-Work-Item Implementation and Verification Human Gates. Record scenario/expected result/check/evidence in existing Jira/MR. No mandatory new document or Skill.
 
 **References:** [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md), [pstack verify-and-ship](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md).
 
@@ -119,17 +129,17 @@ Do **not** automatically generate a `.cursor/skills` tree or mandate daily maint
 
 ## Approval granularity and safe loopback (agreed for Track A)
 
-**Feature-level human gates:** Solution Design approves the agreed technical direction/major contracts; Delivery Planning approves whole-feature scope, critical risks/dependencies and progressive detail of upcoming increments. **Per-Increment human gates:** Implementation approves each reviewable change scope/diff before formal publication; Verification approves **each Increment's** actual acceptance evidence, review and residual risks.
+**Feature-level human gates:** Solution Design approves the agreed technical direction/major contracts; Delivery Planning approves whole-feature scope, critical risks/dependencies and progressive detail of upcoming work items. **Per-Work-Item human gates:** Implementation approves each reviewable change scope/diff before formal publication; Verification approves **each Work Item's** actual acceptance evidence, review and residual risks.
 
-For later increments within the **approved Feature scope**, progressively refine acceptance and verification checks without reopening Design or Planning just because the next increment starts. An Increment can cover coordinated changes across multiple repositories: retain one feature-level work view with repo-specific diffs/MRs and evidence of integration.
+For later work items within the **approved Feature scope**, progressively refine acceptance and verification checks without reopening Design or Planning just because the next work item starts. An Work Item can cover coordinated changes across multiple repositories: retain one feature-level work view with repo-specific diffs/MRs and evidence of integration.
 
-**Q7=B loopback:** Verification findings inside that Increment's approved scope/design/risk can go to Implementation for fixes and proportionate retesting, **without reapproval of each edit or another feature-level gate**. The human still decides the Increment Verification Gate. When a finding materially alters approved requirements/scope, architecture, critical API/data contract, security/data risk or delivery constraints, **reopen only the invalidated upstream human gate(s)** before proceeding.
+**Q7=B loopback:** Verification findings inside that Work Item's approved scope/design/risk can go to Implementation for fixes and proportionate retesting, **without reapproval of each edit or another feature-level gate**. The human still decides the Work Item Verification Gate. When a finding materially alters approved requirements/scope, architecture, critical API/data contract, security/data risk or delivery constraints, **reopen only the invalidated upstream human gate(s)** before proceeding.
 
-Record Feature and Increment approvals and risk owners in existing Jira/MR links. **Each Draft MR** must be individually confirmed by the human after checking repo/task-specific Git Flow, regardless of the number of repos in the Increment. A verified increment is not permission to mark the MR Ready, merge or deploy; those decisions remain human-owned.
+Record Feature and Work Item approvals and risk owners in existing Jira/MR links. **Each Draft MR** must be individually confirmed by the human after checking repo/task-specific Git Flow, regardless of the number of repos in the Work Item. A verified work item is not permission to mark the MR Ready, merge or deploy; those decisions remain human-owned.
 
 ## Fixed Verification Gate, risk-based review and scoped rework (AI-assisted v1.0 candidate)
 
-**Q4=B — Risk-based independent review:** Low-risk changes may use a distinct self-review pass if the local team permits it; moderate changes benefit from an independent diff review; high-risk changes require qualified human peer/domain review when policy or risk demands. The **human Verification Gate is required for every agreed Increment**, regardless of review depth.
+**Q4=B — Risk-based independent review:** Low-risk changes may use a distinct self-review pass if the local team permits it; moderate changes benefit from an independent diff review; high-risk changes require qualified human peer/domain review when policy or risk demands. The **human Verification Gate is required for every agreed Work Item**, regardless of review depth.
 
 **Q5=B — Evidence by change type:** Show acceptance behavior on the appropriate API, UI, CLI, stored-data or other real surface, with applicable automated and negative/integration checks. Missing runs remain **Not run / Blocked / Inconclusive**, never silently treated as passes. Review the actual diff and the originating specification as two distinct axes.
 
@@ -191,11 +201,11 @@ Human decision owner / known limitations:
 - **Blocked — discovery/design:** contradictory requirements, unsupported contracts or unsafe unknowns.
 - **Stop/defer:** unacceptable risk or insufficient basis for acceptance.
 
-No requirement to finish all implementation tasks before starting verification; each coherent increment can pass through several loops.
+No requirement to finish all implementation tasks before starting verification; each coherent work item can pass through several loops.
 
 ## Approval checklist — v1.0 Release Candidate
 
-1. Is Feature-level Design/Planning versus per-Increment Implementation/Verification approval clear, without unnecessary repeat approvals or bypasses?
+1. Is Feature-level Design/Planning versus per-Work-Item Implementation/Verification approval clear, without unnecessary repeat approvals or bypasses?
 2. Are the two workflow responsibilities clear while enabling review during implementation?
 3. Can the shared handoff fit existing Jira/MR without separate mandatory artifacts?
 4. Are evidence, independence, risk acceptance and release authority distinguished?
@@ -205,6 +215,6 @@ No requirement to finish all implementation tasks before starting verification; 
 
 Pilot tiny reversible change, medium integrated feature and a simulated multi-repo contract change. Observe defect detection, rework, integration surprises, false-positive findings, time-to-feedback and paperwork burden.
 
-**Final review focus:** Confirm acceptance expected results are source-backed, not generated from implementation; TDD is preferred where useful but not mandatory. Name the actual human Verification Gate owner per team and agreed increment; make evidence/risks accessible through existing Jira/MR; honor repository-specific required CI, reviewers and branch policies. Pilot the proposed solo/medium/high-risk review depth before turning it into an enforced Skill.
+**Final review focus:** Confirm acceptance expected results are source-backed, not generated from implementation; TDD is preferred where useful but not mandatory. Name the actual human Verification Gate owner per team and agreed work item; make evidence/risks accessible through existing Jira/MR; honor repository-specific required CI, reviewers and branch policies. Pilot the proposed solo/medium/high-risk review depth before turning it into an enforced Skill.
 
 **Release Candidate pending owner approval.** No release authority, automated merge, repository policy or AI skill created.
