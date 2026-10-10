@@ -1,5 +1,6 @@
 # Software Engineering at Google — Chapter 1: What Is Software Engineering? (v0.1)
 
+- **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
 - **Status:** Draft — study notes and candidate principles, not accepted My Engineer policy
 - **Reviewed:** 2026-10-10
 - **Source:** Titus Winters (author), Tom Manshreck (editor), *Software Engineering at Google* (2020), Chapter 1
