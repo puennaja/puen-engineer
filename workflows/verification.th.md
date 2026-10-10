@@ -32,15 +32,21 @@ Implementation รับผิดชอบการสร้าง Change แล
 Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Work Item:
 
 ```text
-Feature Design/Plan ที่ Approved → Work Item
+Work Item ภายใต้ Feature/Story Decisions ที่ Human อนุมัติ
    ↓
-Verification-first: Acceptance, Expected Outcomes, Test Seams
+Verification-first: Acceptance, Expected Results, Test Seams (ก่อน Code)
    ↓
-Implementation: Vertical Slice → TDD เมื่อเหมาะ → Unit Tests PASS + Developer Checks
-   ⇄ Verification: Test Quality, Behavior Evidence, Independent Review
-   ↳ Findings → Scoped Fix → Reverify
+Implementation: Vertical Slices + TDD เมื่อเหมาะ → Unit Tests PASS
+                + Developer Checks พร้อมผลรันจริง
    ↓
-Human Verification Gate → Release Review (แยก)
+HUMAN IMPLEMENTATION GATE: Scope, Diff, Test Evidence
+   ↓
+Scoped Publish / Draft MR เมื่อจำเป็น (Human ยืนยันทุก MR)
+   ↓
+FORMAL INDEPENDENT VERIFICATION: Code Review + Behavior + Test Quality
+   ↳ Findings → Scoped Fix → รัน Unit Tests ที่กระทบใหม่ → Reverify
+   ↓
+HUMAN VERIFICATION GATE → MR Completion / Release Decision (แยก)
 ```
 
 **Verification เริ่มได้ก่อนเขียนโค้ด:** กำหนดพฤติกรรมและหลักฐานจาก Requirement/Contract ที่ยืนยันก่อน ไม่ใช่เพิ่ม Approval Gate ใหม่ **เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
