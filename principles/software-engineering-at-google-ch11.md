@@ -1,5 +1,6 @@
 # Software Engineering at Google — Chapter 11: Testing Overview
 
+- **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
 - **Status:** Draft study notes v0.1 — candidates **not approved**
 - **Evidence:** Full publicly published chapter reviewed including examples and conclusion; original analytical paraphrase, not a translation
 - **Author(s):** Adam Bender
