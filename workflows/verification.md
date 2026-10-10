@@ -21,7 +21,7 @@
 
 ## Purpose, timing, separation
 
-Establish **credible evidence that the change meets acceptance, respects important system boundaries and has been critically reviewed**. Verification is a distinct workflow with its own responsibilities and exit decision. It may begin **during implementation** and repeatedly send findings back; it is not a final waterfall phase.
+Establish **credible evidence that the change meets acceptance, respects important system boundaries and has been critically reviewed**. Verification is a distinct workflow with its own responsibilities and exit decision. **Verification-first preparation and preliminary feedback** may begin before or during Implementation and repeatedly return findings; **formal Independent Verification** begins only after passing applicable developer checks and the Human Implementation Gate. This is an iterative responsibility loop, not a mandatory waterfall for each edit.
 
 Implementation owns making the change and developer checks. Verification owns evaluating acceptance, failures, cross-component behavior and review findings. Roles can overlap for solo work, but distinguish an independent assessment from an implementer's self-check. AI review alone is not equivalent to independent human judgment.
 
@@ -46,7 +46,7 @@ FORMAL INDEPENDENT VERIFICATION: code review + behavior + test quality
 HUMAN VERIFICATION GATE → separate MR completion / release decisions
 ```
 
-**Start before code:** Verification first defines trustworthy expected behavior, example cases and observable proof based on confirmed requirements; it may then review API/contracts, test strategy or partial diff; a "Ready for Verification" label is a convenience, **not** a mandatory wait-for-all-code gate. Developer tests remain part of Implementation; independent evaluation and evidence judgment are Verification's responsibility.
+**Verification-first preparation starts before code:** define trustworthy expected behavior, examples and observable proof from confirmed requirements. **Preliminary feedback** may assess API/contracts, test strategy and partial diffs before the Implementation Gate; this is **not formal Independent Verification**. A "Ready for Verification" label is useful for handoff but does not bypass the formal entry rule below. Developer tests remain Implementation-owned; formal independent evidence judgment follows the agreed entry condition.
 
 **One shared handoff in the existing issue/MR** (not a new obligatory artifact):
 - **Identity & scope:** work item, acceptance IDs, repo/diff links and known exclusions.
@@ -83,6 +83,17 @@ When a reliable test harness exists, Verification may create a **small executabl
 
 Once admitted, **challenge the green tests**: confirm assertions reflect agreed expected behavior, check critical negative/edge cases, exercise appropriate real API/DB/BFF contracts, and independently review the diff. **Green unit tests are necessary feedback where applicable, never sufficient proof of correctness.** When Verification finds a defect, use scoped fix → **rerun impacted developer unit tests** → renewed Independent Verification evidence; the normal Human Verification Gate still applies. This adds no gate or bypass to existing approval policy.
 
+## Verification execution-safety preflight — required before running side-effecting checks (v1.0 review amendment)
+
+**Preflight is a safety check, not a new Human Gate.** Before any live API call, integration test, database write/migration, job, queue/event publication, external notification or cleanup, identify and confirm:
+
+1. **Scope and target:** the agreed Work Item, exact service/repository, environment/endpoint/database and whether each proposed check is read-only or has side effects. Confirm where data, events and logs will flow, including downstream services and other users.
+2. **Authorization and environment:** use a **specifically authorized local/isolated test or non-production environment** with synthetic/sanitized fixtures by default. Access to an environment or possession of credentials is **not** permission to mutate it. Do **not** execute production or production-connected tests (even ostensibly read-only probes) without separate explicit authorization and a team-approved safe procedure. Production changes, migrations, real payments, external communications and privileged/destructive commands require their own permitted owner-approved process; this workflow grants none.
+3. **Isolation and data safety:** avoid real financial/personal records, secrets, uncontrolled external integrations, destructive fixtures and shared-state collisions. For write/async tests, verify safe test identities, transaction/rollback or cleanup plan, and downstream effects. **Cleanup only resources created/owned by this verification run**; never delete unknown or pre-existing data.
+4. **Stop condition:** if the target environment, permissions, data ownership, side effects or cleanup boundary are unclear, **do not execute** the unsafe check. Report **Blocked / Not run**, why, and who must authorize or provide a safe alternative. Continue independent **read-only** spec/diff review where legitimately authorized, without claiming behavioral proof.
+
+Record the checked target, permissions/limitations, fixtures, commands, observed results and side-effect/cleanup status in the existing Jira/MR evidence. Do not copy credentials or sensitive payloads into public reports. Follow stricter repository/company policies and the [Accepted Implementation Working-tree Safety](./implementation.md) for any related edits.
+
 ## Independent Verification v1.0 — four agreed safety nets (baseline design decision, 2026-10-10)
 
 After the applicable unit/regression tests and required developer checks **actually pass** and the authorized human approves the Implementation Gate, formal Independent Verification evaluates these **four distinct questions** for the assigned Work Item. **All four dimensions are considered; the checks and depth within each depend on risk and applicability.** Passing unit tests grants admission, **not** independent acceptance.
@@ -102,7 +113,7 @@ After the applicable unit/regression tests and required developer checks **actua
 
 ## Entry and risk selection
 
-May start once a reviewable slice, test plan or interface contract exists. Read requirements/acceptance, solution constraints, diff, actual developer-check outputs, dependencies and relevant risk map.
+**Preparation / preliminary review** may start as soon as an acceptance example, test plan, contract or reviewable partial diff exists. **Formal Independent Verification** starts **only after** actual passing applicable unit/regression tests and required developer checks **and** the Human Implementation Gate, subject to the documented no-unit-test-seam exception in the entry rule above. Before formal checks, review source-backed acceptance, a **fixed diff/commit base**, observed developer-check outputs, dependencies, risk map and the execution-safety preflight below.
 
 Select depth according to impact, reversibility, data sensitivity, concurrency, external contracts and operational risk:
 - **Low:** inspect relevant diff, focused tests and acceptance behavior; concise MR record.
@@ -198,7 +209,13 @@ Look at requirements; contract and schema compatibility; domain invariants; priv
 
 Record actionable findings as **Severity | location/evidence | failure scenario | recommendation | resolution/owner**. Prefer substantive risk over stylistic preference. No findings never proves correctness.
 
-**Independent AI review:** A separate prompt/context or model can be a useful *candidate* technique, not a guaranteed independent audit. A human engineer must assess high-impact conclusions and own risk acceptance.
+**Independent AI review:** Different prompt/context or model is a useful technique, **not a claim of genuine independent human review**. Follow the separate-review-inputs contract above. The authorized human owns high-impact conclusions, risk acceptance and the Verification Gate.
+
+## Independent assessment separation and reviewer inputs (v1.0 review amendment)
+
+**Before a formal review pass**, provide the reviewer with (a) confirmed Work Item/parent Story acceptance and excluded scope, (b) actual **diff and fixed base/commit**, (c) relevant repository contracts/standards, (d) developer-check outputs **as evidence to challenge**, and (e) changed risk boundaries. **Do not substitute the implementer's summary, recommendations, or “all tests pass” assertion for these primary inputs.** Check important expected outputs directly against the approved source, not AI-generated test expectations.
+
+Use **two explicit review axes**: **spec/behavior correctness** (including test assertion gaps, unauthorized behavior, contract failure) and **codebase quality/risk** (maintainability, security, integration, data/operational effects). Distinguish observed defects with reproducible evidence from hypotheses/style preferences. If the same engineer or agent is both implementer and reviewer, conduct a **deliberate separate skeptical review pass** and record that limitation; separate prompts/models can reduce shared assumptions but do not guarantee real independence. **Low risk:** separate self-review may be permitted by local policy. **Medium risk:** deliberate separate reviewer/pass proportionate to risk; **high risk:** qualified human peer/domain review when required by policy/risk. The **Human Verification Gate always remains**.
 
 ## Cross-repo verification
 
@@ -211,35 +228,53 @@ Use one feature-level view with per-repo MR links. Validate changed producer/con
 Scenario | evidence / executed result | gap
 
 ## Checks
-Command or manual procedure | environment | pass/fail/not run | link
+Required/optional + risk reason | command or procedure | authorized target/environment + fixture | expected vs observed | Pass/Fail/Not run/Blocked/Inconclusive | evidence link
 
 ## Independent findings
-Severity | file/evidence | impact | resolution | owner
+Severity/blocking? | spec or quality axis | file/diff-base/evidence | impact | resolution | owner
 
 ## Contract / rollout
-Compatibility, integration, migration, remaining verification
+Compatibility, integration, migration, remaining verification and external owner
+Execution preflight: target, permissions, side effects, owned cleanup, data safety
 
 ## Decision
-Verified for release review | Fix & reverify | Blocked | Stop/defer
-Human decision owner / known limitations:
+Recommended: Verified for release review | Fix & reverify | Blocked | Stop/defer
+Required-check gaps / policy-approved equivalent evidence (if any):
+Residual risks / owners / limitations:
+Human Verification Gate owner / approval or rejection / date:
 ```
+
+## Required evidence, blocking defects and outcome rules (v1.0 review amendment)
+
+**Before running formal checks**, identify which acceptance scenarios/checks are **required** for the Work Item's actual risk, security/data impact and repository/team CI/review policy, versus optional probes. Record expected outcomes and the applicable owner/policy. Do not downgrade a required check merely because the environment or test harness is unavailable.
+
+| Recommendation | Minimum condition / what to record |
+| --- | --- |
+| **Verified for release review** | Confirmed acceptance and **all required safety/behavior/contract checks** have credible executed or policy-authorized **equivalent** evidence; no unresolved blocking defect; remaining non-blocking gaps/risks are documented with owners for the **Human Verification Gate**. This is **not** full Story acceptance or release permission. |
+| **Fix & reverify** | Actual failed acceptance, regression or blocking finding that can be fixed in the authorized Work Item scope; return to Implementation → rerun affected developer tests → independent recheck. |
+| **Blocked** | A required check/evidence, environment, access, acceptance decision or qualified reviewer is missing/unavailable; record **Not run / Inconclusive**, blocker owner and safe next action. **Do not label the Work Item Verified** merely because other checks pass. |
+| **Stop / defer** | Unacceptable/unbounded safety or correctness risk, or material design/scope conflict requiring higher-level decision; stop the unsafe direction and escalate appropriately. |
+
+**Exceptions must be explicit:** when an ordinarily required check cannot run, only an **authorized decision maker under the actual team/repository policy** may approve a valid alternative proof or exception, with rationale, evidence limits and residual-risk owner recorded. Such approval **cannot waive a mandatory policy or convert unexecuted checks into "Pass"**. Without policy-authorized equivalent evidence, keep the result **Blocked / Stop** rather than "Verified". An optional test marked **Not run** does not automatically block if its risk is demonstrably covered by adequate evidence and the gap is documented.
+
+The independent reviewer **recommends** a status; only the authorized human decides the per-Work-Item **Verification Gate**. Never auto-accept CI, a green test suite, an empty findings list or an implementer narrative as a decision.
 
 ## Exit decisions and loopback
 
-- **Verified for release review:** proportionate evidence exists, critical findings addressed, residual risks assigned. **Does not authorize deployment.**
+- **Verified for release review:** required evidence is complete (or explicitly replaced by a policy-permitted authorized equivalent), blocking findings resolved, residual non-blocking risks owned. **Does not authorize deployment or imply full Story acceptance.**
 - **Fix & reverify:** return to [Implementation](./implementation.md), then re-run impacted checks.
-- **Blocked — discovery/design:** contradictory requirements, unsupported contracts or unsafe unknowns.
-- **Stop/defer:** unacceptable risk or insufficient basis for acceptance.
+- **Blocked:** missing required evidence, unresolved acceptance/contract decision, unsafe/unavailable environment or insufficient authorization; record owner and safe next action.
+- **Stop/defer:** unacceptable risk or a material unresolved design/scope conflict; halt the unsafe direction and escalate.
 
-No requirement to finish all implementation tasks before starting verification; each coherent work item can pass through several loops.
+No requirement to finish an entire Feature/Story before **preliminary feedback or formal verification of an individually ready Work Item**. Formal assessment of that Work Item still requires its actual green developer checks and Human Implementation Gate; scoped fixes loop back through affected tests before re-verification.
 
 ## Approval checklist — v1.0 Release Candidate
 
-1. Is Feature-level Design/Planning versus per-Work-Item Implementation/Verification approval clear, without unnecessary repeat approvals or bypasses?
-2. Are the two workflow responsibilities clear while enabling review during implementation?
-3. Can the shared handoff fit existing Jira/MR without separate mandatory artifacts?
-4. Are all **four agreed safety nets** covered (requirement, independent code review/test quality, risk-based behavior proof, evidence/risk), with depth appropriate to the Work Item?
-5. Are real repository permissions and AI Skill creation separate authorizations?
+1. Are Feature Design/Planning and Work Item Human Implementation/Verification Gates clear, and is **Preliminary vs Formal Verification** unambiguous?
+2. Does **Execution Safety Preflight** require authorized environments, fixture isolation, data/side-effect limits and safe ownership-based cleanup without adding a gate?
+3. Are **required check / blocked outcome / documented exception** rules strict enough to prevent false Verified decisions?
+4. Are all **four safety nets** covered at risk-appropriate depth, and does a **separate skeptical review** start from source-backed acceptance and fixed diff, not implementer claims?
+5. Are Jira/MR evidence and Human Gate decisions retained without duplicate artifacts, while GitLab permissions, per-MR confirmation, release and AI Skill creation remain separately authorized?
 
 ## Pilot and open decisions
 
