@@ -20,16 +20,18 @@ Implementation owns making the change and developer checks. Verification owns ev
 The two workflows remain **separate responsibilities**, but use **one iterative execution loop** for each coherent increment:
 
 ```text
-Delivery Planning (agreed increment)
+Approved Feature design / plan → agreed Increment
    ↓
-Implementation: orient → change → developer checks
-   ⇄ Verification: acceptance / tests / contracts / independent review
-   ↳ Findings → implementation fixes → targeted re-verification
+Verification-FIRST: acceptance examples, expected outcomes, test seams
    ↓
-Verification decision → release review (a separate workflow)
+Implementation: vertical slice → TDD when useful → developer checks
+   ⇄ Verification: independent behavior proof, test quality, review
+   ↳ Findings → scoped fix → targeted re-verification
+   ↓
+Human Increment Verification Gate → separate release decisions
 ```
 
-**Start early:** Verification may begin with acceptance examples, test strategy, API/contract or partial diff; a "Ready for Verification" label is a convenience, **not** a mandatory wait-for-all-code gate. Developer tests remain part of Implementation; independent evaluation and evidence judgment are Verification's responsibility.
+**Start before code:** Verification first defines trustworthy expected behavior, example cases and observable proof based on confirmed requirements; it may then review API/contracts, test strategy or partial diff; a "Ready for Verification" label is a convenience, **not** a mandatory wait-for-all-code gate. Developer tests remain part of Implementation; independent evaluation and evidence judgment are Verification's responsibility.
 
 **One shared handoff in the existing issue/MR** (not a new obligatory artifact):
 - **Identity & scope:** increment, acceptance IDs, repo/diff links and known exclusions.
