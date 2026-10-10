@@ -101,6 +101,14 @@ Use one feature-level work item and scoped repository tasks. Record actual provi
 
 AI may propose edits, tests and explanations within authorized scope. A responsible engineer confirms architecture changes, privileged operations, destructive edits, code execution policies, pushes, commits and draft MR creation under the local team's permissions. No mandatory Claude/Codex split is approved. A short AGENTS.md may link to this workflow; create reusable skills only after pilots reveal recurring work.
 
+## GitLab Draft MR — mandatory per-MR human confirmation (v1.0 candidate)
+
+After the **Implementation Gate**, AI must first investigate **the actual repository and work-item Git Flow**, including documented branching/contribution rules, Jira/work item, source branch, proposed target branch, release/integration strategy and dependent MRs. Never assume that `master` (or the default branch) is the right target.
+
+**Before creating every single Draft MR**, show the human the repository, source → proposed target branch, target rationale, work-item link and relevant ordering constraints; **ask for and wait for explicit MR-specific approval**. Previous implementation approval or scoped Git permissions do not waive this question. Changing the MR target afterward also requires renewed human confirmation.
+
+Commit/push authority is not yet finalized; see [AI-assisted feature delivery — Draft](./ai-assisted-feature-delivery.md). Approval to open a Draft MR is **not** approval to merge or deploy.
+
 ## Handoff to Verification
 
 Provide:
