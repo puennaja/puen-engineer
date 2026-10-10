@@ -1,6 +1,6 @@
-# Implementation Workflow — v1.0 Release Candidate (ภาษาไทย)
+# Implementation Workflow — v1.0 (Accepted — ภาษาไทย)
 
-- **สถานะ:** Review Ready / Release Candidate — รอ Owner Approve; ยังไม่ Accepted
+- **สถานะ:** Accepted — Repository Owner อนุมัติเมื่อ 2026-10-10 (My Engineer Track A)
 - **Decision:** แยก Implementation และ Verification เป็นสอง Workflow โดยใช้ Execution Loop ร่วมกัน (2026-10-10)
 - **วันที่:** 2026-10-10
 - **Track:** A — Build My Engineer
@@ -171,7 +171,7 @@ AI เลือก Skill ตามงานแบบ Hybrid และแก้�
 
 ถ้ามีการเปลี่ยน **Feature Scope, Design, API/Data Contract, Security/Data Risk หรือ Delivery Constraints อย่างมีนัยสำคัญ** ให้หยุดส่วนที่ได้รับผลกระทบและกลับไปขออนุมัติ **เฉพาะ Gate ก่อนหน้าที่ Decision ถูกกระทบ** ตาม Human Owner ของทีมนั้น แต่ Scoped Bug Fix/Test ที่ยังอยู่ใน Scope เดิมทำซ้ำได้ตาม Q7 และต้องผ่าน Verification Gate ของ Work Item นั้น ใช้ Jira/MR เดิม Link Approval ของ Feature และ Work Item โดยระบุ Owner, Scope และ Evidence
 
-Work Item หนึ่งอาจกระทบหลาย Repos ได้ โดยใช้ Evidence ที่เชื่อมโยงกัน แต่ **การเปิด Draft MR แต่ละครั้งยังต้องถาม Human เพื่อยืนยัน Git Flow และ Source/Target Branch แยกเสมอ** นี่คือ Design Decision ของ Track A AI-assisted ที่ยังรอ Approve Workflow ไม่ได้เปลี่ยน General Lifecycle ที่ Accepted แล้ว ดู [Decision Q1–Q9 และ Gate Granularity](./ai-assisted-feature-delivery.md)
+Work Item หนึ่งอาจกระทบหลาย Repos ได้ โดยใช้ Evidence ที่เชื่อมโยงกัน แต่ **การเปิด Draft MR แต่ละครั้งยังต้องถาม Human เพื่อยืนยัน Git Flow และ Source/Target Branch แยกเสมอ** นี่คือข้อตกลงของ Track A AI-assisted ที่อนุมัติ Implementation v1.0 แล้ว โดยไม่ได้เปลี่ยน General Lifecycle ที่ Accepted ก่อนหน้า ดู [Decision Q1–Q9 และ Gate Granularity](./ai-assisted-feature-delivery.md)
 
 ## Fixed Implementation Gate, Scoped Git และ Rework (สำหรับ AI-assisted v1.0)
 
@@ -203,7 +203,7 @@ Local Commit/Push ใช้กติกา Scoped Git ด้านบน ส่�
 
 **Ready for Verification ไม่ใช่สิทธิ์ Deploy**
 
-## Checklist ก่อนอนุมัติ — v1.0 Release Candidate
+## Approval Checklist — Implementation v1.0 (Accepted)
 
 1. **Human Implementation Gate** อยู่หลัง Unit Tests/Developer Checks ที่ผ่านจริง และอยู่ก่อน Formal Independent Verification ชัดหรือไม่ (Preliminary Review เริ่มก่อนได้)?
 2. English/Thai ใช้ **Work Item, Verification-first Test Intent, TDD เมื่อเหมาะ, Scope และ Evidence** ตรงกันหรือไม่?
@@ -218,4 +218,4 @@ Local Commit/Push ใช้กติกา Scoped Git ด้านบน ส่�
 
 **จุดตรวจสุดท้าย:** ระบุ Human Gate Owner และ Work Item Boundary ให้ชัดตามทีมจริง ตรวจว่า Publish Authorization เก็บใน Jira/MR เดิมและไม่มีขั้นตอน Review ที่ข้าม Fixed Gates ส่วน Target Branch, CI และ Reviewer Requirements ต้องตรวจจาก Git Flow/Policy ของ Repo จริง
 
-**Release Candidate รอ Owner Approve** ยังไม่เปลี่ยน AGENTS.md, Skills, Automation หรือ Permissions
+**Accepted v1.0 — Repository Owner อนุมัติเมื่อ 2026-10-10** การอนุมัติ Workflow นี้ **ไม่ใช่** การเปลี่ยน AGENTS.md, Skills, Automation, GitLab Permissions, Human Gates, สิทธิ์ Push หรือสิทธิ์สร้าง Draft MR ของงานจริง ส่วน Verification v1.0 **ยังเป็น Release Candidate** และรออนุมัติแยก
