@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft (ภาษาไทย)
 
-- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1–Q4 แล้ว ส่วน Q5 รอตัดสิน
+- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1–Q5 แล้ว ส่วน Q6 รอตัดสิน
 - **วันที่:** 2026-10-10
 - **Track:** A — My Engineer, ออกแบบจาก Engineering Practices ไม่ผูกบริษัทหรือเครื่องมือ
 - **ก่อนหน้า:** [Implementation (Accepted)](./implementation.th.md), [Verification (Accepted)](./verification.th.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.th.md)
@@ -40,7 +40,7 @@
 - **ข้อจำกัดการทำงาน:** Rollout Steps ที่อนุญาต, เวลา/อายุ Approval ถ้าจำเป็น, Validation Signals, Pause/Abort Criteria, Recovery/Rollback/Roll-forward Plan และผู้รับผิดชอบ, Human Release Approver
 - **Traceability:** ใช้ Release Ticket/Pipeline Record ที่มีอยู่บันทึก **ใครอนุมัติอะไร ที่ไหน เมื่อไร ภายใต้เงื่อนไขอะไร** โดยไม่สร้าง Markdown File ใหม่เป็นข้อบังคับ
 
-**Automation ภายใน Scope:** Pipeline ที่ได้รับสิทธิ์สามารถทำ Stages ตาม Approval และ Retry/Continue เมื่อ **ได้รับอนุญาตไว้ตาม Policy, ปลอดภัย, ไม่เพิ่ม Risk/Scope และยังใช้ Artifact/Target เดิม** ห้ามใช้ Retry เพื่อข้าม Stop Criteria คำสั่งเสี่ยง/ทำลายและ Incident Recovery ยังอยู่ภายใต้ Process/Permissions ที่อนุมัติแยก
+**Automation ภายใน Scope:** Pipeline ที่ได้รับสิทธิ์ทำ **Routine Stages ที่อนุมัติไว้** และ Retry ตามปกติที่ **ไม่ใช่การแก้ Incident** ได้ภายใน Artifact/Target/Scope เดิมเท่านั้น แต่ตาม Q5 เมื่อมีเหตุผิดปกติที่ต้องสั่ง **Intervention ใหม่** เช่น Pause, Abort, Remedial Retry, Rollback, Roll Forward, Restart หรือ Recovery ต้อง **แจ้งเตือนและรอ Human ยืนยัน Action นั้นใหม่ก่อน** ห้ามใช้ Retry ข้าม Stop Criteria และไม่ได้อนุมัติ Auto Recovery/Destructive Action
 
 **เมื่อ Approval ใช้ต่อไม่ได้:** เปลี่ยน Artifact/Manifest, เปลี่ยน Production Target/Services/Exposure, ขยาย Rollout, เพิ่ม Migration/Contract Risk, Approval หมดอายุ หรือ Assumptions ที่สำคัญเปลี่ยน → **หยุด Action ที่กระทบและขอ Human Approval ใหม่** ส่วนการรัน Check เดิมที่อนุญาตแล้วแบบไม่มีผลเสี่ยงเพิ่มไม่จำเป็นต้องขอใหม่ทุกครั้ง ห้ามอ้าง CI เขียว, Work Item Verify ผ่าน, Merge แล้ว หรือ Approval จาก Release เก่าแทนการอนุมัติครั้งนี้
 
@@ -82,15 +82,31 @@
 4. **Observe & Decide:** ใช้ **Observation Window หรือ Objective Signal Threshold ตาม Risk** ที่ตกลงไว้ก่อน Release มี Observer/On-call Owner, Evidence และ Stop/Abort/Escalation Trigger งาน Low-risk อาจดูช่วงสั้น ๆ ด้วย Focused Checks ส่วน High-risk เพิ่ม Depth/Progressive Exposure/Monitoring ผลกระทบที่เกิดช้าต้องมี Owner ติดตาม ไม่อ้างว่าผ่านครบเมื่อยังไม่เห็น
 5. **แยกผลลัพธ์:** Deployment (**Completed / Partial / Failed / Unknown**), Service (**Healthy / Degraded / Inconclusive**), Business Behavior (**Pass / Fail / Not run / Inconclusive**) และ Release Disposition (**Healthy / Degraded / Inconclusive / Recovery in progress**) พร้อม Owner, เวลาที่ตรวจ, Evidence และ Remaining Risks
 
-**Safety & Escalation:** หาก Critical Threshold ผิด, Release Scope เบี่ยงจาก Approval, ข้อมูล/ผู้ใช้ได้รับผลเสีย หรือ Mandatory Evidence ยังไม่ชัด ให้ใช้ **Pause/Abort/Escalation Process ที่กำหนด** ห้ามตีตราว่า Healthy อัตโนมัติ Pipeline เขียว, Dashboard เขียว หรือ Pod Healthy ไม่ใช่ Business Acceptance และ **Q4 ไม่ได้เพิ่มสิทธิ์ให้ AI ไป Pause/Rollback/เปลี่ยน Exposure เอง** เพราะ Operational Authority จะตกลงแยกใน Q5
+**Safety & Escalation:** หาก Critical Threshold ผิด, Release Scope เบี่ยงจาก Approval, ผู้ใช้/ข้อมูลได้รับผลเสีย หรือ Mandatory Evidence ยังไม่ชัด ให้ **ตรวจจับ/แจ้งเตือนอัตโนมัติและ Escalate หา Human ทันทีเพื่อตัดสิน Pause/Abort/Recovery ตาม Q5** แม้เป็น Protective Pause ก็ต้องขอ Human Confirmation ใหม่ตาม Q5 ไม่สรุป Healthy จาก Pipeline/Dashboard/Pod ที่เขียว และไม่ให้ AI Intervene เอง
 
 **เงื่อนไขปิด Release:** Human Release/Outcome Owner (หรือ Process ที่มี Human Decision ถูกต้อง) ประเมิน Evidence และ Residual Risks จะสรุป Healthy ได้เมื่อ Health/Behavior Criteria ที่เกี่ยวข้องตาม Risk ผ่านจริง ถ้า Mandatory Evidence ไม่มีให้บันทึก **Inconclusive/Blocked** ไม่ใช่ Success ใช้ Release/Pipeline/Incident Record เดิม ไม่เพิ่ม Markdown Report หรือ Human Gate ต่อ Test
 
-## Q5 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+## Q5 — Human Confirmation Before Every Intervention (ตกลงเมื่อ 2026-10-11)
 
-**เมื่อ Post-deploy Signals บอกว่ามีปัญหา ใครมีอำนาจ Pause Rollout, Rollback, Roll Forward หรือเริ่ม Incident Response?**
+**Owner Decision: เลือก B — Human Confirmation Before Every Intervention สำหรับ Release & Operations v1.0** Monitoring, AI และ Pipeline สามารถ **ตรวจจับ แจ้งเตือน บันทึก Evidence และเสนอทางเลือก** ได้ แต่ **ทุก Intentional Operational Intervention ที่ตอบสนองเหตุผิดปกติ ต้องได้รับ Human Confirmation ใหม่เฉพาะ Action ก่อน Execute** ได้แก่ **Pause, Abort, Rollback, Roll Forward, Restart, Remedial Retry, เปลี่ยน Feature-flag Exposure และ Recovery** แม้จะเป็น Action ป้องกันผลเสียหรือดูมี Risk ต่ำก็ตาม
 
-- **A. Guardrailed Operational Response with Explicit Authority (กูแนะนำ):** Pipeline Safeguard ที่อนุมัติล่วงหน้าอาจ **Pause/Abort การ Rollout เพิ่มแบบอัตโนมัติ** เมื่อเจอ Stop Conditions ที่วัดได้และยังอยู่ใน Q2 Envelope; การ Rollback/Recovery ทำอัตโนมัติได้ **เฉพาะเมื่อ Action นั้นได้รับอนุญาตแยกชัดเจน ปลอดภัยกับ Schema/Data/Exposure ปัจจุบัน และมี Recovery Steps ที่เชื่อถือได้** มิฉะนั้นต้อง Escalate ไป Human Incident/Release Owner ยังคง Human Ownership, Incident Communication, Recovery Evidence และ Approval ใหม่เมื่อมีการเปลี่ยน Scope/Risk สำคัญ **ไม่เปิด Auto Destructive Rollback เป็นค่าเริ่มต้น**
-- **B. Human Confirmation Before Every Intervention:** ระบบตรวจ/Alert อัตโนมัติ แต่ทุก Pause/Abort/Rollback/Recovery ต้องรอ Human Confirm ใหม่ แม้เป็นการหยุด Rollout เพิ่มที่ปลอดภัยและอยู่ใน Scope เดิม
+**Intervention Contract:**
 
-**หลัง Q5:** ออกแบบ Outcome/Learning Loop แบบกระชับ ตรวจให้สอดคล้องกับ Workflow ที่ Accepted แล้ว และส่ง Release & Operations v1.0 ให้ Review/Approve แยกอีกครั้ง
+1. **Detect & Escalate:** แจ้ง Human Incident/Release Owner ที่ติดต่อได้ผ่านช่องทางที่ตกลง พร้อม Symptoms, Impact, Release/Version, Deployment State, Metrics/Logs และตัวเลือกที่เสนอ ระบบ Detection/Paging ทำอัตโนมัติได้ แต่ AI Recommendation ไม่ใช่ Execution Permission
+2. **Human Confirm ทุก Intervention:** Owner ประเมิน Target/Scope, Schema/Data Safety, Dependencies, Side Effects, Reversibility และ Policy แล้วอนุมัติ **Action ที่ระบุชัดเจน** การอนุมัติหนึ่ง Action ไม่ได้เหมารวม Action ถัดไป
+3. **Execute ตาม Operational Permission จริง:** Human หรือ Pipeline ที่มีสิทธิ์ดำเนินการเฉพาะ Action ที่ยืนยันแล้ว ถ้าการกระทำเปลี่ยน Q2 Release Envelope อย่างมีนัยสำคัญต้องได้รับ Release Authorization ใหม่ตามเกณฑ์ด้วย การเปิด Incident ไม่ได้ให้สิทธิ์ Production เพิ่มแก่ AI
+4. **Revalidate & Record:** เก็บผล Execute และตรวจ Service Health/Business Behavior ใหม่ พร้อม Outcome (**Recovered / Degraded / Inconclusive / Still mitigating**), Human Decision Owner, ผู้ Execute, เวลา และ Observer/Owner ที่รับช่วง ห้ามถือว่า Rollback Command ผ่านเท่ากับ Recovery สำเร็จ
+5. **ถ้า Human ติดต่อไม่ได้:** ทำ Detection, Paging, Escalation ต่อภายใต้ Incident Policy จริง แต่ **ห้าม Auto-execute Intervention หรือสมมติว่าได้รับ Approval** ดังนั้น Q3 Readiness ต้องพิจารณา On-call Owner, Escalation Route และ Response Expectations โดยเฉพาะ Release ที่มี Risk สูง
+
+**ไม่ขัดกับ Q1–Q4:** Fixed Human Release Gate และ Bounded Authorization ยังอนุญาตให้ Pipeline ทำ **Routine Stages ที่ตกลงไว้** โดย Human ไม่ต้องกดทุก Step ส่วน Q5 คุม **Intervention ใหม่หลังเกิดเหตุผิดปกติ** ไม่ใช่งานปกติใน Pipeline การรันคำสั่งล้มเหลวหรือระบบ Platform หยุดด้วยกลไกของมันเองเป็น Observed Failure ไม่ใช่สิทธิ์ให้ AI Initiate Recovery ต่อเอง **เราไม่ได้อนุมัติให้เพิ่ม Auto-pause หรือ Auto-rollback เพื่อจัดการ Incident ใน v1.0** หากมีข้อบังคับด้าน Platform/Safety/Legal ที่เข้มงวดกว่า ต้องเคารพข้อบังคับและ Independent Fail-safe Mechanism เดิม; Draft นี้ไม่เปลี่ยน Config หรือข้าม Policy เหล่านั้น
+
+**ข้อแลกเปลี่ยน:** การรอ Human แม้แต่ก่อน Protective Pause อาจทำให้ Response ช้าและเพิ่มผลกระทบกับผู้ใช้/ข้อมูล จึงควรมี Actionable Alerts, Escalation ที่มีคนรับผิดชอบ และ Recovery Procedure ที่น่าเชื่อถือ การเลือก B **ไม่ได้แปลว่าเป็น Incident Response ที่เร็วหรือปลอดภัยที่สุดเสมอ** แต่เป็น Choice เรื่อง Human Control ที่ตกลงสำหรับ v1.0
+
+## Q6 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+
+**หลัง Q4 Validation และ Q5 Incident Response (ถ้ามี) เราควรปิด Release และนำสิ่งที่เรียนรู้กลับไปสู่ Engineering อย่างไร?**
+
+- **A. Lightweight Outcome & Learning Loop (กูแนะนำ):** Human Release/Outcome Owner บันทึก **ผล Health/Behavior จริง, Evidence, Remaining Risks, Follow-up Owner และ Business/Customer Outcome ที่ยังต้องติดตาม** ใน Release/Jira/Incident Record เดิม สร้าง Work Item ใหม่เฉพาะ Defect หรือ Improvement ที่ลงมือทำได้จริง ทำ Incident Review แบบกระชับเมื่อ Impact/Risk สมควร ไม่บังคับ Meeting หรือ Markdown Report ทุก Release เล็ก
+- **B. Close at Technical Health:** บันทึก Technical Health และ Critical Incidents ที่ยังค้าง โดยปล่อยให้ Process อื่นติดตาม Business Outcome และ Learning แยก
+
+**หลัง Q6:** ตรวจ Consistency ของ Lifecycle กับ Workflow ที่ Accepted แล้ว Review v1.0 ฉบับสมบูรณ์เพื่อขอ Owner Approve แยกอีกครั้ง Draft นี้ไม่ได้ให้สิทธิ์ Production Deployment หรือ AI Automation
