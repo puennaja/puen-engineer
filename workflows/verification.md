@@ -30,15 +30,20 @@ Implementation owns making the change and developer checks. Verification owns ev
 The two workflows remain **separate responsibilities**, but use **one iterative execution loop** for each coherent work item:
 
 ```text
-Approved Feature design / plan → agreed Work Item
+Agreed Work Item within approved Feature/Story decisions
    ↓
-Verification-FIRST: acceptance examples, expected outcomes, test seams
+Verification-first: source-backed acceptance + test intent (before code)
    ↓
-Implementation: vertical slice → TDD when useful → unit tests GREEN + developer checks
-   ⇄ Verification: independent behavior proof, test quality, review
-   ↳ Findings → scoped fix → targeted re-verification
+Implementation: slices + optional TDD → unit tests PASS + developer checks
    ↓
-Human Work Item Verification Gate → separate release decisions
+HUMAN IMPLEMENTATION GATE: scope, diff and test evidence
+   ↓
+Scoped publish / Draft MR if needed (human approves EACH MR)
+   ↓
+FORMAL INDEPENDENT VERIFICATION: code review + behavior + test quality
+   ↳ Findings → scoped fix → rerun affected unit tests → reverify
+   ↓
+HUMAN VERIFICATION GATE → separate MR completion / release decisions
 ```
 
 **Start before code:** Verification first defines trustworthy expected behavior, example cases and observable proof based on confirmed requirements; it may then review API/contracts, test strategy or partial diff; a "Ready for Verification" label is a convenience, **not** a mandatory wait-for-all-code gate. Developer tests remain part of Implementation; independent evaluation and evidence judgment are Verification's responsibility.
