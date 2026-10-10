@@ -215,4 +215,4 @@ Try a tiny regression, a medium feature and a simulated cross-repo contract chan
 
 **Review focus:** Confirm that human gate owners and accepted-work item boundaries can be identified in each actual team, that publish authorization is recorded once in the existing issue/MR, and that early feedback does not bypass fixed gates. Git Flow, target branch and mandatory CI checks remain repository/task-specific.
 
-**Accepted v1.0 — explicitly approved by repository owner on 2026-10-10.** Approval of this workflow does **not** change AGENTS.md policy, automation, skills, GitLab permissions, individual Human Gates, publish authorization or per-Draft-MR approval. The companion Verification v1.0 remains a Release Candidate until separately approved.
+**Accepted v1.0 — explicitly approved by repository owner on 2026-10-10.** Approval of this workflow does **not** change AGENTS.md policy, automation, skills, GitLab permissions, individual Human Gates, publish authorization or per-Draft-MR approval. The companion Verification v1.0 was separately Accepted by the repository owner on 2026-10-10.
