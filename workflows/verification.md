@@ -75,8 +75,8 @@ Unclear implementation state or missing credentials are recorded as blockers, no
 
 | Activity | What to check | Evidence |
 | --- | --- | --- |
-| 1. Trace acceptance | Map acceptance and exclusions to changed behavior and tests | Scenario → check → observed outcome |
-| 2. Validate tests | Inspect test assertions and run suitable checks in an authorized environment | Actual command, environment, timestamp/context, pass/fail/not run |
+| 1. Define acceptance first | Before coding, derive expected outcomes, negative cases and test seams from confirmed requirements/contracts; map them to checks | Source-backed scenario → expected outcome → proof surface |
+| 2. Validate test design and runs | Optionally create a small executable acceptance test; assess implementer test assertions and execute relevant checks | Intended failure vs harness failure; actual commands/results/environment |
 | 3. Probe critical failures | Check permission, malformed input, concurrency, retry/idempotency, error/timeout, boundary behavior as relevant | Negative-case evidence and residual risk |
 | 4. Validate integration | Verify contracts/API/schema, producer-consumer compatibility, migration and version skew | Integration/contract tests or owned gap |
 | 5. Review independently | Review diff for correctness, maintainability, unintended change, safety and test gaps | Finding severity, file/evidence, impact, recommendation |
@@ -205,6 +205,6 @@ No requirement to finish all implementation tasks before starting verification; 
 
 Pilot tiny reversible change, medium integrated feature and a simulated multi-repo contract change. Observe defect detection, rework, integration surprises, false-positive findings, time-to-feedback and paperwork burden.
 
-**Final review focus:** Name the actual human Verification Gate owner per team and agreed increment; make evidence/risks accessible through existing Jira/MR; honor repository-specific required CI, reviewers and branch policies. Pilot the proposed solo/medium/high-risk review depth before turning it into an enforced Skill.
+**Final review focus:** Confirm acceptance expected results are source-backed, not generated from implementation; TDD is preferred where useful but not mandatory. Name the actual human Verification Gate owner per team and agreed increment; make evidence/risks accessible through existing Jira/MR; honor repository-specific required CI, reviewers and branch policies. Pilot the proposed solo/medium/high-risk review depth before turning it into an enforced Skill.
 
 **Release Candidate pending owner approval.** No release authority, automated merge, repository policy or AI skill created.
