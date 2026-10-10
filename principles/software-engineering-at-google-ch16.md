@@ -1,7 +1,7 @@
 # Software Engineering at Google — Chapter 16: Version Control and Branch Management
 
 - **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
-- **Status:** Draft v0.1 — candidate principles are **not accepted**
+- **Status:** Accepted — reference knowledge; non-mandatory guidance
 - **Chapter author(s):** Titus Winters
 - **Primary full chapter:** https://abseil.io/resources/swe-book/html/ch16.html
 - **Thai companion:** [Thai](./software-engineering-at-google-ch16.th.md)
