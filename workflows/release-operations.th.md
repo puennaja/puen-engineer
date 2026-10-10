@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft (ภาษาไทย)
 
-- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1–Q5 แล้ว ส่วน Q6 รอตัดสิน
+- **สถานะ:** Design Draft — **ยังไม่ Accepted**; Q1–Q6 ตกลงแล้ว รอ Final Review v1.0
 - **วันที่:** 2026-10-10
 - **Track:** A — My Engineer, ออกแบบจาก Engineering Practices ไม่ผูกบริษัทหรือเครื่องมือ
 - **ก่อนหน้า:** [Implementation (Accepted)](./implementation.th.md), [Verification (Accepted)](./verification.th.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.th.md)
@@ -102,11 +102,44 @@
 
 **ข้อแลกเปลี่ยน:** การรอ Human แม้แต่ก่อน Protective Pause อาจทำให้ Response ช้าและเพิ่มผลกระทบกับผู้ใช้/ข้อมูล จึงควรมี Actionable Alerts, Escalation ที่มีคนรับผิดชอบ และ Recovery Procedure ที่น่าเชื่อถือ การเลือก B **ไม่ได้แปลว่าเป็น Incident Response ที่เร็วหรือปลอดภัยที่สุดเสมอ** แต่เป็น Choice เรื่อง Human Control ที่ตกลงสำหรับ v1.0
 
-## Q6 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+## Q6 — Lightweight Outcome & Learning Loop (ตกลงเมื่อ 2026-10-11)
 
-**หลัง Q4 Validation และ Q5 Incident Response (ถ้ามี) เราควรปิด Release และนำสิ่งที่เรียนรู้กลับไปสู่ Engineering อย่างไร?**
+**Owner Decision: เลือก A — Lightweight Outcome & Learning Loop สำหรับ Release & Operations v1.0** ปิด Release ด้วย **ผลจริงพร้อม Evidence และผู้รับผิดชอบ Follow-up** โดยไม่ต้องมี Retrospective Meeting หรือ Report ใหม่ทุกครั้งที่ Deploy งานเล็ก และแยก **Technical Release Closure** ออกจาก **Business Outcome ที่อาจต้องวัดภายหลัง**
 
-- **A. Lightweight Outcome & Learning Loop (กูแนะนำ):** Human Release/Outcome Owner บันทึก **ผล Health/Behavior จริง, Evidence, Remaining Risks, Follow-up Owner และ Business/Customer Outcome ที่ยังต้องติดตาม** ใน Release/Jira/Incident Record เดิม สร้าง Work Item ใหม่เฉพาะ Defect หรือ Improvement ที่ลงมือทำได้จริง ทำ Incident Review แบบกระชับเมื่อ Impact/Risk สมควร ไม่บังคับ Meeting หรือ Markdown Report ทุก Release เล็ก
-- **B. Close at Technical Health:** บันทึก Technical Health และ Critical Incidents ที่ยังค้าง โดยปล่อยให้ Process อื่นติดตาม Business Outcome และ Learning แยก
+**Minimum Closeout — ใช้ Release Ticket/Pipeline/Jira/Incident Record เดิม:**
 
-**หลัง Q6:** ตรวจ Consistency ของ Lifecycle กับ Workflow ที่ Accepted แล้ว Review v1.0 ฉบับสมบูรณ์เพื่อขอ Owner Approve แยกอีกครั้ง Draft นี้ไม่ได้ให้สิทธิ์ Production Deployment หรือ AI Automation
+1. **Actual Release Disposition:** บันทึก Artifact/Target/Exposure ที่ปล่อยจริง, Deployment Result และ Q4 Health/Critical Behavior Evidence พร้อมเวลาและ Links โดยแยกผล **Healthy / Degraded / Inconclusive / Recovery in progress** ห้ามถือว่า Checks ที่ไม่ได้รันหรือผล Async ที่ยังไม่ปรากฏคือ Success
+2. **Human Outcome Decision & Risk:** Human Release/Outcome Owner ที่มีอำนาจตัดสินว่า **ปิดเป็น Healthy**, คงสถานะ Degraded/เปิด Incident ต่อ หรือส่งต่องานค้างให้ Owner ชัดเจน Critical Checks จาก Q3/Q4 ยังต้องมี Evidence การปิด Record ไม่ได้ยกเว้น Safety/Mandatory Tests หรือรับความเสี่ยงแทน Human
+3. **Owner สำหรับ Gaps ที่สำคัญ:** ระบุ Defects, Dependencies, Compatibility, Incident Links, Remaining Risks และ Long-tail Monitoring พร้อม **Owner และ Next Checkpoint** หากยังไม่รู้ Business/Customer Outcome ให้มอบหมาย Owner ติดตามโดยไม่บังคับให้ Deployment Record ค้างไม่สิ้นสุด
+4. **Feedback กลับสู่ Engineering:** สร้าง/เชื่อม **Work Items ใหม่เฉพาะ Defect, Reliability Improvement หรือ Missing Behavior ที่ทำต่อได้จริง** พร้อมอ้าง Evidence หากเปลี่ยน Scope/Contract อย่างมีนัยสำคัญให้ย้อน Gate ของ Design/Planning ที่ได้รับผลกระทบ ส่วน Follow-up ปกติไม่ต้องกลับไป Approve ใหม่โดยไม่มีเหตุ
+5. **Learning ตาม Impact:** กรณี Outage, Regression, Rollback, Security/Data Incident หรือปัญหาซ้ำที่มีนัยสำคัญ ให้ทำ **Focused Incident Review** จาก Timeline/Contributing Factors/Evidence และ Action เพื่อป้องกันซ้ำ งานเล็กที่ Healthy เก็บใน Release Record เดิมก็เพียงพอ **ไม่บังคับ Meeting หรือ Markdown Report เพิ่ม**
+
+**ขอบเขต Business Outcome:** Service Healthy และ Critical Flows ผ่านไม่ได้พิสูจน์ว่า User Adopt Feature หรือ Product Outcome ดีขึ้น ถ้าต้องรอ Signals ภายหลัง ให้มี Product/Feature Owner และ Checkpoint ติดตาม การที่ Business Metric ยังไม่บรรลุไม่ได้แปลว่า Deployment ล้มเหลวโดยอัตโนมัติ แต่เป็นข้อมูลสำหรับปรับ Product/Engineering ต่อ
+
+**บทบาท AI:** AI สรุป Release Evidence, ชี้ Gaps ที่ไม่มี Owner, เสนอ Actionable Work Items และวิเคราะห์ Incident Evidence ที่ได้รับสิทธิ์ได้ แต่ **ห้ามปิด Degraded Release เอง, รับ Residual Risk แทนคน, เปลี่ยน Priority, เพิ่ม Production Privilege หรืออ้าง Human Approval** ข้อตกลง Release/Intervention ของ Q1–Q5 ยังอยู่ครบ
+
+## Proposed Release & Operations Lifecycle — Review Candidate (ยังไม่ Accepted)
+
+Q1–Q6 ทำงานเป็น **Iterative, Risk-adaptive Release Responsibility** ไม่ใช่ Waterfall บังคับหรือเพิ่ม Human Approval ทุกครั้งที่รัน Test:
+
+1. **เลือก Release Scope:** รวบรวม Work Items ที่มี **Human Verification Gate** ตามที่เกี่ยวข้องและ Dependencies ที่ Compatible, ตรึง Artifact/Manifest/Build/Commit, Production Targets และ Exposure ให้ชัด หนึ่ง Work Item ผ่าน Verification ไม่ได้หมายความว่า Story ข้ามทีมผ่าน Integration แล้ว
+2. **Release Readiness (Q3):** ตรวจ CI/Verification Evidence ของ Release **ทั้งชุด**, Contracts/Config/Migrations/Dependencies, Environment Permission, Release/Incident Owner, Recovery Plan และ Production Validation Signals ตาม Risk ถ้า Critical หรือ Mandatory Evidence ขาดต้อง **No-Go** ไม่แต่งผลว่า Pass
+3. **Bounded Human Approval (Q1 + Q2):** Human Release Owner ที่ได้รับอำนาจตัดสิน **Go / No-Go** สำหรับ Artifact, Targets, Rollout/Exposure และ Constraints เฉพาะครั้ง บันทึกใน Release Tool เดิม แยกจากสิทธิ์ MR Ready/Merge, Work Item Gates และ Production Execution Permission
+4. **Execute Routine Stages ที่อนุมัติ:** Human/Pipeline ที่มีสิทธิ์ Deploy เฉพาะใน Envelope เดิม บันทึก Artifact, Target, Step และผลรันจริง Routine Pipeline Steps ไม่ต้องขอ Human กดทุกครั้ง แต่ **หากเป็น Intervention ใหม่เมื่อเกิดเหตุผิดปกติต้องมี Human Confirm ตาม Q5**
+5. **Post-deploy Validation & Observation (Q4):** แยก Deployment Completed, Service/Dependency Health, Changed Business/Critical-flow Evidence, Stop Criteria และ Observation Window ตาม Risk Detection/Alerting อัตโนมัติได้ แต่ **Pause/Abort/Rollback/Roll Forward หรือ Recovery Action ใหม่ต้องมี Human ยืนยันใหม่ตาม Q5** โดยไม่ข้าม Safety Policy ที่เข้มกว่า
+6. **Close / Escalate / Learn (Q6):** Human บันทึกผลจริงพร้อม Evidence; ถ้ายังมี Critical Gap หรือ Incident ห้ามตีตราว่า Healthy มอบหมาย Remaining Risks, Long-tail/Customer Outcome และ Actionable Engineering Improvements กลับไป Gate ก่อนหน้าเฉพาะเมื่อเปลี่ยน Scope/Design อย่างมีนัยสำคัญ
+
+**Minimum Shared Record:** Release Identity/Manifest, Work Item/MR Links, CI/Verification & Dependency Evidence, Risk/Recovery Plan, Human Go/No-Go (ใคร เมื่อไร อนุมัติ Scope ใด), Artifact ที่ Deploy จริง, Validation/Observation Evidence, Q5 Intervention Decision (ถ้ามี), Release Disposition และ Owner ของงานค้าง ใช้ Fields/Links ใน Tool เดิมให้กระชับ **ไม่บังคับสร้างเอกสารใหม่**
+
+**Authority Boundary:** การอนุมัติ **Workflow Design** นี้ **ไม่ได้ให้สิทธิ์ Deploy Production, GitLab Ready/Merge, เข้าถึง Production, สั่ง Recovery, สร้าง AI Skill หรือ Automation** Protected Environment และ Emergency/Incident Policy จริงยังเป็นหลัก ถ้ากติกา Human Confirmation ขัดกับ Independent Safety Fail-safe ที่ระบบมีเป็นข้อบังคับ **ห้ามไปปิด Fail-safe นั้น** ต้องให้ System Owner จัดการความสอดคล้อง
+
+## Candidate Final-review Checklist — ก่อน Approve v1.0 อย่างชัดแจ้ง
+
+1. **Release Unit:** Work Item กับ Release Bundle ไม่ใช่หน่วยเดียวกัน Verification ผ่านไม่ได้อนุญาตให้ Merge/Deploy/Enable Flag และไม่เดา Branch/Artifact
+2. **Human Authority:** Q1 Human Release Gate, Q2 Bounded Envelope และ Q5 Human Confirmation **ทุก Anomaly-driven Intervention** ทำงานร่วมกับ Routine Pipeline Automation และ Mandatory Platform Fail-safe ได้
+3. **Readiness & Proof:** Q3 ตรวจ Compatibility และ Mandatory Checks ของทั้ง Release; Q4 ตรวจ Production Health/Behavior ด้วยหลักฐานจริง ไม่ใช่ Pipeline เขียว และ Critical Gap ทำให้สรุป Healthy ไม่ได้
+4. **Recovery Safety:** มี Owner และทางเลือก Mitigation/Rollback/Roll Forward ที่ทำได้จริง ประเมิน Irreversible Migration และ Data/User Impact ก่อน Deploy ไม่ให้ AI มี Autonomous Production Privilege
+5. **Learning & Proportionality:** Q6 แยก Technical Health จาก Product Outcome มี Owner ของ Actionable Gaps โดยไม่บังคับ Report/Ceremony ใหม่ทุกงาน
+6. **No Silent Authorization:** Q1–Q6 เป็น **Design Decisions เท่านั้น** Workflow ทั้งฉบับยังเป็น **Design Draft** จนกว่า Owner จะอนุมัติแยก Pilot, Skills, CI/CD Config และ Production Permissions ต้องขออนุญาตต่างหาก
+
+**Review Status:** ตกลง Design Decisions Q1–Q6 แล้ว แต่ Release & Operations v1.0 **ยังรอ Final Cross-document Review และ Owner Approve ชัดเจน**
