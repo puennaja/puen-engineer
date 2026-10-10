@@ -1,5 +1,6 @@
 # Software Engineering at Google — บทที่ 15: Deprecation
 
+- **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
 - **สถานะ:** Draft Study Notes v0.1; Candidate Principles **ยังไม่ Approved**
 - **ผู้เขียนบท:** Hyrum Wright
 - **แหล่งต้นฉบับ:** https://abseil.io/resources/swe-book/html/ch15.html
