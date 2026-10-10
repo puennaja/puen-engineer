@@ -1,5 +1,6 @@
 # Software Engineering at Google — บทที่ 16: Version Control and Branch Management
 
+- **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
 - **สถานะ:** Draft Study Notes v0.1; Candidate Principles **ยังไม่ Approved**
 - **ผู้เขียนบท:** Titus Winters
 - **แหล่งต้นฉบับ:** https://abseil.io/resources/swe-book/html/ch16.html
