@@ -48,6 +48,18 @@ Human Verification Gate → Release Review (แยก)
 
 **Scale:** งานเล็ก Reversible บันทึกใน MR สั้น ๆ ได้ งาน Cross-repo/Finance/Security ต้องมีหลักฐาน Contract, Tests, Review และ Release Risks มากขึ้น โดยไม่ต้องสร้าง Ticket ซ้ำ
 
+## Verification-first: เจ้าของ Acceptance และการพิสูจน์อย่างอิสระ (Design Direction)
+
+**ก่อน Implement:** Verification อ้าง Requirement/Domain/Contract ที่ตกลงแล้ว กำหนด **Acceptance Scenarios, Expected Results, Negative Cases, Test Seams และ Proof Surface** ไม่เดา Expected Result จากโค้ดที่ AI เขียน ถ้า Requirement ไม่ชัดต้องถาม Decision Owner ก่อนเขียน Test ที่กลายเป็นข้อกำหนดผิด
+
+หากมี Harness ที่เหมาะ Verification อาจสร้าง **Executable Acceptance/Contract Test เล็ก ๆ** ซึ่ง Fail เพราะ Behavior ที่ยังไม่มีจริง ถ้ายังไม่มี Harness หรือ Test แพง ใช้ Given–When–Then/Repro ที่ Review ได้แทน Test Fail เพราะ Environment พังนับเป็น **Blocked/Inconclusive** ไม่ใช่ Red ที่ใช้พิสูจน์ Requirement
+
+**ระหว่าง Implement:** ฝั่ง Implementation เป็นเจ้าของ Code, Unit/Regression Tests และ TDD แบบ Red → Green → Refactor เป็น Vertical Slices Verification ช่วยท้าทาย Assertions, API Contract และ Partial Diff ได้โดยไม่เพิ่ม Approval Gate
+
+**หลังมี Code:** Verification ตรวจว่า Developer Tests จับ Behavior ผิดได้จริงหรือไม่ และรัน Independent Behavior Checks บน API/UI/CLI/Data ตามความเสี่ยง พร้อม Review Diff เทียบ Spec และ Repo Standards Unit Tests/Build ผ่านอย่างเดียว **ยังไม่ใช่หลักฐานเพียงพอ** Findings ส่งกลับ Implement เพื่อ Fix/Retest ตาม Q7 และการเปลี่ยน Acceptance/Design สำคัญต้องกลับไปหา Human Gate ที่ได้รับผลกระทบ
+
+Human Implementation/Verification Gates ราย Increment ยังมีอยู่ ใช้ Jira/MR เดิมเก็บ Scenario/Expected Outcome/Check/Result ไม่บังคับเอกสารหรือ Skill เพิ่ม อ้างอิง [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md) และ [pstack Verification](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md)
+
 ## เกณฑ์เริ่มและเลือกความลึก
 
 เริ่มเมื่อมี Slice, Test Plan หรือ Contract ให้ตรวจได้ อ่าน Requirement, Diff, ผลทดสอบที่รันจริง, Design Constraints และ Risks
