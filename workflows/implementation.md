@@ -30,18 +30,24 @@ Turn one agreed, sufficiently understood work item into **reviewable code** with
 Implementation and [Verification](./verification.md) are distinct responsibilities working in a shared iterative loop, **not sequential waterfall gates**:
 
 ```text
-Approved Feature design + plan → agreed Work Item
-        ↓
-Verification-first: specify observable acceptance / examples / test seams
-        ↓                         ↖ questions or failing checks
-Implementation: vertical slice → test-first where valuable → unit tests GREEN + developer checks
-        ↕
-Verification: test quality + real-behavior proof + independent review
-        ↓ findings → scoped fix → targeted re-verification
-        ↓ human Work Item Verification Gate → separate release decisions
+Agreed Work Item within approved Feature/Story decisions
+    ↓
+Verification-first: expected behavior + acceptance/test intent (before code)
+    ↓
+Implementation: small slices + optional TDD → unit/regression tests PASS
+                + required developer checks, with observed results
+    ↓
+HUMAN IMPLEMENTATION GATE: review scope, diff, checks and publish authority
+    ↓
+Scoped publish / Draft MR (if needed; explicit approval for EACH MR)
+    ↓
+FORMAL INDEPENDENT VERIFICATION: test quality + behavior + code review
+    ↳ findings → scoped Implementation fix → unit tests PASS → reverify
+    ↓
+HUMAN VERIFICATION GATE → separate MR completion / release decisions
 ```
 
-**Verification starts before code** by defining expected behavior and a meaningful proof strategy. It can then challenge partial code and repeatedly evaluate outcomes. This is a **responsibility loop, not a new sequential approval gate**: preliminary verification work does not require a completed Implementation Gate; the agreed human Design/Planning gates and the per-Work-Item Implementation/Verification exit gates remain in force. Handoff information belongs in the **same issue/MR**, not mandatory duplicate documents:
+**Verification-first starts before code** by defining expected behavior and a meaningful proof strategy. Provisional review of scenarios, contracts and partial diffs is allowed during Implementation; **formal** Independent Verification starts only after observed passing developer checks and the **Human Implementation Gate**. The diagram shows the fixed approval order, **not** a mandatory waterfall for every edit or early reviewer comment. A small standalone bug can use a lean, human-approved Design/Planning path (defined below), not silently omit those approvals. Handoff information belongs in the **same issue/MR**, not mandatory duplicate documents:
 
 - Scope and links: work item, acceptance, repository diffs.
 - Change boundaries: contracts, schema, critical invariants and operational risks.
@@ -73,18 +79,36 @@ Scale the checks and independent review to risk. Solo work may use separate self
 
 **Timing distinction:** Verification-first **acceptance/test-intent design** and provisional review/feedback can happen before or during coding. The **formal Independent Verification assessment** (test quality, external behavior, contracts, independent diff review) happens only after the Implementation developer-check precondition and the already agreed Human Implementation Gate. Green unit tests **are an entry condition, not a correctness verdict**. Any findings return to scoped Implementation: rerun impacted unit tests first, then independently reverify and complete the Human Verification Gate. No additional approval gate is introduced.
 
+## Working-tree and existing-change safety (v1.0 review amendment)
+
+**Before the first write:** inspect the **actual repository, current branch/upstream and Git status**, including staged, unstaged and untracked files; inspect relevant diffs without changing them. Identify a baseline so the agent can distinguish **pre-existing human/other-agent work** from changes it is authorized to make for this Work Item.
+
+- **Preserve existing work:** never overwrite, reset, clean, stash, discard, rebase, switch branches over, or delete pre-existing changes (including untracked files) merely to get a clean workspace. Do not modify an overlapping work-in-progress file without resolving ownership and safe isolation with the human first. Never use destructive Git commands without the separate authorization required by the scoped-Git policy.
+- **Keep work isolated:** prefer a dedicated work branch/worktree **when available and authorized by local Git Flow**, or coordinate a clearly agreed safe editing scope. Creating isolation must not secretly move, stash, or remove someone else's files. If existing changes make isolation unsafe or ownership unclear, **stop and ask** rather than guessing.
+- **Before committing:** recheck Git status and the actual staged/unstaged diff, attribute each change to the Work Item, and stage/commit **only authorized changes**. Avoid indiscriminate staging (for example `git add -A`) where unrelated or pre-existing work exists. Do not claim a clean baseline or a focused diff without checking.
+
+This safety check does **not** require asking approval for every ordinary file edit inside an already approved, uncontested Work Item scope. It protects work outside that scope and does not grant new branch, push or MR permissions.
+
+## Lean path for a small, low-risk bug or standalone Work Item (v1.0 review amendment)
+
+The accepted general lifecycle and Delivery Planning support **risk-proportional depth**, not a new full Feature document for every tiny, reversible fix. For a small bug inside **already approved Feature/Story boundaries**, **reuse existing Design/Planning approvals**, and record the specific repro or expected behavior, affected scope, risk, owner, relevant tests and change intention in its Jira Work Item. No repeat Feature gates solely because the next Work Item starts.
+
+For a genuinely standalone small bug **without a prior applicable approved Feature plan**, have the authorized human make **concise, explicit Design and Planning decisions** in the existing Jira/issue (they may be reviewed together in one conversation/checkpoint), confirming the expected behavior, safe approach/scope, risk/rollback and owner. **Do not treat "small" as implicit approval or skip the Track A Design/Planning decisions.** Higher-risk bugs, cross-repo contract/data changes or unresolved requirements require deeper upstream work and the appropriate human approvals.
+
+In **both** paths, the assigned Work Item still uses Verification-first intent, scoped Implementation, **applicable unit/regression tests and developer checks passing**, a **Human Implementation Gate**, then formal Independent Verification and the **Human Verification Gate**. Repo-specific Git permissions and **per-Draft-MR human confirmation** remain unchanged. No mandatory new artifact, extra gate or general exemption is introduced.
+
 ## Activities (repeat as necessary)
 
 | Activity | Action | Minimal evidence |
 | --- | --- | --- |
-| 1. Orient | Read relevant code, AGENTS.md where available, test conventions, relevant requirement/design, current Git state | Existing behavior, known constraints and evidence-backed affected paths |
+| 1. Orient + protect baseline | Read code/AGENTS.md/tests/requirements and inspect branch/upstream, staged, unstaged and untracked work **before edits** | Existing behavior, scope/ownership of pre-existing changes and evidence-backed affected paths |
 | 2. Agree test intent | Align with Verification's source-backed acceptance examples, expected outcomes, safe observable seams and non-goals | Linked scenarios / meaningful check, with unknowns owned |
 | 3. Plan local edits | Choose a small vertical slice, its test-first seam when appropriate, minimal design-consistent code and relevant migrations/errors | Next verifiable slice, intended developer test and key unknowns |
-| 4. Implement + developer tests | Prefer red → green → refactor on viable seams; otherwise use the nearest credible check; keep edits reversible and scoped | Meaningful test failure/pass when feasible, reviewable diff and rationale |
+| 4. Implement + developer tests | Prefer red → green → refactor on viable seams; otherwise use the nearest credible check; edit only authorized files, preserving other work | Meaningful test failure/pass when feasible, reviewable diff and rationale |
 | 5. Developer checks | Run suitable local tests, lints, typechecks and builds; write or update behavioral/regression tests | Actual commands/results, not AI-claimed outcomes |
-| 6. Handoff or iterate | Fix local findings; communicate contracts, unrun checks, migrations and dependencies to Verification | Diff link, acceptance mapping, test evidence and known gaps |
+| 6. Handoff or iterate | Recheck own diff/staging, fix local findings, report contracts, unrun checks, migrations and dependencies | Scoped diff/commit evidence, acceptance mapping, actual test results and known gaps |
 
-**Do not wait until the end to test.** Developer checks are inside implementation for fast feedback, but **independent verification** is defined in a separate workflow. An implementer can request it during any iteration.
+**Do not wait until the end to test.** Developer checks are part of Implementation for fast feedback; **provisional Verification feedback** is available at any point, whereas **formal Independent Verification** follows passing applicable developer checks and the Human Implementation Gate.
 
 ## Evidence-driven implementation — pstack + grill-me adaptation (candidate for v1.0)
 
@@ -113,7 +137,7 @@ Use a focused **change → developer check → inspect → adjust** loop, not a 
 
 ### 4. Reviewability and handoff
 
-Before a review pass, remove unrelated changes, dead compatibility scaffolding and unsupported defensive code where safe. **Do not adopt pstack's blanket comment-removal preference**: retain comments that explain non-obvious invariants, externally imposed constraints and genuinely useful API contracts. Keep human-reviewed decisions and proof in the existing Jira/MR record.
+Before a review pass, remove **only unrelated edits attributable to this Work Item that the agent is authorized to change**, dead compatibility scaffolding and unsupported defensive code where safe; never remove pre-existing user changes. **Do not adopt pstack's blanket comment-removal preference**: retain comments that explain non-obvious invariants, externally imposed constraints and genuinely useful API contracts. Keep human-reviewed decisions and proof in the existing Jira/MR record.
 
 **Candidate future skill boundaries (not yet created):** a task router (goal/done/evidence → selected procedure), codebase-grounding, implementation-by-slice and a decision-interview helper. Do not copy `/poteto-mode`, `/architect` or `/grill-me` into a mandatory `AGENTS.md` chain. Validate any eventual skill on pilot tasks and compare effort, quality and token cost against the no-skill baseline.
 
@@ -124,6 +148,7 @@ Before a review pass, remove unrelated changes, dead compatibility scaffolding a
 - **Consider TDD first** for changed feature/bug behavior with a stable seam and inexpensive feedback; use test-after or an alternative proof when TDD adds brittle setup or low signal. Do not mandate TDD or a coverage percentage universally.
 - Treat schema migrations, retries, idempotency, authorization, concurrency and observability as part of the affected change where relevant.
 - Only claim a check ran if its results were actually observed. Mark missing tools/credentials as **Not run** or **Blocked**.
+- Inspect and preserve the existing Git worktree; never stage, overwrite or discard unrelated human/agent changes.
 - Avoid secrets or company-confidential data in public repositories or unauthorized AI tools.
 - Keep one issue/MR as the living record when sufficient; no mandatory duplicate Markdown plan.
 
@@ -180,7 +205,9 @@ Provide:
 2. Separate ownership without mandatory handoff for each edit.
 3. Evidence and findings shared through one existing issue/MR.
 4. Verification-first acceptance/test intent, TDD where viable, and risk-proportional independent behavior evidence.
-5. Real repo access and Skill implementation remain separately authorized.
+5. Existing working-tree/user changes are protected, including before edits and commits.
+6. Small bug/standalone Work Item uses risk-proportionate upstream depth **without bypassing applicable human Design/Planning and Work Item gates**.
+7. Real repo access and Skill implementation remain separately authorized.
 
 ## Pilot / open decisions
 
