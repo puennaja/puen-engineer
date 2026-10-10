@@ -23,7 +23,7 @@
 
 สร้าง **หลักฐานที่เชื่อถือได้ว่าโค้ดตรง Acceptance ไม่ทำลาย Contract สำคัญ และได้รับการ Review อย่างเหมาะสม**
 
-Verification เป็น Workflow ที่มีความรับผิดชอบและ Exit Decision ของตัวเอง แต่ **เริ่มได้ระหว่าง Implementation** และส่ง Findings ย้อนให้แก้ได้หลายรอบ ไม่ใช่รอทำทุกอย่างจบแบบ Waterfall
+Verification มีความรับผิดชอบและ Exit Decision แยกจาก Implementation: **Verification-first / Preliminary Feedback** เริ่มได้ก่อนหรือระหว่าง Implement และส่ง Findings ย้อนให้แก้ได้ แต่ **Formal Independent Verification** เริ่มหลัง Unit/Regression Tests กับ Developer Checks ที่เกี่ยวข้องผ่านจริงและ Human Implementation Gate เท่านั้น เป็นการวน Loop ไม่ใช่ Waterfall ที่รอ Review ทุกไฟล์
 
 Implementation รับผิดชอบการสร้าง Change และ Developer Checks; Verification รับผิดชอบการประเมิน Acceptance, Failure, Integration และ Review Findings งาน Solo คนเดียวอาจรับหลายบทบาท แต่ต้องแยกการ Self-check กับ Independent Assessment ให้ชัด AI Review ไม่ใช่การอนุมัติของมนุษย์
 
@@ -49,7 +49,7 @@ FORMAL INDEPENDENT VERIFICATION: Code Review + Behavior + Test Quality
 HUMAN VERIFICATION GATE → MR Completion / Release Decision (แยก)
 ```
 
-**Verification เริ่มได้ก่อนเขียนโค้ด:** กำหนดพฤติกรรมและหลักฐานจาก Requirement/Contract ที่ยืนยันก่อน ไม่ใช่เพิ่ม Approval Gate ใหม่ **เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
+**Verification-first Preparation เริ่มได้ก่อนเขียนโค้ด:** กำหนด Acceptance, Expected Behavior และ Evidence จาก Requirement/Contract ที่ยืนยันแล้ว ส่วน **Preliminary Feedback** ตรวจ Test Strategy, Contract หรือ Partial Diff ระหว่าง Implement ได้ แต่ **ยังไม่ใช่ Formal Independent Verification** ป้าย Ready for Verification เป็นเพียงการส่งต่องาน ไม่ได้ข้ามเกณฑ์เข้า Formal ที่อยู่ด้านล่าง Developer Tests ยังเป็นหน้าที่ Implementation
 
 **ส่งต่อผ่าน Jira/MR เดิมเพียงชุดเดียว** ไม่บังคับสร้างเอกสารใหม่:
 - **Identity / Scope:** Work Item, Acceptance IDs, Repo/Diff Links, Exclusions
@@ -84,6 +84,17 @@ Human Implementation/Verification Gates ราย Work Item ยังมีอ�
 
 เมื่อเข้า Formal Independent Verification แล้วจึง **ท้าทาย Tests ที่ผ่าน** ว่า Assertions จับ Behavior ตาม Requirement ได้จริงหรือไม่ พร้อม Negative/Edge Cases, API/DB/BFF Contract Evidence และ Independent Diff Review **Unit Tests ผ่านไม่เท่ากับโค้ดถูกต้อง** หากพบ Finding ส่งกลับ Implementation → แก้ไข → รัน Unit Tests ที่เกี่ยวข้องใหม่ → Independent Reverify และผ่าน Human Verification Gate เดิม ไม่มี Gate ใหม่เพิ่ม
 
+## Verification Execution Safety Preflight — ก่อนรัน Checks ที่มี Side Effects (แก้ตาม Review v1.0)
+
+**Preflight นี้เป็นการตรวจความปลอดภัย ไม่ใช่ Human Gate ใหม่** ก่อนยิง API จริง, รัน Integration Test, เขียน/แก้ Database, Migration, Job, Queue/Event, ส่ง Notification หรือ Cleanup ให้ตรวจ:
+
+1. **Scope และ Target:** Work Item, Service/Repo, Environment/Endpoint/Database ที่จะใช้, แต่ละ Check เป็น Read-only หรือมี Side Effects อะไร รวมถึง Downstream Services, Events, Logs และผู้ใช้อื่นที่อาจได้รับผล
+2. **Permission และ Environment:** ค่าเริ่มต้นคือ **Local/Isolated Test หรือ Non-production Environment ที่ได้รับอนุญาตเฉพาะ** ใช้ข้อมูล Synthetic/Sanitized; การมี Credential หรือเข้า Environment ได้ **ไม่แปลว่ามีสิทธิ์เขียน/ทดสอบ** ห้ามรัน Checks ที่ Production หรือเชื่อมต่อ Production แม้อ้างว่า Read-only หากไม่ได้รับอนุญาตแยกโดยชัดแจ้งและมี Safe Procedure ของทีม การทำ Production Migration, Real Payment, External Communication หรือคำสั่ง Privileged/Destructive ต้องผ่านขั้นตอนอนุมัติเฉพาะของทีม Workflow นี้ไม่ได้ให้สิทธิ์เหล่านั้น
+3. **Isolation และ Data Safety:** หลีกเลี่ยงข้อมูลการเงิน/ข้อมูลส่วนบุคคลจริง, Secrets, External Integrations ที่ควบคุมไม่ได้ และการชน Shared State หากจะทดสอบการเขียน/Async ต้องยืนยัน Test Identity, Fixture, Transaction/Rollback หรือ Cleanup Plan และ Downstream Effects **Cleanup ได้เฉพาะ Resource ที่การรันทดสอบครั้งนี้สร้างหรือเป็นเจ้าของเอง** ห้ามลบข้อมูลเดิมหรือข้อมูลที่ไม่รู้เจ้าของ
+4. **Stop Condition:** ถ้าไม่ชัดเรื่อง Environment, Permission, Data Owner, Side Effect หรือ Cleanup Boundary **ห้าม Execute Check ที่ไม่ปลอดภัย** ให้รายงาน **Blocked / Not run** พร้อมเหตุผลและ Owner ที่ต้องอนุมัติหรือช่วยจัด Environment; อ่าน Spec/Diff แบบ Read-only ต่อได้เมื่อมีสิทธิ์ แต่อย่าอ้างว่าพิสูจน์ Behavior แล้ว
+
+บันทึก Target/Environment, Authorization/ข้อจำกัด, Test Fixtures, Commands, Observed Results, Side Effects และ Cleanup Status ลง Jira/MR เดิม ห้ามคัดลอก Credentials หรือ Sensitive Payloads ลง Public Report เคารพ Policy บริษัท/Repo ที่เข้มงวดกว่า และกติกา [Working Tree Safety ของ Implementation ที่ Accepted](./implementation.th.md) ถ้าต้องแตะไฟล์
+
 ## Independent Verification v1.0 — Safety Net 4 ด้าน (ข้อตกลง 2026-10-10)
 
 หลัง **Unit/Regression Tests ที่เกี่ยวข้องและ Developer Checks ผ่านจริง** และผ่าน Human Implementation Gate เดิมแล้ว Formal Independent Verification ประเมิน **4 ด้าน** ต่อ Work Item ที่รับผิดชอบ **ทุกงานต้องพิจารณาทั้ง 4 ด้าน แต่ความลึกของ Tests/Review แตกต่างตาม Risk และความเกี่ยวข้อง** Unit Tests เขียวเป็นเงื่อนไขเข้า ไม่ใช่หลักฐานว่าทุกอย่างถูกต้อง
@@ -103,7 +114,7 @@ Human Implementation/Verification Gates ราย Work Item ยังมีอ�
 
 ## เกณฑ์เริ่มและเลือกความลึก
 
-เริ่มเมื่อมี Slice, Test Plan หรือ Contract ให้ตรวจได้ อ่าน Requirement, Diff, ผลทดสอบที่รันจริง, Design Constraints และ Risks
+**Verification-first / Preliminary Review** เริ่มได้ทันทีที่มี Acceptance Example, Test Plan, Contract หรือ Partial Diff ที่ Review ได้ ส่วน **Formal Independent Verification** เริ่ม **เฉพาะเมื่อ** Unit/Regression Tests และ Developer Checks ที่เกี่ยวข้องผ่านจริง พร้อม **Human Implementation Gate** (หรือ Alternative Checks ที่ Human อนุมัติตามข้อยกเว้นที่ระบุไว้ก่อนหน้า) ก่อนเริ่ม Formal Checks ต้องอ่าน Requirement ที่ยืนยัน, **Diff Base/Commit ที่แน่นอน**, ผลรันทดสอบจริง, Dependencies, Risks และ Execution Safety Preflight ด้านล่าง
 
 เลือกความลึกตาม Impact, Reversibility, Privacy, Concurrency, External Contract และ Operational Risk
 
@@ -202,7 +213,15 @@ Work Item ถัดไปที่อยู่ใน **Feature Scope ที่�
 
 Finding ที่ดีประกอบด้วย **Severity | ตำแหน่ง/หลักฐาน | Scenario/Impact | Recommendation | Resolution/Owner** ไม่ใช่บังคับ Personal Style และการไม่มี Finding ไม่ได้แปลว่าไม่มี Bug
 
-**AI Review:** ใช้ Prompt/Context แยกหรืออีก Model ได้เป็นแนวทางทดลอง แต่ไม่ได้รับประกันว่า Independent จริง Engineer ต้องตัดสินและรับผิดชอบความเสี่ยงเอง
+**AI Review:** การแยก Prompt/Context หรือใช้คนละ Model ช่วยได้ แต่ **ไม่ใช่ Independent Human Review** ต้องใช้ Review Inputs และกติกา Separation ข้างต้น Human ยังเป็นเจ้าของผลตัดสินสำคัญ, Residual Risk และ Verification Gate
+
+## การแยก Independent Review และ Inputs ขั้นต่ำ (แก้ตาม Review v1.0)
+
+**ก่อน Formal Review Pass** ส่งให้ Reviewer เห็น (ก) Work Item/Parent Story Acceptance และ Exclusions ที่ยืนยันแล้ว (ข) **Diff พร้อม Base/Commit ที่แน่นอน** (ค) Contracts/Repo Standards ที่เกี่ยวข้อง (ง) Developer-check Outputs **ซึ่งต้องตรวจสอบได้ ไม่ใช่ข้อสรุป** และ (จ) Boundary/Risk ที่เปลี่ยน **ห้ามใช้ Implementer's Summary ว่า "ผ่านหมด" เป็นแหล่งข้อมูลหลักแทน Requirement/Diff/Test Evidence** Reviewer ต้องเทียบ Expected Behavior กับ Source ที่ Approve ไม่ใช่ผลที่ AI เดาจากโค้ดตัวเอง
+
+**Review แยกสองแกน:** (1) **Spec/Behavior Correctness** รวม Missing Scenarios, Unauthorized Scope, Contract/Test Assertion Defects และ (2) **Codebase Quality/Risk** เช่น Maintainability, Security, Data/Integration/Operation Side Effects แยก Finding ที่พิสูจน์ได้จาก Hypothesis/Style Preference หาก Engineer/AI ตัวเดียวกับ Implementer ต้องทำ **Skeptical Review Pass แยกอย่างตั้งใจ** พร้อมระบุข้อจำกัด การแยก Prompt/Context หรือใช้คนละ Model ช่วยลด Shared Assumptions ได้ แต่ไม่ได้แปลว่า Independent จริงแบบ Human
+
+**ตาม Risk:** Low-risk ใช้ Separate Self-review Pass เมื่อ Policy อนุญาต; Medium-risk ใช้ Review Pass/Reviewer ที่แยกจาก Implementer ตามความเสี่ยง; High-risk ให้ Qualified Human Peer/Domain Reviewer ตรวจเมื่อ Policy หรือ Risk กำหนด และ **Human Verification Gate ยังบังคับทุก Work Item**
 
 ## Cross-repo Verification
 
@@ -215,35 +234,53 @@ Finding ที่ดีประกอบด้วย **Severity | ตำแห�
 Scenario | Evidence / Result | Gap
 
 ## Checks
-Command / Manual procedure | Environment | Pass/Fail/Not run | Link
+Required/Optional + Risk Reason | Command/Procedure | Authorized Environment/Fixture | Expected vs Observed | Pass/Fail/Not run/Blocked/Inconclusive | Evidence Link
 
 ## Findings
-Severity | Location/Evidence | Impact | Resolution | Owner
+Severity/Blocking? | Spec หรือ Quality Axis | Location/Diff Base/Evidence | Impact | Resolution | Owner
 
 ## Contract / Rollout
-Compatibility, Integration, Migration, Remaining Verification
+Compatibility, Integration, Migration, Remaining Verification และ External Owner
+Execution Preflight: Target, Permission, Side Effects, Data Safety, Cleanup เฉพาะของที่สร้างเอง
 
 ## Decision
-Verified for release review | Fix & reverify | Blocked | Stop/defer
-Human decision owner / known limitations:
+Recommended: Verified for release review | Fix & reverify | Blocked | Stop/defer
+Required Checks ที่ยังไม่ผ่าน / Policy-approved Equivalent Evidence (ถ้ามี):
+Remaining Risks / Owners / Limitations:
+Human Verification Gate Owner / Decision / Date:
 ```
+
+## Required Evidence, Blockers และการตัดสินผล (แก้ตาม Review v1.0)
+
+**ก่อนเริ่ม Formal Checks** ให้กำหนดว่า Acceptance/Checks ไหน **Required** ตาม Risk ของ Work Item, Security/Data Impact และ CI/Review Policy ของ Repo/ทีม และอะไรเป็น Optional Probe ระบุ Expected Outcomes และ Decision Owner/Policy ให้ชัด **ห้ามลดระดับ Required Check** เพราะ Environment หรือ Harness ใช้งานไม่ได้
+
+| Recommendation | เกณฑ์ขั้นต่ำ / สิ่งที่ต้องบันทึก |
+| --- | --- |
+| **Verified for Release Review** | Acceptance และ **Required Safety/Behavior/Contract Checks ทุกข้อ** มี Evidence จากการรันจริง หรือหลักฐาน **เทียบเท่าที่ได้รับอนุญาตตาม Policy** ไม่มี Blocking Finding ค้างอยู่; Remaining Non-blocking Risks/Checks ที่ไม่ได้รันมี Owner ชัดและส่งให้ **Human Verification Gate** พิจารณา ไม่เท่ากับ Story ทั้งหมดผ่านหรือ Deploy ได้ |
+| **Fix & Reverify** | พบ Acceptance Fail/Regression/Blocking Defect ที่แก้ได้ใน Work Item Scope เดิม → กลับ Implementation แก้ → รัน Unit Tests ที่ได้รับผลซ้ำ → Independent Reverify |
+| **Blocked** | ขาด Required Check/Evidence, Environment, Access, Requirement Decision หรือ Reviewer ที่จำเป็น ระบุ **Not run / Inconclusive**, Blocker Owner และ Safe Next Action **ห้ามตีความว่า Verified** เพราะ Test อื่นผ่าน |
+| **Stop / Defer** | Risk ด้าน Safety/Correctness รับไม่ได้หรือขอบเขต/Design เปลี่ยนอย่างมีนัยสำคัญ ต้องหยุดงานส่วนที่ไม่ปลอดภัยและ Escalate ไป Human Owner |
+
+**ข้อยกเว้นต้องชัดเจน:** ถ้า Check ที่ Required รันไม่ได้ มีเพียง Human Decision Owner ที่ได้รับอำนาจภายใต้ **Policy ของ Repo/ทีมจริง** เท่านั้นที่อนุมัติ Equivalent Proof หรือ Exception ได้ โดยต้องบันทึกเหตุผล ข้อจำกัด Evidence และ Residual Risk Owner **ห้ามยกเว้น Policy ที่บังคับอยู่ หรือรายงาน Test ที่ไม่รันว่า Pass** ถ้าไม่มี Equivalent Evidence ที่ Policy ยอมรับ ให้คง **Blocked / Stop** ไว้ ส่วน Optional Test ที่ Not run ไม่จำเป็นต้อง Block ถ้ามี Evidence ที่เพียงพอต่อ Risk และบันทึก Gap ไว้
+
+AI/Independent Reviewer ทำได้เพียง **Recommend Status** ผู้มีอำนาจที่เป็น Human ยังต้องตัดสิน **Verification Gate ต่อ Work Item** ห้ามถือว่า CI เขียว, Test Suite เขียว, ไม่มี Finding หรือ Implementer บอกว่าเสร็จ เท่ากับ Approve อัตโนมัติ
 
 ## Exit Decision และวนกลับ
 
-- **Verified for Release Review:** Evidence เพียงพอกับ Risk, Critical Findings เคลียร์, Remaining Risks มี Owner แต่ **ไม่ได้อนุญาต Deploy**
+- **Verified for Release Review:** Required Evidence ครบ (หรือมี Equivalent Proof ที่ Policy อนุมัติถูกต้อง), Blocking Findings เคลียร์, Residual Non-blocking Risks มี Owner **ไม่ได้อนุญาต Deploy หรือแปลว่า Story ทั้งหมดผ่าน**
 - **Fix & Reverify:** กลับไป [Implementation](./implementation.th.md) แล้วตรวจส่วนที่เปลี่ยนซ้ำ
-- **Blocked — Discovery/Design:** Requirement/Contract ขัดกันหรือ Unknown ไม่ปลอดภัย
-- **Stop/Defer:** Risk รับไม่ได้หรือข้อมูลยังไม่พอให้รับรอง
+- **Blocked:** Required Evidence, Requirement/Contract Decision, Environment, Permission หรือ Reviewer ที่จำเป็นไม่พร้อม ระบุ Owner และ Safe Next Action
+- **Stop/Defer:** Risk ที่ยอมรับไม่ได้หรือ Design/Scope Conflict สำคัญที่ต้องหยุดส่วนที่ไม่ปลอดภัยและ Escalate
 
-แต่ละ Work Item เข้า-ออก Workflow นี้หลายรอบได้ ไม่ต้องรอโค้ดทั้ง Feature เสร็จ
+ไม่ต้องรอทั้ง Feature/Story Implement เสร็จจึงค่อย **Preliminary Feedback หรือ Formal Verification ของ Work Item ที่พร้อมแล้ว** แต่ Formal Verification ของ Work Item นั้นยังต้องผ่าน Developer Checks และ Human Implementation Gate ก่อนเสมอ เมื่อแก้ Finding ให้รัน Unit Tests ที่กระทบใหม่ แล้ว Reverify
 
 ## Checklist ก่อนอนุมัติ v1.0
 
-1. Design/Planning Approve ระดับ Feature และ Implementation/Verification Approve ราย Work Item ชัดเจน โดยไม่ขออนุมัติซ้ำหรือข้าม Gate
-2. Verification แยกจาก Developer Checks แต่เริ่มตรวจระหว่าง Implementation ได้
-3. Shared Handoff อยู่ใน Jira/MR โดยไม่เพิ่ม Artifact บังคับ
-4. ครบ **Safety Net 4 ด้าน**: Requirement, Independent Code Review/Test Quality, Risk-based Behavior Proof และ Evidence/Risk Decision
-5. Release Authorization และ Permission ของระบบจริงต้องแยกอนุมัติ
+1. Feature Design/Planning กับ Work Item Implementation/Verification Gates ชัด และแยก **Preliminary กับ Formal Verification** ไม่กำกวมหรือไม่?
+2. **Execution Safety Preflight** ป้องกันการรันผิด Environment/Permission, ข้อมูลจริง, Side Effects และ Cleanup ของคนอื่นโดยไม่เพิ่ม Human Gate หรือไม่?
+3. เกณฑ์ **Required Checks / Blocked / Explicit Exception** เข้มพอที่จะไม่รับรองโค้ดที่ไม่มี Evidence สำคัญหรือไม่?
+4. ครบ **4 Safety Nets** ตาม Risk และ Reviewer ใช้ **Source-backed Acceptance + Fixed Diff + Evidence** แยกจาก Implementer's Claim หรือไม่?
+5. ใช้ Jira/MR เก็บ Evidence และ Human Decision โดยไม่สร้าง Artifact บังคับเพิ่ม พร้อมรักษา GitLab Permissions, Human Confirmation ก่อนแต่ละ MR, Release Authority และ Skill Approval แยกกันหรือไม่?
 
 ## Pilot และคำถามรอ Review
 
