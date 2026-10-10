@@ -22,14 +22,18 @@ Turn one agreed, sufficiently understood increment into **reviewable code** with
 Implementation and [Verification](./verification.md) are distinct responsibilities working in a shared iterative loop, **not sequential waterfall gates**:
 
 ```text
-Delivery Planning → Implementation (code + developer checks)
-                     ↕
-                 Verification (acceptance + independent review)
-                     ↓ findings → implement fixes → reverify
-                     ↓ sufficient evidence → release review (separate)
+Approved Feature design + plan → agreed Increment
+        ↓
+Verification-first: specify observable acceptance / examples / test seams
+        ↓                         ↖ questions or failing checks
+Implementation: one vertical slice → test-first where valuable → developer checks
+        ↕
+Verification: test quality + real-behavior proof + independent review
+        ↓ findings → scoped fix → targeted re-verification
+        ↓ human Increment Verification Gate → separate release decisions
 ```
 
-Verification may start on acceptance examples, contracts, test strategy or partial diffs; it need not wait for implementation to finish. Handoff information belongs in the **same issue/MR**, not mandatory duplicate documents:
+**Verification starts before code** by defining expected behavior and a meaningful proof strategy. It can then challenge partial code and repeatedly evaluate outcomes. This is a **responsibility loop, not a new sequential approval gate**: preliminary verification work does not require a completed Implementation Gate; the agreed human Design/Planning gates and the per-Increment Implementation/Verification exit gates remain in force. Handoff information belongs in the **same issue/MR**, not mandatory duplicate documents:
 
 - Scope and links: increment, acceptance, repository diffs.
 - Change boundaries: contracts, schema, critical invariants and operational risks.
@@ -39,14 +43,28 @@ Verification may start on acceptance examples, contracts, test strategy or parti
 
 Scale the checks and independent review to risk. Solo work may use separate self-check and review passes; AI agreement alone is not independent human approval. After a fix, reverify affected behavior and dependencies, widening checks if impact expands. Neither workflow authorizes deployment.
 
+## Verification-first, TDD-enabled implementation contract (agreed design direction; v1.0 candidate)
+
+**Default for a sufficiently understood feature/bug increment:** begin with the [Verification workflow](./verification.md) to express **what counts as correct** before selecting the implementation. Use confirmed requirements, representative examples, domain invariants and known codebase contracts as the source of expected outcomes, not guesses from generated code.
+
+**Verification owns test intent and independent judgment:** select acceptance/negative/boundary scenarios, externally observable expected outcomes, relevant **test seams** and proof surfaces. When a reliable harness exists, it may produce a small **executable acceptance/contract test** that initially fails for the intended missing behavior; otherwise a reviewable Given–When–Then scenario or repro is sufficient. A test that fails because the service is unbuilt, dependencies are unavailable or the harness is broken is **not evidence** of a behavior regression.
+
+**Implementation owns developer tests and code:** receive the agreed scenario/seam and proceed in small vertical slices. When the seam is stable and the feedback is cheap, prefer **TDD: meaningful red (expected failure) → minimal green → refactor with behavior preserved → rerun**. Implementers own unit/regression tests, suitable integration tests and local developer checks. Do **not** write a whole suite of speculative tests up front, test private implementation details, or rewrite acceptance expectations merely to make a failing build green. For UI/manual/high-setup work, use the nearest credible executable check; give a reason when TDD is unsuitable.
+
+**Feedback ownership:** Verification can revise *proposed* scenarios when new **source-backed** requirement evidence emerges, but material changes to agreed acceptance, design, contracts or scope return to the relevant human decision owner / affected gate. Implementation can challenge test feasibility; neither side unilaterally changes the success oracle. After code changes, Verification checks the quality of developer tests and **independently probes the actual behavior**, including meaningful failure cases. Build + unit tests are necessary feedback where applicable, **not alone sufficient safety evidence**.
+
+**AI use:** Separate agent context/models when useful to reduce shared assumptions, not as a mandatory multi-agent tax or substitute for executed evidence and human review. Save approved scenarios, checked results and failures in existing Jira/MR links; no extra mandatory test-plan file and no new skill is created by this workflow.
+
+**Related references:** [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md), [pstack Build & Clean](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/05-build-and-clean.md) and [pstack Prove It Works](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md).
+
 ## Activities (repeat as necessary)
 
 | Activity | Action | Minimal evidence |
 | --- | --- | --- |
 | 1. Orient | Read relevant code, AGENTS.md where available, test conventions, relevant requirement/design, current Git state | Existing behavior, known constraints and evidence-backed affected paths |
-| 2. Bound | State increment outcome, acceptance cases, non-goals and expected integration boundaries | Linked task/plan and short change intention |
-| 3. Plan local edits | Select minimal changes consistent with existing architecture; note tests, migrations, error semantics | Clear next change and critical unknowns |
-| 4. Implement | Make focused and reversible edits; keep unrelated refactors separate; maintain security and compatibility | Reviewable diff and rationale for non-obvious deviations |
+| 2. Agree test intent | Align with Verification's source-backed acceptance examples, expected outcomes, safe observable seams and non-goals | Linked scenarios / meaningful check, with unknowns owned |
+| 3. Plan local edits | Choose a small vertical slice, its test-first seam when appropriate, minimal design-consistent code and relevant migrations/errors | Next verifiable slice, intended developer test and key unknowns |
+| 4. Implement + developer tests | Prefer red → green → refactor on viable seams; otherwise use the nearest credible check; keep edits reversible and scoped | Meaningful test failure/pass when feasible, reviewable diff and rationale |
 | 5. Developer checks | Run suitable local tests, lints, typechecks and builds; write or update behavioral/regression tests | Actual commands/results, not AI-claimed outcomes |
 | 6. Handoff or iterate | Fix local findings; communicate contracts, unrun checks, migrations and dependencies to Verification | Diff link, acceptance mapping, test evidence and known gaps |
 
@@ -87,7 +105,7 @@ Before a review pass, remove unrelated changes, dead compatibility scaffolding a
 
 - Preserve current behavior outside agreed scope; identify compatibility and side effects.
 - Minimize complexity rather than simply minimizing line count. Follow existing patterns unless design evidence warrants change.
-- Choose test-first, test-after or iterative testing based on risk and feedback value; no universal TDD or coverage quota.
+- **Consider TDD first** for changed feature/bug behavior with a stable seam and inexpensive feedback; use test-after or an alternative proof when TDD adds brittle setup or low signal. Do not mandate TDD or a coverage percentage universally.
 - Treat schema migrations, retries, idempotency, authorization, concurrency and observability as part of the affected change where relevant.
 - Only claim a check ran if its results were actually observed. Mark missing tools/credentials as **Not run** or **Blocked**.
 - Avoid secrets or company-confidential data in public repositories or unauthorized AI tools.
@@ -132,7 +150,7 @@ After the **Implementation Gate**, AI must first investigate **the actual reposi
 ## Handoff to Verification
 
 Provide:
-1. Linked acceptance cases and changed boundaries/repositories.
+1. Pre-agreed acceptance examples, test intent/seams and changed boundaries/repositories.
 2. Reviewable diff and contract/schema changes.
 3. Tests run, exact outcomes and environments; tests not run.
 4. Key failure/permission scenarios and expected behavior.
@@ -145,7 +163,7 @@ Provide:
 1. Feature-level Design/Planning approvals are distinct from per-Increment Implementation/Verification gates, with only affected prior gates reopened on material change.
 2. Separate ownership without mandatory handoff for each edit.
 3. Evidence and findings shared through one existing issue/MR.
-4. Risk-proportional review and actual test evidence.
+4. Verification-first acceptance/test intent, TDD where viable, and risk-proportional independent behavior evidence.
 5. Real repo access and Skill implementation remain separately authorized.
 
 ## Pilot / open decisions
