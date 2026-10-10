@@ -1,6 +1,8 @@
-# Delivery Planning Workflow — v0.1
+# Delivery Planning Workflow — v1.0 Release Candidate
 
-- **Status:** Proposed / Draft — awaiting review
+- **Status:** 🟡 Review Ready / Release Candidate — pending explicit owner approval (not Accepted)
+- **Decision agreed:** Hybrid — Full Scope, Progressive Detail is the default planning depth, 2026-10-10
+- **Thai companion:** [Delivery Planning (Thai)](./delivery-planning.th.md)
 - **Date:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **Foundation:** [Feature Delivery Lifecycle v1.0](./feature-delivery-lifecycle.md)
@@ -29,6 +31,35 @@ Inputs may be links rather than copies:
 - Delivery context: solo/team, release restrictions, cross-team ownership, current work in progress.
 
 If an unresolved issue makes effort unknowable or would materially change scope, schedule a bounded **discovery/spike task** before committing full delivery. Do not turn weak discovery into falsely precise estimates.
+
+## 2A. Planning depth policy — Hybrid: Full Scope, Progressive Detail
+
+**Default:** Understand the whole feature at a meaningful level, including boundaries, outcomes, major dependencies, integration/release risks and decision ownership, but detail work **progressively** in proportion to risk, uncertainty and proximity to execution. Do not require a fully elaborated task inventory for every future increment before implementation of a sufficiently understood first increment.
+
+Three nested levels clarify what "planned" means:
+
+| Level | Minimum useful view | When greater detail is warranted |
+| --- | --- | --- |
+| **Feature / end-to-end scope** | Outcome, acceptance boundaries, known/unknown impacted components, cross-repo contracts, important dependencies, risk, owners, integration/release approach and milestones | Strong external coordination, fixed cutover, regulatory obligations, irreversible changes |
+| **Increment / next deliverable** | Observable acceptance/learning goal, owner, required interfaces and dependencies, appropriate verification and rollback/recovery implications | Near-term delivery; high-impact or uncertain increments |
+| **Task / execution steps** | Concrete steps and completion evidence where useful to coordinate or execute; exact file lists only if supported by discovery | Increment starting now, hand-offs between engineers, non-routine migrations, compliance traceability |
+
+**Full breakdown is allowed and often efficient** for small, well-understood changes or externally constrained work. It is **not mandatory** for distant, volatile work. Neither a complete high-level scope nor a complete ticket inventory implies perfect knowledge.
+
+### Depth decision table
+
+| Risk / uncertainty | Suggested planning depth | Safety boundary |
+| --- | --- | --- |
+| Low risk, stable requirements, reversible | Full breakdown can be faster; one issue may suffice | Basic acceptance and verification remain explicit |
+| Moderate risk or changing details | Full feature-level scope; detailed first increment; outline later increments | Record unknowns and review triggers |
+| High-risk / multi-team / migration / committed cutover | Detailed dependency, compatible-contract, release/rollback and ownership plan **across the whole affected change**; progressively refine implementation subtasks | No implementation/deployment that crosses an unresolved critical safety or coordination dependency |
+| High uncertainty affecting solution/scope | A bounded spike or discovery increment first | Do not promise detailed effort or task count without evidence |
+
+**Risk dimensions:** impact of failure; reversibility; privacy/security/compliance; data correctness; integration breadth; external dependencies; date constraints; maturity of tests/observability. A tiny-looking change can be high risk.
+
+**Replanning triggers:** verified new dependencies; contract changes; spike findings; failed acceptance/quality evidence; significant priority or capacity shifts; newly discovered migration or production risks. Replan with the relevant decision owners; update the same shared work view.
+
+**Anti-patterns:** full breakdown built on guesses; rolling-wave without end-to-end contract/release awareness; delaying a safe spike until every ticket is defined; silently pushing necessary test or operational work to the end.
 
 ## 3. Seven activities (repeat as conditions change)
 
@@ -115,6 +146,12 @@ Delivery goal / current smallest valuable increment:
 Product decision owner / engineering delivery owner:
 Time/capacity assumptions (if applicable):
 
+## Planning depth and next checkpoint
+Mode: Hybrid — Full Scope, Progressive Detail (default); exceptions with reason.
+Feature-wide known scope, critical unknowns and cross-team integration/release dependencies:
+Next detailed increment / readiness checkpoint:
+Later increments (outline, assumptions, refinement trigger):
+
 ## Work slices
 Slice | outcome / acceptance | owner | dependencies | verification | status
 
@@ -139,13 +176,15 @@ Create separate tickets for work items **when they help ownership, execution or 
 
 ## 9. Planning readiness and checkpoints
 
-Planning is **credible enough to start the next safe increment** when:
+Planning is **credible enough to start the next safe increment** when the **whole-feature scope and critical risks have been scanned**, and:
 1. A valuable or informative increment and its acceptance/learning goal are explicit.
 2. Its owner, key reviewers, actual dependencies and major unknowns are visible.
 3. The selected solution/contract boundaries are understood enough for that increment.
 4. Appropriate verification, integration and release implications are included.
 5. Capacity and timing claims, if made, explain assumptions and uncertainty.
 6. A product/engineering decision owner has resolved critical scope and technical conflicts, or assigned a bounded follow-up.
+7. Critical future integration, migration, security or rollout constraints are visible at feature level even if later task details remain provisional.
+8. Planning mode and a trigger for refining the next increments are clear.
 
 **Outcomes:**
 - **Agreed for first increment:** begin implementation and continuously inspect.
@@ -203,12 +242,12 @@ Pilots should include:
 
 Measure: blocked time, WIP, unplanned scope changes, integration surprises, forecast reliability where meaningful, review/rework and overhead to maintain plan. Assess at the team/system level, not individual ranking.
 
-## Open review questions (v0.1)
+## Approval review checklist — v1.0 Release Candidate
 
-1. Is the single shared plan/work view the right default without duplicating Jira?
-2. Does vertical slicing allow necessary foundational tasks and spikes without inventing user value?
-3. Is the **Agreed for first increment** gate clear enough versus a fictional fixed "ready for everything" state?
-4. Which capacity/forecast conventions are suitable for a solo engineer versus a product team?
-5. How do we maintain one source of truth across multiple repositories and team boards?
+1. Does Hybrid — Full Scope, Progressive Detail expose the full risk/contract map while avoiding speculative detailed tickets?
+2. Are low-risk full breakdowns and high-risk cutover exceptions sufficiently clear?
+3. Does **Agreed for first increment** block unresolved critical dependencies without requiring every later task?
+4. Are Jira-first source-of-truth, forecast uncertainty, and named decision owners practical across solo/team?
+5. Can cross-repo integrations share one feature-level view with linked per-repo issues, without double maintenance?
 
-**Draft pending explicit approval.** No automated staffing, sprint commitments, Jira integration, or new Skill is approved by this document.
+**Release Candidate pending explicit owner approval.** No automated staffing, sprint commitments, Jira integration, or new Skill is approved by this document.
