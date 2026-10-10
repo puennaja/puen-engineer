@@ -101,9 +101,19 @@ When repeated runs require manual UI/CLI/API operation, evaluate a **project-spe
 
 Do **not** automatically generate a `.cursor/skills` tree or mandate daily maintenance for My Engineer. A future `puen-stack` skill requires approved access, a successful pilot, ownership/maintenance plan and an evaluation against current verification practice. A skill that merely wraps the same unreliable steps does not create evidence.
 
+## Approval granularity and safe loopback (agreed for Track A)
+
+**Feature-level human gates:** Solution Design approves the agreed technical direction/major contracts; Delivery Planning approves whole-feature scope, critical risks/dependencies and progressive detail of upcoming increments. **Per-Increment human gates:** Implementation approves each reviewable change scope/diff before formal publication; Verification approves **each Increment's** actual acceptance evidence, review and residual risks.
+
+For later increments within the **approved Feature scope**, progressively refine acceptance and verification checks without reopening Design or Planning just because the next increment starts. An Increment can cover coordinated changes across multiple repositories: retain one feature-level work view with repo-specific diffs/MRs and evidence of integration.
+
+**Q7=B loopback:** Verification findings inside that Increment's approved scope/design/risk can go to Implementation for fixes and proportionate retesting, **without reapproval of each edit or another feature-level gate**. The human still decides the Increment Verification Gate. When a finding materially alters approved requirements/scope, architecture, critical API/data contract, security/data risk or delivery constraints, **reopen only the invalidated upstream human gate(s)** before proceeding.
+
+Record Feature and Increment approvals and risk owners in existing Jira/MR links. **Each Draft MR** must be individually confirmed by the human after checking repo/task-specific Git Flow, regardless of the number of repos in the Increment. A verified increment is not permission to mark the MR Ready, merge or deploy; those decisions remain human-owned.
+
 ## Fixed Verification Gate, risk-based review and scoped rework (AI-assisted v1.0 candidate)
 
-**Q4=B — Risk-based independent review:** Low-risk changes may use a distinct self-review pass if the local team permits it; moderate changes benefit from an independent diff review; high-risk changes require qualified human peer/domain review when policy or risk demands. The **human Verification Gate is required for every agreed increment**, regardless of review depth.
+**Q4=B — Risk-based independent review:** Low-risk changes may use a distinct self-review pass if the local team permits it; moderate changes benefit from an independent diff review; high-risk changes require qualified human peer/domain review when policy or risk demands. The **human Verification Gate is required for every agreed Increment**, regardless of review depth.
 
 **Q5=B — Evidence by change type:** Show acceptance behavior on the appropriate API, UI, CLI, stored-data or other real surface, with applicable automated and negative/integration checks. Missing runs remain **Not run / Blocked / Inconclusive**, never silently treated as passes. Review the actual diff and the originating specification as two distinct axes.
 
@@ -169,10 +179,11 @@ No requirement to finish all implementation tasks before starting verification; 
 
 ## Approval checklist — v1.0 Release Candidate
 
-1. Are the two workflow responsibilities clear while enabling review during implementation?
-2. Can the shared handoff fit existing Jira/MR without separate mandatory artifacts?
-3. Are evidence, independence, risk acceptance and release authority distinguished?
-4. Are AI permissions left to separate explicit approval?
+1. Is Feature-level Design/Planning versus per-Increment Implementation/Verification approval clear, without unnecessary repeat approvals or bypasses?
+2. Are the two workflow responsibilities clear while enabling review during implementation?
+3. Can the shared handoff fit existing Jira/MR without separate mandatory artifacts?
+4. Are evidence, independence, risk acceptance and release authority distinguished?
+5. Are real repository permissions and AI Skill creation separate authorizations?
 
 ## Pilot and open decisions
 
