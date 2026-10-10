@@ -132,6 +132,14 @@ Verification เริ่มได้ตั้งแต่มี Acceptance Case
 
 AI เสนอ Code, Tests, Explanation ได้ภายใต้สิทธิ์ที่อนุญาต Engineer รับผิดชอบการเปลี่ยน Architecture, Destructive Operations, การ Run Command ที่มีสิทธิ์พิเศษ, Commit/Push/MR ตาม Policy ท้องถิ่น ยังไม่ได้บังคับว่าต้องใช้ Claude หรือ Codex คู่กัน และไม่สร้าง Skill ก่อน Pilot
 
+## GitLab Draft MR — Human Confirmation ทุกครั้ง (ข้อตกลงสำหรับ Review v1.0)
+
+หลังผ่าน **Implementation Gate** แล้ว AI ต้อง **ตรวจ Git Flow ของ Repo และงานนั้นก่อน** ทั้ง Contribution/Branching Rules, Jira/Work Item, Source Branch, Proposed Target Branch, Release/Integration Flow และ Dependency ของ MR ที่เกี่ยวข้อง ห้ามสมมติว่าต้อง Target `master` เสมอ
+
+**ก่อนสร้าง Draft MR ทุกครั้ง AI ต้องแสดง Repo + Source → Target Branch + เหตุผล + Jira Link แล้วถาม Human เพื่อยืนยัน MR นั้นโดยเฉพาะ** แม้เคยอนุมัติ Implementation Gate หรือมี Scoped Git Permission แล้วก็ตาม ห้ามเปิดก่อนมีคำตอบ การแก้ Target Branch ภายหลังก็ต้องยืนยันใหม่
+
+Commit/Push Permissions ยังเป็นคำถามใน Grill-me รอบถัดไป และ **การอนุมัติให้เปิด MR ไม่ใช่สิทธิ์ Merge/Deploy** อ้างอิง [AI-assisted feature delivery — Draft](./ai-assisted-feature-delivery.md)
+
 ## ส่งอะไรให้ Verification
 
 1. Acceptance Cases และ Repo/Boundary ที่เปลี่ยน
