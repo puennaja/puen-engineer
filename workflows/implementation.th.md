@@ -1,6 +1,7 @@
-# Implementation Workflow — v0.1 (ภาษาไทย)
+# Implementation Workflow — v1.0 Release Candidate (ภาษาไทย)
 
-- **สถานะ:** Proposed / Draft — ยังไม่อนุมัติ
+- **สถานะ:** Review Ready / Release Candidate — รอ Owner Approve; ยังไม่ Accepted
+- **Decision:** แยก Implementation และ Verification เป็นสอง Workflow โดยใช้ Execution Loop ร่วมกัน (2026-10-10)
 - **วันที่:** 2026-10-10
 - **Track:** A — Build My Engineer
 - **ก่อนหน้า:** [Delivery Planning v1.0](./delivery-planning.th.md), [Solution Design v1.0](./solution-design.th.md)
@@ -17,6 +18,35 @@
 **Inputs:** Acceptance Scenarios, Increment ใน Delivery Plan, Design Decisions, Repo/Contract ที่สำรวจแล้ว, Risks, Coding Conventions, สิทธิ์ที่ได้รับอนุญาต
 
 **หยุดและกลับไป Discovery/Design/Planning** ถ้าข้อสมมติที่ยังไม่พิสูจน์อาจทำให้เกิด Data Loss, Authorization ผิด, Contract เข้ากันไม่ได้หรือ Business Behavior ผิด การทำ Spike แบบจำกัดขอบเขตยังนับเป็นงานที่เหมาะสม
+
+## Execution Loop ร่วมกัน — ข้อตกลงการส่งต่องาน (เสนอสำหรับ v1.0)
+
+Workflow สองตัว **แยกหน้าที่** แต่ใช้ **วงจรทำงานร่วมกันเดียว** ต่อ Increment:
+
+```text
+Delivery Planning (Increment ที่ตกลง)
+   ↓
+Implementation: สำรวจ → แก้โค้ด → Developer Checks
+   ⇄ Verification: Acceptance / Tests / Contracts / Independent Review
+   ↳ Findings → แก้โค้ด → ตรวจส่วนที่ได้รับผลกระทบซ้ำ
+   ↓
+Verification Decision → Release Review (Workflow อื่น)
+```
+
+**เริ่ม Verify ได้ทันทีที่มีสิ่งให้ตรวจ:** Acceptance Example, Test Strategy, API/Contract หรือ Partial Diff ก็เริ่มได้แล้ว ไม่ต้องรอ Code ทั้ง Feature จบ หรือรอป้าย Ready for Verification แบบบังคับ Developer Tests ยังคงอยู่ใน Implementation ส่วนการประเมินอย่างอิสระและการตัดสินคุณภาพหลักฐานเป็นหน้าที่ Verification
+
+**ส่งต่อผ่าน Jira/MR เดิมเพียงชุดเดียว** ไม่บังคับสร้างเอกสารใหม่:
+- **Identity / Scope:** Increment, Acceptance IDs, Repo/Diff Links, Exclusions
+- **Changes / Risks:** Boundary ที่เปลี่ยน, Contracts/Data/Migration และ Failure Cases
+- **Evidence:** Checks ที่รันจริงพร้อมผล/Environment, สิ่งที่ **Not run / Blocked**
+- **Feedback:** Findings พร้อม Severity/หลักฐาน/Owner, ผลแก้และตรวจซ้ำ
+- **Decision:** ทำต่อ / พร้อมตรวจเพิ่ม / Fix & Reverify / Blocked / Verified for Release Review โดยมนุษย์รับผิดชอบ Residual Risk
+
+**กติกาวนซ้ำ:** แก้จุดไหนให้ Reverify จุดนั้นและ Dependencies ที่ได้รับผลกระทบ แต่ถ้าผลกระทบขยายต้องตรวจเพิ่ม ถ้าเจอ Unknown สำคัญย้อนกลับ Discovery/Design/Planning ทั้งสอง Workflow **ไม่มีอำนาจ Deploy** หรือแก้ Acceptance เงียบ ๆ
+
+**Roles:** งาน Solo ทำได้ทั้งสองหน้าที่ แต่ควรแยก Self-check กับ Review Pass งาน Medium/High-risk ควรมี Reviewer ที่เป็นอิสระจริงเมื่อทำได้หรือ Local Policy กำหนด AI สองตัวเห็นตรงกันไม่ได้แปลว่า Test ผ่านหรือ Human อนุมัติ
+
+**Scale:** งานเล็ก Reversible บันทึกใน MR สั้น ๆ ได้ งาน Cross-repo/Finance/Security ต้องมีหลักฐาน Contract, Tests, Review และ Release Risks มากขึ้น โดยไม่ต้องสร้าง Ticket ซ้ำ
 
 ## กิจกรรม (ทำซ้ำได้)
 
@@ -61,10 +91,17 @@ AI เสนอ Code, Tests, Explanation ได้ภายใต้สิทธ
 
 **Ready for Verification ไม่ใช่สิทธิ์ Deploy**
 
+## Checklist ก่อนอนุมัติ — v1.0 Release Candidate
+
+1. Implementation กับ Verification แยก Responsibility ชัด และไม่สร้าง Waterfall หรือบังคับ Handoff ทุกครั้งหรือไม่?
+2. Shared Loop และหลักฐาน Jira/MR เพียงชุดเดียวเหมาะกับ Solo และ Multi-repo หรือไม่?
+3. เกณฑ์ Independent Review และผล Verify เพียงพอตาม Risk หรือไม่?
+4. ขอบเขต AI Permissions ยังรอออกแบบแยกจาก Workflow อย่างเหมาะสมหรือไม่?
+
 ## ทดลองและคำถามที่ยังเปิด
 
 ลอง Tiny Regression, Medium Feature และ Simulated Cross-repo Contract Change; วัด First Feedback, Rework, ความตรงไปตรงมาของ Test Evidence และ Overhead
 
 **รอ Review:** AI แก้/Commit ได้ภายใต้ขอบเขต Permission แบบไหน? Handoff ขั้นต่ำใน Jira/GitLab เท่าไร? งานใหญ่ควรเริ่ม Independent Review เมื่อไร?
 
-**ยังเป็น Draft ไม่ได้เปลี่ยน AGENTS.md, Skills, Automation หรือ Permissions**
+**Release Candidate รอ Owner Approve** ยังไม่เปลี่ยน AGENTS.md, Skills, Automation หรือ Permissions
