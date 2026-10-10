@@ -70,6 +70,14 @@ When a reliable test harness exists, Verification may create a **small executabl
 
 **References:** [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md), [pstack verify-and-ship](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md).
 
+## Formal Independent Verification entry: unit tests green first (agreed 2026-10-10)
+
+**Two different moments:** Early Verification-first work defines source-backed acceptance, scenarios and test seams **before code**; provisional feedback may review contracts or partial diffs **during Implementation**. This is preparation, **not a formal independent acceptance judgment**.
+
+**Formal Independent Verification begins only after Implementation has demonstrated passing applicable unit/regression tests and required local developer checks, with actual command/results/environment, and after the agreed Human Implementation Gate.** If unit tests fail, send the Work Item back to Implementation; if they did not run or the runner is unavailable, report **Not run / Blocked**. Do not label an unexecuted check green. For a change with no meaningful unit-test seam, require an explicit, justified alternative check accepted under the existing Implementation Gate, rather than a silent exception.
+
+Once admitted, **challenge the green tests**: confirm assertions reflect agreed expected behavior, check critical negative/edge cases, exercise appropriate real API/DB/BFF contracts, and independently review the diff. **Green unit tests are necessary feedback where applicable, never sufficient proof of correctness.** When Verification finds a defect, use scoped fix → **rerun impacted developer unit tests** → renewed Independent Verification evidence; the normal Human Verification Gate still applies. This adds no gate or bypass to existing approval policy.
+
 ## Entry and risk selection
 
 May start once a reviewable slice, test plan or interface contract exists. Read requirements/acceptance, solution constraints, diff, actual developer-check outputs, dependencies and relevant risk map.
