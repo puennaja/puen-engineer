@@ -99,7 +99,17 @@ Use one feature-level work item and scoped repository tasks. Record actual provi
 
 ## AI involvement (candidate guidance)
 
-AI may propose edits, tests and explanations within authorized scope. A responsible engineer confirms architecture changes, privileged operations, destructive edits, code execution policies, pushes, commits and draft MR creation under the local team's permissions. No mandatory Claude/Codex split is approved. A short AGENTS.md may link to this workflow; create reusable skills only after pilots reveal recurring work.
+AI may choose appropriate task skills (hybrid routing), propose edits and execute focused, non-destructive developer checks inside the approved scope. **Scoped autonomy** allows local edits and commits on the agreed work branch, without per-file approval; additional architecture/scope changes and privileged/destructive operations require fresh human authorization. A **Fixed Human Implementation Gate** still approves the completed increment before authorized remote publishing. Push and MR creation have different permissions. No mandatory Claude/Codex split is approved. Keep AGENTS.md short; create reusable skills only after pilots.
+
+## Fixed Implementation Gate, scoped commits and rework (AI-assisted candidate)
+
+For each agreed increment, the authorized human reviews the changed scope, diff, completed developer checks, known gaps and relevant integration dependencies and **explicitly approves the Implementation Gate**. Preliminary Verification feedback is allowed before this gate; formal Verification completion remains a separate human decision.
+
+Within the approved scope, AI may make **local commits** following repository conventions. **Normal pushes** to the specifically authorized, non-protected work branch require explicit **publish authorization at the Implementation Gate**; that authorization can cover later pushes of scoped fixes to the same branch. It never covers new destinations, protected branches, force-push, history rewrites, destructive Git actions, or unrelated changes. Company permissions override this candidate guidance.
+
+**Scoped Rework (Q7=B):** After implementation approval, findings may be fixed and proportionately retested within the same agreed scope/design/risk envelope without asking for Implementation approval on each edit. The human still approves the **Verification Gate** after reviewing the final evidence. Material changes to scope, accepted design, contracts, security/data risk or planned delivery require re-approval of the **affected earlier gate(s)**.
+
+**MR Completion (Q9=A):** AI can report status and suggest readiness. Only an authorized human may mark Draft MR as Ready or Merge; never auto-merge or deploy. See [AI-assisted design decisions](./ai-assisted-feature-delivery.md) for Q1–Q9 and the per-MR confirmation policy.
 
 ## GitLab Draft MR — mandatory per-MR human confirmation (v1.0 candidate)
 
@@ -107,7 +117,7 @@ After the **Implementation Gate**, AI must first investigate **the actual reposi
 
 **Before creating every single Draft MR**, show the human the repository, source → proposed target branch, target rationale, work-item link and relevant ordering constraints; **ask for and wait for explicit MR-specific approval**. Previous implementation approval or scoped Git permissions do not waive this question. Changing the MR target afterward also requires renewed human confirmation.
 
-Commit/push authority is not yet finalized; see [AI-assisted feature delivery — Draft](./ai-assisted-feature-delivery.md). Approval to open a Draft MR is **not** approval to merge or deploy.
+**Commit/push** follow the scoped rules above; **each Draft MR still needs separate explicit human approval**, even after a push was authorized. Humans alone mark Ready and Merge; deployment requires its own authorization.
 
 ## Handoff to Verification
 
@@ -131,6 +141,6 @@ Provide:
 
 Try a tiny regression, a medium feature and a simulated cross-repo contract change. Measure first useful feedback, rework, developer-test honesty and documentation overhead.
 
-**Review:** Should edits and commits by an agent need per-action consent or a bounded approved permission? What minimum handoff fits Jira/GitLab? When should a review start during a longer implementation?
+**Review focus:** Confirm that human gate owners and accepted-increment boundaries can be identified in each actual team, that publish authorization is recorded once in the existing issue/MR, and that early feedback does not bypass fixed gates. Git Flow, target branch and mandatory CI checks remain repository/task-specific.
 
 **Release Candidate — awaiting explicit approval.** No AGENTS.md policy, automation, skills or repository permissions are changed.
