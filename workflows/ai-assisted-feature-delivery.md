@@ -19,7 +19,19 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 **Important tension to resolve in later rounds:** the shared Implementation/Verification loop remains iterative, while the selected Fixed Gates require formal stage completion approval. Distinguish early review and developer checks from formal entry/exit decisions; decide how findings that force rework affect previously granted approvals. A fixed gate is not release authorization; merge/deploy permissions remain separate.
 
-**Pending round 2:** independent review/independence threshold; verification evidence needed at each gate; GitLab Draft MR, commit/push and human approval ordering.
+## Track A design decisions — grill-me round 2 (agreed 2026-10-10)
+
+**Decision status:** Confirmed for further design; **not** approval of the AI-assisted workflow or either Implementation/Verification Release Candidate. These decisions refine the AI-assisted execution adapter while preserving round 1's Fixed Human Checkpoints.
+
+| Decision | Chosen option | Consequence for design |
+| --- | --- | --- |
+| Q4 — Independent review | **B: Risk-based independent review** | Low-risk changes may use deliberate self-review when local policy permits; medium-risk changes use a separate review pass; high-risk changes require appropriate human peer/domain review under local policy. Independent AI review can supplement, never replace required human sign-off. **The fixed human Verification gate still applies for every increment.** |
+| Q5 — Verification evidence | **B: Evidence by change type** | Verify changed observable behavior on the relevant CLI, API, UI, data or other execution surface, plus appropriate automated checks and risk-driven negative/integration scenarios. Record actual commands/results and **not run / blocked / inconclusive** gaps. No universal requirement for full E2E/video on every change. |
+| Q6 — GitLab Draft MR timing | **A: After Implementation Gate** | Human reviews and approves completion of the Implementation increment first; then, **with appropriate publish authorization (exact permissions pending Q8)**, AI may commit/push/open a **Draft MR** linked to the work item against the agreed target branch. Formal Verification can then use MR/CI and reviewers; early provisional/read-only feedback during implementation remains possible. Draft MR is not merge or deploy authorization. |
+
+**Consistency note:** Q3 Fixed Gates and Q4 Risk-based Review answer different questions. The **human approval checkpoint is fixed**, while **verification/reviewer depth is risk-proportional**. Risk-based self-review does not silently waive the fixed human gate. Q6 does not imply unrestricted push rights; this is the subject of round 3.
+
+**Pending round 3:** Q7 rework and whether approval resets; Q8 local commit vs push/publish authority and re-push; Q9 Draft MR completion/readiness, required CI/reviewer checks and who may merge. Neither AI workflow has been Accepted.
 
 ## Proposed stages
 1. **Intake** — read requirement, identify ambiguity, establish acceptance criteria and use cases.
