@@ -1,7 +1,7 @@
 # Software Engineering at Google — Chapter 07: Measuring Engineering Productivity
 
 - **Approval:** 🟢 Accepted — summary and principles approved as contextual guidance, not mandatory policy; independent corroboration still pending.
-- **Status:** Draft study notes v0.1 — candidates **not approved**
+- **Status:** Accepted as study reference — principles are contextual guidance, not mandatory rules
 - **Evidence:** Full publicly published chapter reviewed including examples and conclusion; original analytical paraphrase, not a translation
 - **Author(s):** Ciera Jaspan
 - **Primary source:** https://abseil.io/resources/swe-book/html/ch07.html
