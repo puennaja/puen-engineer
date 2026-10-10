@@ -1,5 +1,6 @@
 # Software Engineering at Google — บทที่ 07: Measuring Engineering Productivity
 
+- **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
 - **สถานะ:** Draft Study Notes v0.1 — Candidate ยังไม่ได้รับรอง
 - **ขอบเขต:** อ่านจากตัวบทเผยแพร่ของ Google ครบทั้งบท (รวมบทสรุปและตัวอย่าง); สรุปใหม่ ไม่ใช่คำแปลแบบคัดลอก
 - **ผู้เขียน:** Ciera Jaspan
