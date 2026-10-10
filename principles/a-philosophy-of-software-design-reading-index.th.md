@@ -8,6 +8,14 @@
 - **เป้าหมาย:** เติม Architecture & System Design กับ Code Quality & Maintainability ใน My Engineer
 
 
+## งานใหม่จากหนังสือฉบับที่ 2 (Chapter 21 บางส่วน)
+
+- **[อ่านสรุปภาษาไทย — Decide What Matters](./a-philosophy-of-software-design-ch21-extract.th.md)** · **[English](./a-philosophy-of-software-design-ch21-extract.md)**
+- **สถานะ:** 🟡 Draft — ได้ข้อความต้นฉบับจากระบบดัชนีค้นหาบางช่วง แต่ **ยังไม่ได้ดาวน์โหลด/อ่าน PDF ครบ**
+- **ตรวจได้:** เปิดบท, §21.1 บางส่วน, §§21.3–21.4; ยังขาด §21.2 และ §21.5
+- **Candidates ใหม่:** AP-C05–AP-C06 (ยังไม่อนุมัติ)
+- **ปรับสถานะจากครั้งก่อน:** แม้เครื่องมือเปิด PDF ทั้งไฟล์ยังไม่สำเร็จ (13.9 MB) แต่ดัชนีค้นหาแสดงข้อความต้นฉบับบางช่วงได้แล้ว จึงทำสรุป **บางส่วนเท่านั้น**
+
 ## งานศึกษารอบแรก — Author Talk + Stanford Lecture Notes
 
 - **เอกสาร:** [ฉบับไทย](./a-philosophy-of-software-design-author-talk.th.md) · [อังกฤษ](./a-philosophy-of-software-design-author-talk.md)
