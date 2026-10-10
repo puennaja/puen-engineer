@@ -1,6 +1,6 @@
 # AI-assisted feature delivery
 
-- Status: Draft — decision record; Implementation v1.0 Accepted (2026-10-10), Verification v1.0 remains Release Candidate
+- Status: Draft — overarching AI-assisted decision record; Implementation and Verification v1.0 both Accepted (2026-10-10)
 - Created: 2026-10-09
 - Scope: personal engineering workflow (generic example; no company-confidential material)
 
@@ -9,7 +9,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 ## Track A design decisions — grill-me round 1 (agreed 2026-10-10)
 
-**Decision status (at the time of Q1–Q3 design):** Confirmed for further design, not an automatic workflow approval. **Current approval state:** Implementation v1.0 was explicitly Accepted on 2026-10-10; Verification v1.0 and this decision record remain unapproved as whole workflows. These AI-specific preferences do not retroactively change the already Accepted, adaptable Feature Delivery Lifecycle.
+**Decision status (at the time of Q1–Q3 design):** Confirmed for further design, not an automatic workflow approval. **Current approval state:** Implementation and Verification v1.0 were each explicitly Accepted by the repository owner on 2026-10-10; this overarching AI-assisted decision record remains Draft. These AI-specific preferences do not retroactively change the already Accepted, adaptable Feature Delivery Lifecycle.
 
 | Decision | Chosen option | Consequence for design |
 | --- | --- | --- |
@@ -21,7 +21,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 ## Track A design decisions — grill-me round 2 (agreed 2026-10-10)
 
-**Decision status (at the time of Q4–Q6 design):** Confirmed for further design; these decisions **did not themselves approve** either workflow. Implementation v1.0 was subsequently explicitly Accepted on 2026-10-10; Verification v1.0 remains a Release Candidate. These decisions preserve round 1's Fixed Human Checkpoints.
+**Decision status (at the time of Q4–Q6 design):** Confirmed for further design; these decisions **did not themselves approve** either workflow. Implementation and Verification v1.0 were subsequently each explicitly Accepted on 2026-10-10. These decisions preserve round 1's Fixed Human Checkpoints.
 
 | Decision | Chosen option | Consequence for design |
 | --- | --- | --- |
@@ -39,11 +39,11 @@ Build features efficiently with AI assistance while retaining developer ownershi
 4. **Create only the confirmed Draft MR** after the required Implementation Gate and publish permissions; link the task and report the MR URL. If human rejects or changes the branch, re-evaluate before creation. A target-branch change later also requires fresh human confirmation.
 5. **No bypass:** Do not silently use `master` or the repo's default branch as an assumed target; do not create another MR as a workaround; do not auto-merge or deploy.
 
-**Permission distinction:** The approval to open an MR is **separate from** local editing, commit and push rights. Those rights are defined by scoped autonomy in Q8, without waiving the per-MR confirmation. This explicit per-MR question is required even if Q8 later permits scoped Git autonomy. This policy is an agreed design decision for the pending AI-assisted flow, **not yet an Approved implementation/verification workflow**.
+**Permission distinction:** The approval to open an MR is **separate from** local editing, commit and push rights. Those rights are defined by scoped autonomy in Q8, without waiving the per-MR confirmation. This explicit per-MR question is required even if Q8 later permits scoped Git autonomy. This policy is part of the AI-assisted design decisions and the separately **Accepted Implementation and Verification v1.0 workflows**; it still does **not** grant actual GitLab permissions or authorize any specific MR.
 
 ## Track A design decisions — grill-me round 3 (agreed 2026-10-10)
 
-**Decision status (at the time of Q7–Q9 design):** Confirmed as design constraints, **not an approval by themselves**. Implementation v1.0 was subsequently explicitly Accepted on 2026-10-10; Verification v1.0, repository automation settings and release authority remain separately unapproved.
+**Decision status (at the time of Q7–Q9 design):** Confirmed as design constraints, **not an approval by themselves**. Implementation and Verification v1.0 were subsequently each explicitly Accepted on 2026-10-10; repository automation settings, publishing rights and release authority remain separately unauthorized.
 
 | Decision | Chosen option | Consequence for design |
 | --- | --- | --- |
@@ -68,7 +68,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 ## Track A final gate-granularity decision — agreed 2026-10-10
 
-**Owner decision:** In the **AI-assisted Track A workflow**, **Solution Design and Delivery Planning receive explicit human approvals at the Feature level**, while **Implementation and Verification receive explicit human approvals for each agreed, independently verifiable Work Item**. This resolved the gate-granularity question; the decision **was not itself workflow approval**. Implementation v1.0 was separately Accepted on 2026-10-10; Verification v1.0 still awaits explicit approval.
+**Owner decision:** In the **AI-assisted Track A workflow**, **Solution Design and Delivery Planning receive explicit human approvals at the Feature level**, while **Implementation and Verification receive explicit human approvals for each agreed, independently verifiable Work Item**. This resolved the gate-granularity question; the decision **was not itself workflow approval**. Implementation and Verification v1.0 were each separately Accepted on 2026-10-10.
 
 | Gate | Approval unit | What the human agrees to |
 | --- | --- | --- |
@@ -97,9 +97,9 @@ Build features efficiently with AI assistance while retaining developer ownershi
 - **Story integration:** test the cross-repository/cross-owner acceptance and contracts when relevant, with responsibility assigned across the team. This is **not an automatic extra global gate** and does not imply one engineer must implement unassigned FE/BFF/BE work. If end-to-end checks need unavailable repos/services, record **Not run / Blocked / externally owned** and the integration owner; do not declare the full Story accepted solely because a backend Work Item passed.
 - **Boundary of Work Item:** agree observable outcome, non-goals, risk, impacted repos/contracts, evidence and Jira reference. If a Jira sub-task is vague (e.g. "Implement BE"), derive local acceptance from the parent Story with the appropriate human/contract owner, not from AI guesses.
 
-**Terminology scope:** Previously accepted [Delivery Planning v1.0](./delivery-planning.md) may still use the Agile term *increment* for an iterative delivery slice. **Do not retroactively edit Accepted workflows.** For **AI-assisted Implementation v1.0 (Accepted)** and **Verification v1.0 (Release Candidate)**, *Work Item* supersedes the previous term *Increment* as the unit of ownership and human gate approval.
+**Terminology scope:** Previously accepted [Delivery Planning v1.0](./delivery-planning.md) may still use the Agile term *increment* for an iterative delivery slice. **Do not retroactively edit Accepted workflows.** For **AI-assisted Implementation v1.0 (Accepted)** and **Verification v1.0 (Accepted)**, *Work Item* supersedes the previous term *Increment* as the unit of ownership and human gate approval.
 
-**All earlier guardrails remain:** Hybrid skill choice; scoped edits/rework and scoped Git permissions; human approval before **every** Draft MR after inspecting actual per-repo Git Flow; humans alone mark MR Ready or Merge; no automatic deployment. This terminology decision **does not** mark either workflow Accepted or change real repository permissions.
+**All earlier guardrails remain:** Hybrid skill choice; scoped edits/rework and scoped Git permissions; human approval before **every** Draft MR after inspecting actual per-repo Git Flow; humans alone mark MR Ready or Merge; no automatic deployment. This terminology decision **did not itself approve** either workflow; both were subsequently approved explicitly on 2026-10-10. It does **not** change real repository permissions.
 
 ## Track A — Verification-first and TDD-enabled loop (agreed direction, 2026-10-10)
 
@@ -130,7 +130,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 **Coverage is baseline; test intensity is risk-based.** Low risk gets focused acceptance, test-quality/diff review and trustworthy evidence (with appropriate behavior checks where useful). Medium risk adds stronger real-behavior/contract/integration checks. High risk warrants targeted security/concurrency/data/migration/failure checks and required accountable human reviewers. No universal Mutation Testing, fuzzing, load-testing or video mandate. A test suite passing does **not** alone prove correctness.
 
-**Responsibility/approval:** Verification may recommend Verified / Fix and reverify / Blocked / Stop; **the human retains the Work Item Verification Gate** and authority over residual risk. This is agreement on **the four-part baseline for the pending Verification v1.0**, **not acceptance of the whole workflow**, automation rights, MR Ready/Merge authority or a new Story-level gate. Reuse Jira/MR evidence records. See [Verification RC](./verification.md) and [Thai RC](./verification.th.md).
+**Responsibility/approval:** Verification may recommend Verified / Fix and reverify / Blocked / Stop; **the human retains the Work Item Verification Gate** and authority over residual risk. This was the agreement on the four-part baseline that later became part of **Verification v1.0 (Accepted on 2026-10-10)**. Approval of the workflow does **not** authorize automation, MR Ready/Merge or an extra Story-level gate. Reuse Jira/MR evidence records. See [Verification (Accepted)](./verification.md) and [Thai (Accepted)](./verification.th.md).
 
 ## Proposed AI-assisted sequence — aligned with agreed decisions
 
@@ -162,4 +162,4 @@ The **Q1–Q9 design choices are now recorded**. Before piloting in an actual te
 
 Deferred and **not required to approve the two workflow documents**: `puen-stack` skill authoring/evaluation, GitLab automation integrations and Release & Operations workflow. Approval of workflow documents does **not** grant real repository permissions.
 
-**Status:** This overarching decision record remains Draft; **Implementation v1.0 was explicitly Accepted by the repository owner on 2026-10-10** (English and Thai); **Verification v1.0 remains a Release Candidate awaiting separate owner approval**. Implementation acceptance does not grant GitLab publishing, MR creation, Ready/Merge, deployment, Skills or Automation permissions.
+**Status:** This overarching AI-assisted decision record remains Draft. **Implementation v1.0 and Verification v1.0 were each explicitly Accepted by the repository owner on 2026-10-10** (English and Thai). Workflow approval does **not** grant real environment access, GitLab publishing, MR creation, Ready/Merge, deployment, Skills or Automation permissions. The actual project pilot remains separate.
