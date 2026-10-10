@@ -1,6 +1,6 @@
 # Release & Operations Workflow — v1.0 Design Draft (ภาษาไทย)
 
-- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตอนนี้ตกลงเฉพาะ Q1
+- **สถานะ:** Design Draft — **ยังไม่ Accepted**; ตกลง Q1 และ Q2 แล้ว ส่วน Q3 รอตัดสิน
 - **วันที่:** 2026-10-10
 - **Track:** A — My Engineer, ออกแบบจาก Engineering Practices ไม่ผูกบริษัทหรือเครื่องมือ
 - **ก่อนหน้า:** [Implementation (Accepted)](./implementation.th.md), [Verification (Accepted)](./verification.th.md), [Feature Delivery Lifecycle](./feature-delivery-lifecycle.th.md)
@@ -18,7 +18,7 @@
 - AI ช่วยเตรียม/ประเมิน Release Readiness, Evidence, Compatibility, Rollout, Monitoring และ Recovery Plan ได้ **ภายในสิทธิ์ที่ได้รับอนุญาต** แต่ห้ามถือว่า CI เขียวคือ Human Approval หรือเข้าถึง Production เอง
 - Pipeline ที่ได้รับอนุมัติไม่ได้ให้ AI มีสิทธิ์ Production อัตโนมัติ Credentials, Release Owner, Protected Environment, Incident Authority และนโยบายบริษัท/Repo ต้องกำหนดแยกใน Project จริง
 - **ไม่ได้บังคับให้ Human กดทุกขั้นของ Pipeline** บังคับให้ Human อนุมัติ Production Release แต่ละครั้งก่อน ส่วนระบบ Automation ทำต่อภายในขอบเขตที่อนุมัติได้
-- Deploy Code, เปิด Feature Flag หรือเปลี่ยน Exposure ของผู้ใช้ อาจมี Risk/Authorization ต่างกัน; **ขอบเขตที่ Approval หนึ่งครั้งครอบคลุมเป็น Q2 ที่ยังไม่ตัดสิน**
+- การ Deploy Code, เปิด Feature Flag หรือเปลี่ยน Exposure ของผู้ใช้ เป็นคนละการกระทำ **Q2 กำหนดแล้วว่า Approval ต้องระบุ Scope ที่อนุญาตไว้ชัด** ถ้าไม่รวมการเปิด Flag ห้ามตีความว่าเปิด Flag ได้
 - การตกลง Q1 **ไม่อนุญาต** Deploy, เข้าถึง Production, เปลี่ยน Policy, สร้าง Automation หรือ AI Skill ใหม่
 
 ## Responsibilities ที่เสนอ (ยังไม่อนุมัติเป็น Workflow)
@@ -30,11 +30,27 @@
 
 **ความลึกตาม Risk:** Low-risk/Reversible ทำแบบกระชับได้; High-risk, Multi-service, Data Changes หรือย้อนกลับยาก ต้องตรวจ Compatibility, Recovery, Monitoring และ Human Owner เข้มขึ้น เป็นแนวทางเสนอ **ไม่ใช่ Gate ใหม่ที่อนุมัติแล้ว**
 
-## Q2 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+## Q2 — Bounded Release Authorization (ตกลงเมื่อ 2026-10-10)
 
-**หนึ่งครั้งที่ Human Approve Production Release ควรอนุญาตอะไรบ้าง?**
+**Owner Decision: เลือก A — Bounded Release Authorization สำหรับ Release & Operations v1.0** Human อนุมัติ Production Release **ที่ระบุขอบเขตชัดเจนแต่ละครั้ง** ไม่ใช่อนุมัติช่วงเวลากว้าง ๆ ให้เลือก Build ใดมา Deploy ก็ได้
 
-- **A. Bounded Release Authorization (แนะนำ):** ระบุ Artifact/Version หรือ Release Manifest ที่แน่นอน, Production Target, Rollout/Exposure Scope และข้อจำกัดสำคัญให้ครบ Pipeline ทำขั้นตอนภายใน Scope นี้ต่ออัตโนมัติได้ แต่ถ้าสาระสำคัญหรือ Risk เปลี่ยนต้อง Approve ใหม่ การ Recovery จาก Incident อยู่ภายใต้ Runbook/Policy และ Permission ที่อนุญาตแยก
-- **B. Broad Release-window Authorization:** Human อนุมัติ Window หรือ Batch กว้าง ๆ แล้ว Pipeline เลือก Build ที่เข้าเกณฑ์ภายในช่วงนั้นตาม Policy
+**ขอบเขตขั้นต่ำของ Approval ตามผลกระทบจริง:**
+- **สิ่งที่จะปล่อย:** Artifact Digest/Version หรือ Release Manifest ที่ตรึงแน่นอน, Build/Commit ต้นทาง, Repos/Services ที่รวมอยู่ และ Dependencies สำคัญ
+- **ปลายทางและ Exposure:** Production Environment/Cluster/Region/Tenant ที่ได้รับอนุญาตตามความเกี่ยวข้อง, Services, Deployment Strategy และขอบเขต Traffic/Users/Feature Flag หากไม่ได้อนุมัติ **Enable Feature Flag** ไว้ใน Scope ก็ห้ามถือว่าอนุมัติให้เปิด
+- **ข้อจำกัดการทำงาน:** Rollout Steps ที่อนุญาต, เวลา/อายุ Approval ถ้าจำเป็น, Validation Signals, Pause/Abort Criteria, Recovery/Rollback/Roll-forward Plan และผู้รับผิดชอบ, Human Release Approver
+- **Traceability:** ใช้ Release Ticket/Pipeline Record ที่มีอยู่บันทึก **ใครอนุมัติอะไร ที่ไหน เมื่อไร ภายใต้เงื่อนไขอะไร** โดยไม่สร้าง Markdown File ใหม่เป็นข้อบังคับ
 
-**รอตัดสิน:** Q2 แล้วค่อยออกแบบ Release Readiness, Recovery, Observation, Exception และ Release Decision Record จนพร้อม Review v1.0
+**Automation ภายใน Scope:** Pipeline ที่ได้รับสิทธิ์สามารถทำ Stages ตาม Approval และ Retry/Continue เมื่อ **ได้รับอนุญาตไว้ตาม Policy, ปลอดภัย, ไม่เพิ่ม Risk/Scope และยังใช้ Artifact/Target เดิม** ห้ามใช้ Retry เพื่อข้าม Stop Criteria คำสั่งเสี่ยง/ทำลายและ Incident Recovery ยังอยู่ภายใต้ Process/Permissions ที่อนุมัติแยก
+
+**เมื่อ Approval ใช้ต่อไม่ได้:** เปลี่ยน Artifact/Manifest, เปลี่ยน Production Target/Services/Exposure, ขยาย Rollout, เพิ่ม Migration/Contract Risk, Approval หมดอายุ หรือ Assumptions ที่สำคัญเปลี่ยน → **หยุด Action ที่กระทบและขอ Human Approval ใหม่** ส่วนการรัน Check เดิมที่อนุญาตแล้วแบบไม่มีผลเสี่ยงเพิ่มไม่จำเป็นต้องขอใหม่ทุกครั้ง ห้ามอ้าง CI เขียว, Work Item Verify ผ่าน, Merge แล้ว หรือ Approval จาก Release เก่าแทนการอนุมัติครั้งนี้
+
+**ขอบเขต Decision:** Q1/Q2 เป็นการตกลง **หลักการออกแบบ Policy** ไม่ใช่อนุญาตให้เข้าถึง Production, ใช้ Credentials, Deploy จริง หรือสร้าง Automation ใหม่ Workflow ทั้งฉบับยังเป็น Draft
+
+## Q3 — เรื่องที่ต้องตัดสินต่อ (ยังไม่ตกลง)
+
+**ก่อน Human กดอนุมัติ Production Release ตาม Q1/Q2 ต้องมี Readiness Evidence ระดับไหน?**
+
+- **A. Risk-adaptive Readiness พร้อม Safety Boundaries ที่ห้ามข้าม (แนะนำ):** มี Artifact/Scope ที่ตรึงแน่นอน, Verification/CI Evidence ที่เกี่ยวข้อง, ประเมิน Dependencies/Contracts และ Recovery, Release Owner, Target Permissions, Validation/Observation Plan และ Blockers ที่ระบุชัด เพิ่มความเข้มการตรวจ Migration, Security, Integration, Progressive Rollout และ Monitoring ตาม Risk หาก Required Check ขาดหรือ Critical Risk ยังไม่ยอมรับได้ → **No-Go** จนแก้หรือมี Alternative ตาม Policy ที่ได้รับอนุมัติ AI ยกเว้นเองไม่ได้
+- **B. Uniform Heavyweight Checklist:** ทุก Release ต้องใช้ Checklist/Tests/Runbook ฉบับหนักเท่ากันไม่ว่างานเล็กใหญ่หรือ Risk ต่างกัน
+
+**หลัง Q3:** ค่อยออกแบบ Post-deploy Observation, Stop/Recovery Authority และ Learning Loop ก่อนส่ง Workflow v1.0 ให้ Review/Approve
