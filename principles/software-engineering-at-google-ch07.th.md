@@ -1,7 +1,7 @@
 # Software Engineering at Google — บทที่ 07: Measuring Engineering Productivity
 
 - **Approval:** 🟢 Accepted — สรุปบทและ Principles ได้รับรองเป็นแนวทางประกอบการตัดสินใจ ไม่ใช่กฎบังคับ (ตรวจสอบหลักฐานอิสระเพิ่มเติมได้)
-- **สถานะ:** Draft Study Notes v0.1 — Candidate ยังไม่ได้รับรอง
+- **สถานะ:** Accepted — สรุปผ่านการอนุมัติ หลักการเป็นแนวทาง ไม่ใช่กฎบังคับ
 - **ขอบเขต:** อ่านจากตัวบทเผยแพร่ของ Google ครบทั้งบท (รวมบทสรุปและตัวอย่าง); สรุปใหม่ ไม่ใช่คำแปลแบบคัดลอก
 - **ผู้เขียน:** Ciera Jaspan
 - **อ้างอิงหลัก:** https://abseil.io/resources/swe-book/html/ch07.html
@@ -51,7 +51,7 @@ Metric เวลาบิลด์เฉลี่ยนับ Automated Build �
 - **Layer A — ความหมาย / เมื่อไรควรใช้:** ก่อนเก็บตัวเลขให้ระบุผู้ตัดสินใจและสิ่งที่จะทำเมื่อผลบวก/ลบ
 - **Layer B — Trade-offs / ข้อควรระวัง:** อย่าใช้เรื่องต้นทุนเป็นข้ออ้างไม่วัดเรื่องเสี่ยงสูง
 - **Layer C — หลักฐานและสถานะ:** อ้างอิงเฉพาะหัวข้อข้างต้นจากบทเต็ม แต่ยังไม่ได้ตรวจหลักฐานอิสระหรือลองใช้จริง; Confidence: สูงสำหรับการระบุแนวคิดในบท ต่ำ/ยังไม่ประเมินสำหรับการยกเป็นกฎสากล; ทบทวนเมื่อมีหลักฐานใหม่หรือ Pilot ไม่สนับสนุน
-- **Status:** Candidate
+- **Status:** Accepted as study reference — principles are contextual guidance, not mandatory rules
 
 ### EF-G17 — ให้ Metric ย้อนกลับไปยัง Goal และ Signal ได้
 
