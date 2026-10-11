@@ -42,11 +42,11 @@ Implementation: Vertical Slices + TDD เมื่อเหมาะ → Unit Te
 HUMAN IMPLEMENTATION GATE: Scope, Diff, Test Evidence
    ↓
 FORMAL INDEPENDENT VERIFICATION: Code Review + Behavior + Test Quality
+   ↳ Findings → Scoped Fix → Unit Tests → Reverify
    ↓
-HUMAN VERIFICATION GATE → MR Completion / Release Decision (แยก)
-   ↳ Findings → Scoped Fix → รัน Unit Tests ที่กระทบใหม่ → Reverify
+HUMAN VERIFICATION GATE: รับผล Local Verification โดยมนุษย์
    ↓
-Scoped Publish / Draft MR เมื่อจำเป็น (Human ยืนยันทุก MR)
+Scoped Publish / Draft PR/MR หลังได้รับอนุญาต (Remote-evidence Exception ต้องอนุมัติ)
 ```
 
 **Verification-first Preparation เริ่มได้ก่อนเขียนโค้ด:** กำหนด Acceptance, Expected Behavior และ Evidence จาก Requirement/Contract ที่ยืนยันแล้ว ส่วน **Preliminary Feedback** ตรวจ Test Strategy, Contract หรือ Partial Diff ระหว่าง Implement ได้ แต่ **ยังไม่ใช่ Formal Independent Verification** ป้าย Ready for Verification เป็นเพียงการส่งต่องาน ไม่ได้ข้ามเกณฑ์เข้า Formal ที่อยู่ด้านล่าง Developer Tests ยังเป็นหน้าที่ Implementation
@@ -75,6 +75,8 @@ Scoped Publish / Draft MR เมื่อจำเป็น (Human ยืนย�
 **หลังมี Code:** Verification ตรวจว่า Developer Tests จับ Behavior ผิดได้จริงหรือไม่ และรัน Independent Behavior Checks บน API/UI/CLI/Data ตามความเสี่ยง พร้อม Review Diff เทียบ Spec และ Repo Standards Unit Tests/Build ผ่านอย่างเดียว **ยังไม่ใช่หลักฐานเพียงพอ** Findings ส่งกลับ Implement เพื่อ Fix/Retest ตาม Q7 และการเปลี่ยน Acceptance/Design สำคัญต้องกลับไปหา Human Gate ที่ได้รับผลกระทบ
 
 Human Implementation/Verification Gates ราย Work Item ยังมีอยู่ ใช้ Jira/MR เดิมเก็บ Scenario/Expected Outcome/Check/Result ไม่บังคับเอกสารหรือ Skill เพิ่ม อ้างอิง [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md) และ [pstack Verification](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md)
+
+**การปรับลำดับที่อนุมัติ (2026-10-11): Verify Before Publish เป็นค่าเริ่มต้น** หลัง Developer Checks ผ่านและ Human Implementation Gate ให้ทำ Formal Independent Verification ที่ทำ Local ได้ → Human Verification Gate → Scoped Push/Draft PR/MR ที่อนุมัติแยก. หากต้องใช้ Remote CI/Preview/Integration เป็นหลักฐานจำเป็น Human สามารถอนุญาต Exception ให้ Push เร็วก่อนได้ โดย Check ที่ยังไม่รันต้องเป็น Not run/Blocked และจะอ้างว่าผ่าน Verification Gate ไม่ได้จนกว่าหลักฐานจำเป็นครบและ Human ยืนยัน. Findings หลัง Push ต้องแก้, Retest, Reverify และทบทวน Gate ตามผลกระทบ.
 
 ## Formal Independent Verification เริ่มหลัง Unit Tests ผ่าน (ตกลง 2026-10-10)
 

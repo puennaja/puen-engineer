@@ -43,12 +43,12 @@ Implementation: Vertical Slice + TDD เมื่อเหมาะ → Unit Tes
    ↓
 HUMAN IMPLEMENTATION GATE: ตรวจ Scope, Diff, Tests, Publish Permission
    ↓
-FORMAL INDEPENDENT VERIFICATION: Test Quality + Behavior + Code Review
+FORMAL INDEPENDENT VERIFICATION: Code Review + Behavior + Test Quality
+   ↳ Findings → Scoped Fix → Unit Tests → Reverify
    ↓
-HUMAN VERIFICATION GATE → MR Completion / Release Decision (แยก)
-   ↳ Findings → Scoped Fix → Unit Tests PASS → Reverify
+HUMAN VERIFICATION GATE: รับผล Local Verification โดยมนุษย์
    ↓
-Scoped Publish / Draft MR (เมื่อจำเป็น; ขอ Human ยืนยันแต่ละ MR)
+Scoped Publish / Draft PR/MR หลังได้รับอนุญาต (Remote-evidence Exception ต้องอนุมัติ)
 ```
 
 **Verification-first เริ่มก่อนเขียนโค้ดได้** เพื่อกำหนด Expected Behavior จาก Requirement/Contract และรับ Preliminary Feedback ระหว่าง Implement ได้ แต่ **Formal Independent Verification** ที่ประเมิน Code, Test Quality และ Behavior จริงต้องรอผล Developer Checks ที่ผ่านและ **Human Implementation Gate** ก่อน Diagram แสดงลำดับอนุมัติที่ตกลง ไม่ได้ห้าม Review เบื้องต้นหรือ Test ระหว่างเขียนโค้ด ส่วน Bug เล็กแบบ Standalone ใช้เส้นทาง Design/Planning ที่กระชับได้ (ดูด้านล่าง) แต่ไม่ข้าม Human Decisions ที่จำเป็น

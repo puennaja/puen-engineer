@@ -37,13 +37,13 @@ Verification-first: source-backed acceptance + test intent (before code)
 Implementation: slices + optional TDD → unit tests PASS + developer checks
    ↓
 HUMAN IMPLEMENTATION GATE: scope, diff and test evidence
-   ↓
-FORMAL INDEPENDENT VERIFICATION: code review + behavior + test quality
-   ↓
-HUMAN VERIFICATION GATE → separate MR completion / release decisions
-   ↳ Findings → scoped fix → rerun affected unit tests → reverify
-   ↓
-Scoped publish / Draft MR if needed (human approves EACH MR)
+    ↓
+FORMAL INDEPENDENT VERIFICATION: test quality + behavior + code review
+    ↳ findings → scoped Implementation fix → unit tests PASS → reverify
+    ↓
+HUMAN VERIFICATION GATE: human decides on local verification evidence
+    ↓
+Scoped publish / Draft PR/MR after separate permission (earlier only by remote-evidence exception)
 ```
 
 **Verification-first preparation starts before code:** define trustworthy expected behavior, examples and observable proof from confirmed requirements. **Preliminary feedback** may assess API/contracts, test strategy and partial diffs before the Implementation Gate; this is **not formal Independent Verification**. A "Ready for Verification" label is useful for handoff but does not bypass the formal entry rule below. Developer tests remain Implementation-owned; formal independent evidence judgment follows the agreed entry condition.

@@ -40,11 +40,11 @@ Implementation: small slices + optional TDD → unit/regression tests PASS
 HUMAN IMPLEMENTATION GATE: review scope, diff, checks and publish authority
     ↓
 FORMAL INDEPENDENT VERIFICATION: test quality + behavior + code review
-    ↓
-HUMAN VERIFICATION GATE → separate MR completion / release decisions
     ↳ findings → scoped Implementation fix → unit tests PASS → reverify
     ↓
-Scoped publish / Draft MR (if needed; explicit approval for EACH MR)
+HUMAN VERIFICATION GATE: human decides on local verification evidence
+    ↓
+Scoped publish / Draft PR/MR after separate permission (earlier only by remote-evidence exception)
 ```
 
 **Verification-first starts before code** by defining expected behavior and a meaningful proof strategy. Provisional review of scenarios, contracts and partial diffs is allowed during Implementation; **formal** Independent Verification starts only after observed passing developer checks and the **Human Implementation Gate**. The diagram shows the fixed approval order, **not** a mandatory waterfall for every edit or early reviewer comment. A small standalone bug can use a lean, human-approved Design/Planning path (defined below), not silently omit those approvals. Handoff information belongs in the **same issue/MR**, not mandatory duplicate documents:
