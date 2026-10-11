@@ -22,23 +22,25 @@ It must also be obvious **what happened and why** from the existing tracker, Git
 - **AI specialists:** `codebase-explore` (read-only), `verify-work-item` (pre-code expectations, developer checks or eligible formal checks), `review-change` (read-only independent judgment), `git-commit` (local scoped commit) and `gitlab-draft-mr` for GitLab only, or a verified GitHub CLI/connector for Draft PR (only after human confirms **each** Draft PR/MR).
 - **Actual security boundary:** Plane OAuth/project role, agent workspace/sandbox, GitHub/GitLab repo/branch protections and company policy. A Skill never elevates privileges.
 
-## Step 0 — one-time setup from nothing
+## Step 0 — Selectable bootstrap and product readiness
 
-1. **Plane Cloud:** create/select workspace and project via UI; grant signed-in operator appropriate Contributor/Admin role for Work Item create/update/comment; don't give unnecessary workspace-admin rights. Follow [Plane setup](https://github.com/puennaja/puen-stack/blob/master/setup/plane-cloud.md) to configure OAuth MCP separately for Codex and Claude if both will participate.
-2. **Version control:** initialize/select an approved private Git repository. Create an initial README with a lightweight product goal, a safe local run/test command and a short `AGENTS.md` only if the owner approves exact content. No obligation to install every tool or add `CLAUDE.md`.
-3. **Skills:** when Codex skills are already installed globally, verify discovery and **skip reinstalling**. Otherwise, from cloned `puen-stack`, run `node scripts/setup.mjs`, choose **Global or Project**, agent(s), skills, Link/Copy and verify Dry-run preview. Restart agents to confirm discovery. The wizard installs **Skills only**, not Plane MCP or permissions.
-4. **Plane read/write smoke:** call `work-item-runner` with [the Plane setup prompt](https://github.com/puennaja/puen-stack/blob/master/setup/plane-cloud.md) against one authorized synthetic practice item; confirm actual Create → Read-back → Update → Comment → Read-back results. No blind retries.
-5. **Boundary:** decide the nonproduction environment, safe synthetic fixtures, allowed repo paths and the person who approves human gates and reviewer/Release decisions. Treat Production deployment as **out of scope** unless separately authorized.
+**Source of truth:** Engineering workflow and human gates live in `puen-engineer`; tooling and skills live in [puen-stack](https://github.com/puennaja/puen-stack). The workflow must not depend on one agent, tracker or Git host.
 
-**Exit evidence:** real Plane project URL, read/write smoke result and MCP identity; Git repository branch; agents actually discover skills; test environment and human decision owner recorded. If any fails, mark `Setup Blocked`, no pretending connectivity.
+1. Clone/update `puen-stack`, run `npm run setup`, and choose an agent (Codex/Claude/Both), work tracker (Plane/Jira/GitHub Issues/None), Git host (GitHub/GitLab/None) and skill scope (Global/Project). The bootstrap is **not yet end-to-end verified**, and selecting a provider does not imply a working adapter.
+2. The wizard inspects CLI tools, creates only missing model profile files and optionally offers official interactive authentication for selected integrations. Never overwrite user configuration, grant roles or write permissions, push, merge or deploy automatically. Reuse already installed global skills where valid.
+3. Open the real product repository (Pilot #001: `fall-in-love-project`); verify Git root, remote host, existing `AGENTS.md`, branches and changes. Git is the version control system; GitHub uses Draft PR and GitLab uses Draft MR.
+4. Invoke `pilot-recorder` **before** `setup-puen-stack` to establish/reuse evidence under `docs/pilot/`. Record observed events, problems, attempted solutions, meaningful test results and decisions. Then run repository readiness covering owners, Git flow, required checks, skills, permissions and selected tracker read/write.
+5. Read the selected tracker first; obtain a specific human authorization before bounded create/update/comment, and verify writes by reading them back. Check Git hosting authentication and branch rules before proposing publication.
+6. Start discovery when necessary readiness is confirmed, or clearly identify blockers/owner/next action. Do not claim untested integrations or deployment success.
 
-### Current pilot baseline (2026-10-11)
+```bash
+git clone https://github.com/puennaja/puen-stack.git
+cd puen-stack
+npm run setup
+# Then open the existing product repository
+```
 
-- Codex profiles configured by operator; only `fast` launch confirmed, verify all models/effort in `/model`
-- Codex skills installed **globally** by operator; discovery/live skill calls not yet confirmed
-- Version control = **Git**; remote host = **GitHub now**, with **GitLab** as an alternative, selected from `git remote -v`
-- GitHub uses **Draft Pull Requests (PR)**; GitLab uses **Draft Merge Requests (MR)**; do not call GitLab-only skill on GitHub
-- Every stage must capture actual events, issues, fixes, failures and evidence in `pilot-projects/docs` (or the pilot repository's `docs/`), separately from Plane index/comments
+**Capability-based adapters:** Core skills request work-item list/read/create/update/comment and draft-change-request capabilities; selected provider integrations implement those details. If unavailable, report `Blocked/Not Verified`, not fabricated calls or a silent provider switch. Capture important milestones in `docs/pilot/`; don't log every tool call.
 
 ## Copy/paste kickoff prompt (new idea)
 

@@ -30,25 +30,25 @@ Pilot จะผ่านในขอบเขตที่เราทดลอ�
 - **`git-commit` + Git hosting integration:** Commit แบบ Scoped; GitHub ใช้ Draft PR, GitLab ใช้ Draft MR โดยแยก Human Permission สำหรับ Push และแต่ละ PR/MR; `gitlab-draft-mr` ใช้ได้เฉพาะ GitLab
 - **Plane OAuth Role, GitHub/GitLab Permissions และ Sandbox:** เป็นสิทธิ์เชิงเทคนิคจริง; Skills ไม่สามารถแจกสิทธิ์เอง
 
-## Step 0 — Setup ตั้งแต่ไม่มีอะไรเลย (ทำครั้งเดียว)
+## Step 0 — Bootstrap และ Project Readiness (ทำครั้งแรก / เมื่อเปลี่ยน Provider)
 
-1. **Plane Cloud:** เข้า [app.plane.so](https://app.plane.so) สร้าง Workspace และ Project สำหรับ Pilot ด้วยตัวเอง กำหนด Project Identifier (เช่น `PILOT` เป็นตัวอย่างเท่านั้น), ให้บัญชีที่เชื่อมมี Project Role **Contributor/Admin** เพื่อ Create/Update/Comment ได้ ไม่ต้องใช้สิทธิ์ Admin กว้างเกินจำเป็น
-2. **Repository:** เตรียม Git Repo ของ Product ที่ได้รับอนุญาต (เลือก Private ถ้ามีข้อมูลส่วนตัว/บริษัท) Greenfield เริ่มต้น Repo เปล่าได้ ไม่ต้องบังคับสร้างสถาปัตยกรรมก่อน Discovery
-3. **Skills:** ถ้าติดตั้ง Codex Skills แบบ Global แล้ว ให้ตรวจว่า Codex ค้นพบได้จริงและ **ข้ามการติดตั้งซ้ำ**; ถ้ายังไม่ติดตั้งจึง Clone/Update [puen-stack](https://github.com/puennaja/puen-stack) แล้วรัน `node scripts/setup.mjs` เลือก **Global หรือ Project → Codex/Claude/Both → Skills → Link/Copy → Dry-run Preview → Confirm**; ต้องมี Node.js 18+
-4. **Plane MCP:** ติดตั้งและ Login Official Plane Cloud MCP แบบ OAuth แยกสำหรับ Codex และ Claude ตาม [Setup Guide ภาษาไทย](https://github.com/puennaja/puen-stack/blob/master/setup/plane-cloud.th.md) ตัว Skill Installer **ไม่ได้ Login Plane หรือเปิด Write Permission ให้อัตโนมัติ**
-5. **ทดสอบ Connection:** ใช้ `work-item-runner` ทำ Read-only ตรวจ Workspace/Project แล้วขออนุญาตสร้าง **Synthetic Pilot Work Item 1 รายการ** จากนั้น Create → Read Back → Update → Comment → Read Back ต้องเห็น ID/URL จริงใน Plane
-6. **Human & Safety:** กำหนด Owner ของ Gate, Scope ที่ Agent แก้ Code ได้, Safe Test Fixtures และเลือก Local/Staging ก่อน **ไม่ต้องเปิด Production Access** เพื่อให้ Pilot ครบวงจรตัดสินใจ
+**Source of Truth:** Engineering Workflow อยู่ใน `puen-engineer`; การติดตั้ง Tools และ Skills อยู่ใน [puen-stack](https://github.com/puennaja/puen-stack). เลือก Provider ตามงานจริง ไม่ผูกกับ Plane, GitHub, GitLab, Codex หรือ Claude ตายตัว.
 
-**Setup ถือว่าพร้อมเมื่อ:** Skills ถูกค้นพบจริง, Plane MCP Authenticate ได้กับ Project ที่ตั้งใจ, การทดสอบ Create/Update/Comment สำเร็จพร้อมหลักฐาน และมี Repo/Owner/Test Environment ที่ชัดเจน ถ้าไม่ผ่านให้บันทึก `Setup Blocked` ไม่เดา
+1. Clone หรือ Update `puen-stack` แล้วรัน `npm run setup` จาก Repo นั้น เพื่อเลือก Coding Agent (Codex/Claude/Both), Work Tracker (Plane/Jira/GitHub Issues/None), Git Hosting (GitHub/GitLab/None) และที่ติดตั้ง Skills (Global/Project). **คำสั่งนี้เป็น Bootstrap ที่ยังต้อง Live Test และไม่เท่ากับการได้รับสิทธิ์ Provider**; ถ้า Adapter ยังไม่รองรับให้รายงาน `Not Verified` และทำ Manual Provider Setup ตามคู่มือ.
+2. Wizard ตรวจ Tool/CLI, สร้าง Model Profiles เฉพาะไฟล์ที่ยังไม่มี และเสนอ Interactive Authentication เฉพาะ Provider ที่เลือก; **ห้ามทับ Config, เปิด Write Permission, แก้ Role, Push, Merge หรือ Deploy โดยอัตโนมัติ**. ถ้ามี Config/Skills อยู่แล้วให้ตรวจแทนติดตั้งซ้ำ.
+3. เปิด Product Repository จริง (Pilot #001 คือ `fall-in-love-project`), ตรวจ `git rev-parse --show-toplevel`, `git remote -v`, `AGENTS.md` และสิ่งที่เปลี่ยนค้างอยู่. Git เป็น Version Control; GitHub ใช้ Draft PR และ GitLab ใช้ Draft MR.
+4. เรียก `pilot-recorder` ก่อน เพื่อกำหนดหรือใช้โครงสร้าง `docs/pilot/` เดิมและเริ่มบันทึก Setup Events/Issues/Experiments/Decisions/Results แบบมีหลักฐาน; จากนั้นเรียก `setup-puen-stack` ตรวจ Human Owner, Branch/Commit Flow, Required Checks, Tool Discovery, Tracker Read/Write และ Repo Permissions. Claude ไม่ใช่ Blocker หากเลือก Codex-only.
+5. ตรวจ Read ของ Work Tracker ก่อน; การ Create/Update/Comment ต้องอยู่ใน **Project/Scope ที่ Human อนุญาต** และทดสอบ Read-back อย่างปลอดภัย. ตรวจ Git Host Auth และสิทธิ์ Branch จริงก่อนเสนอ Push หรือ PR/MR.
+6. เริ่ม Idea Discovery เมื่อ Setup Checklist ที่จำเป็นผ่านหรือมี Blocker พร้อม Owner/Next Action ชัดเจน. ห้ามอ้างว่า Integration หรือ Production ผ่านโดยไม่มีผลจริง.
 
-### Current Pilot baseline (2026-10-11)
+```bash
+git clone https://github.com/puennaja/puen-stack.git
+cd puen-stack
+npm run setup
+# แล้วเปิด Product Repo ที่มีอยู่จริง เช่น fall-in-love-project
+```
 
-- Codex Profiles: **configured by operator**, ตรวจแต่ละ Profile/Model ผ่าน `/model` ก่อนใช้งาน; `fast` ผ่านการเปิดใช้งานจริงแล้ว ส่วน Profile อื่นยังต้องยืนยัน
-- Codex Skills: **installed globally by operator**, ยังต้อง Smoke Test การค้นพบและการเรียก Skill; ไม่ต้องติดตั้งใหม่โดยอัตโนมัติ
-- Version control: **Git**; Remote Git hosting: **GitHub (Pilot ปัจจุบัน)** หรือ **GitLab (ทางเลือก)** เลือกจาก `git remote -v` และตรวจความสามารถจริง
-- GitHub: **Draft Pull Request (PR)**; GitLab: **Draft Merge Request (MR)**. GitHub ใช้ `git-draft-pr` ที่เพิ่มไว้แล้ว แต่ยังต้อง Smoke Test จริงก่อนถือว่า Ready; ห้ามใช้ `gitlab-draft-mr` กับ GitHub
-- ทุก Stage ต้องบันทึก Activity, Problems, Solutions, Worked/Failed/Not Verified, Evidence ใน `pilot-projects/docs`; อย่าใช้ Plane comments แทน Experiment Log ทั้งหมด
-- ตรวจตั้งแต่ต้นว่า `pilot-projects` เป็น Repository หรือ Parent Folder แล้ววาง `docs/` ให้ถูกที่
+**Provider contract:** Core Skills ทำงานกับ Capability เช่น `work-item.list/get/create/update/comment` และ `change-request.create-draft`; Provider Adapters รับผิดชอบรายละเอียด API และ Permission. หากไม่มี Capability ให้รายงาน Blocked/Not Verified แทนการเดา API หรือแอบเปลี่ยน Provider. `pilot-recorder` บันทึกทั้ง Worked/Partial/Failed/Not Verified ณ Milestone สำคัญ ไม่ Spam ทุก Tool Call.
 
 ## Step 1 — โยน Idea ให้ AI
 
