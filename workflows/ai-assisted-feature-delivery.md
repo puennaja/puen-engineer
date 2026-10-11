@@ -4,6 +4,8 @@
 - Created: 2026-10-09
 - Scope: personal engineering workflow (generic example; no company-confidential material)
 
+**Policy precedence (2026-10-11):** Verify Before Publish supersedes earlier Q6/Q8 publication timing only; separate scoped Push authorization, per-PR/MR human confirmation and human-only Ready/Merge remain in force. Earlier publication is allowed only as a human-approved exception for necessary remote evidence; the Verification Gate remains pending until required proof is observed.
+
 ## Goal
 Build features efficiently with AI assistance while retaining developer ownership and correctness.
 

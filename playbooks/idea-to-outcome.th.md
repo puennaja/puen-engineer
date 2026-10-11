@@ -87,7 +87,7 @@ Do not delete, merge, deploy Production, or self-approve Human Gates.
 | **6. Acceptance-first** | `verify-work-item` (Preparation) | Test Scenarios / Expected Behavior ที่ยึด Requirement ก่อน Code, Edge/Negative Cases | Expected Behavior ใน Child / Note | ถ้ายัง Ambiguous ให้ Human ตัดสิน Expected |
 | **7. Implementation** | Coding Agent + `work-item-runner` | เขียนเฉพาะ Scope ที่มอบหมาย, รักษา Existing Changes, รัน Developer Unit/Lint/Build, เก็บผลจริง | Child Status + Diff/Checks Evidence | **Human Implementation Gate ราย Work Item** เมื่อ Checks ผ่านจริง |
 | **8. Independent Verification** | `review-change` + `verify-work-item` | เข้า **Formal** ได้หลัง Developer Checks ที่เกี่ยวข้องผ่านจริง + Human Implementation Gate แล้ว; ตรวจ Fixed Diff, Behavior, Test Quality, Integration | Findings/Pass/Fail/Not run/Blocked พร้อม Evidence; แก้แล้ว Reverify | **Human Verification Gate ราย Work Item** |
-| **9. Local Commit** | `git-commit` | Scoped Stage, Commit ตาม `[WORK-123] feat: ...` โดยใช้ **Plane Work Item ID จริง**, ทดสอบ Hooks และบันทึก SHA | Link Branch/Commit กลับ Child | ต้องมี Scoped Commit Authorization; **Commit ไม่ใช่ Push** |
+| **9. Local Commit** | `git-commit` | Scoped Stage, Commit ตาม `[WORK-123] feat: ...` โดยใช้ **Work Item ID จริงจาก Tracker ที่เลือก**, ทดสอบ Hooks และบันทึก SHA | Link Branch/Commit กลับ Child | ต้องมี Scoped Commit Authorization; **Commit ไม่ใช่ Push** |
 | **10. Push + Draft PR/MR** | GitHub: `git-draft-pr` (ใช้ `gh` หรือ GitHub integration ที่ยืนยันสิทธิ์แล้ว); GitLab: `gitlab-draft-mr` | ตรวจ `git remote -v`, Host/Repo/Source/Target จริง ไม่เดา `master`; ขอ Push Permission แยก; GitHub เปิด Draft PR / GitLab เปิด Draft MR | Link PR/MR URL จริง + CI/Gaps | **Human Confirm ทุก Draft PR/MR แยก**; Ready/Merge **Human เท่านั้น** |
 | **11. Release Readiness** | `work-item-runner` | ระบุ Immutable Build, Environment, Deployment Scope, Smoke Checks, Monitoring, Recovery Owner | Release Evidence / Stage Outcome | **Human Go/No-Go ก่อน Production ทุก Release** |
 | **12. Observe** | `work-item-runner` | แยก Deploy สำเร็จจาก Service Health, Changed Behavior และ Users/Business Outcome | Actual Result: Local/Staging/Production พร้อมหลักฐาน | Anomaly-driven Intervention ทุก Action ต้อง **Human Confirm ใหม่** |
@@ -106,7 +106,7 @@ Idea: *"อยากมี Web App เล็ก ๆ จดรายจ่าย�
 3. Design: เสนอ Option A: Local-first / Option B: Backend + Database และให้ Human เลือกตาม Risk/Outcome
 4. Planning: Parent Work Item เก็บ Whole-feature Scope แล้วแตก **Child แรก** แค่ "เพิ่ม Expense แล้วสรุปยอดคงเหลือ" (หลัง Human Planning Gate)
 5. Implementation + Verification: Test จำนวนเงินติดลบ, Input ผิด, ความถูกต้องของยอดรวม ใช้ Harness ที่รันได้จริง
-6. Commit/MR: `[PILOT-<real-id>] feat: record expenses` (ID ต้องมาจาก Plane จริง) เปิด Draft MR หลัง Human Confirm
+6. Commit/MR: `[PILOT-<real-id>] feat: record expenses` (ID ต้องมาจาก Tracker ที่เลือกจริง) เปิด Draft MR หลัง Human Confirm
 7. Release/Outcome: ถ้า Run ใน Local อย่างเดียว → `Local behavior verified; production not deployed; user outcome not yet measured`
 
 **อย่าแต่ง Plane ID, Git Commit SHA, Test Output หรือ MR URL เพื่อให้ตัวอย่างดูจบ**
@@ -144,7 +144,7 @@ real action, its owner, and the smallest safe next action. Do not write.
 | **Correct Requirement** | Human ยืนยัน Problem/Scope และ Acceptance ที่เทียบกับ Behavior จริง | Unknown / Needs Discovery |
 | **Human-controlled Workflow** | Human Gate แต่ละระดับมี Decision ต้นทาง พร้อม Owner/เวลา | Pending / Blocked |
 | **Actual Code Quality** | Diff/Review Findings/Tests ที่มีประโยชน์ และ Retry ที่ตรวจซ้ำ | Not run / Inconclusive |
-| **Traceability** | Plane Idea → Child → Commit → Draft MR → Release/Outcome Links จริง | Partial |
+| **Traceability** | Tracker Idea → Child → Commit → Draft PR/MR → Release/Outcome Links จริง | Partial |
 | **Safety** | ไม่มี Write/Push/Merge/Deploy ที่ข้ามสิทธิ์ ไม่มี Duplicate/Secret Leak | Fail + Root Cause |
 | **Observability** | เปิด Plane แล้วรู้ Stage, Actor, Checks, Decision, Blocker, Next Owner | Needs Improvement |
 | **Value & Efficiency** | Success Signal ที่ยืนยันได้, เวลา/จำนวนรอบแก้/Token Cost เมื่อมีข้อมูลจริง | Not measured / No baseline |

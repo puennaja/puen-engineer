@@ -1,6 +1,6 @@
 # My Engineer pilot playbook — idea → working change → observable outcome (EN)
 
-**Canonical Playbook:** This is the pilot workflow source of truth; tooling setup lives in [puen-stack](https://github.com/puennaja/puen-stack). See [model routing](../guides/codex-model-routing.th.md). Record real pilot evidence in `pilot-projects/docs` (or its repo-root `docs/`) throughout execution.
+**Canonical Playbook:** This is the pilot workflow source of truth; tooling setup lives in [puen-stack](https://github.com/puennaja/puen-stack). See [model routing](../guides/codex-model-routing.th.md). Record real pilot evidence in product repo `docs/pilot/` throughout execution.
 
 
 **Status:** v0.1 pilot guide, inspired by the explicit playbook routing of [pstack](https://github.com/cursor/plugins/tree/main/pstack), but **not** a copy of its Cursor-specific automation. My Engineer's [Accepted workflows](https://github.com/puennaja/puen-engineer/tree/master/workflows), human gates and local repository/company rules win when instructions conflict.
@@ -13,12 +13,12 @@ Given only a product idea **or** a feature requirement, can Codex/Claude **get t
 
 It must also be obvious **what happened and why** from the existing tracker, Git and MR records when the owner resumes tomorrow, without reading a long AI transcript or adding duplicate templates.
 
-**Initial pilot:** choose a small, reversible feature in a **private, disposable one-repo greenfield application** with synthetic data and local/staging verification. A brownfield, three-repo feature is a **second pilot** after the one-repo workflow succeeds. Plane Cloud serves as source of truth for Work Items and progress; GitHub (current pilot) or GitLab (optional) owns Git/PR-or-MR records. A successful local/staging pilot does **not** prove production readiness or business impact.
+**Initial pilot:** choose a small, reversible feature in a **private, disposable one-repo greenfield application** with synthetic data and local/staging verification. A brownfield, three-repo feature is a **second pilot** after the one-repo workflow succeeds. The selected tracker is source of truth for Work Items and progress; GitHub (current pilot) or GitLab (optional) owns Git/PR-or-MR records. A successful local/staging pilot does **not** prove production readiness or business impact.
 
 ## Roles and authority
 
 - **Human product/engineering owner** (may be the solo pilot operator): agrees the problem/outcome, reviews Design and Planning, approves each Work Item Implementation and Verification Gate, independently authorizes branch publication and each Draft MR, and controls MR Ready/Merge and each production release.
-- **AI coordinator:** `work-item-runner`, tracking and routing only, with **bounded Plane CRUD** in the specified pilot project if granted; AI comments must say they are not approvals.
+- **AI coordinator:** `work-item-runner`, tracking and routing only, with **bounded selected-tracker CRUD** in the specified pilot project if granted; AI comments must say they are not approvals.
 - **AI specialists:** `codebase-explore` (read-only), `verify-work-item` (pre-code expectations, developer checks or eligible formal checks), `review-change` (read-only independent judgment), `git-commit` (local scoped commit) and `gitlab-draft-mr` for GitLab only, or a verified GitHub CLI/connector for Draft PR (only after human confirms **each** Draft PR/MR).
 - **Actual security boundary:** Plane OAuth/project role, agent workspace/sandbox, GitHub/GitLab repo/branch protections and company policy. A Skill never elevates privileges.
 
