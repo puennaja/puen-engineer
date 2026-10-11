@@ -10,3 +10,11 @@
 - [Artifact Templates / Codex Handoff — English](./artifacts/workflows/README.md)
 
 > Template เป็นแนวทางบันทึก ไม่ได้อนุมัติ Human Gate, GitLab MR, Production Deployment หรือ Automation โดยอัตโนมัติ และไม่ควร Commit ข้อมูลภายในบริษัทลง Repository นี้
+
+## My Engineer Pilot
+
+- [Canonical Playbook — ไทย](./playbooks/idea-to-outcome.th.md) · [English](./playbooks/idea-to-outcome.md)
+- [Cost-optimized Codex Model Routing Policy — ไทย](./guides/codex-model-routing.th.md)
+- [Tooling Setup in puen-stack](https://github.com/puennaja/puen-stack/blob/master/setup/codex-model-routing.th.md)
+
+Workflow อยู่ที่นี่, Tooling อยู่ที่ puen-stack และหลักฐานการทดลอง (Activity, Problems, Solutions, Verified/Failed Results) ต้องอยู่ใน `pilot-projects/docs` ของ Pilot Project
