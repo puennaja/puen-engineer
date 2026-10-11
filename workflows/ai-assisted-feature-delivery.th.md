@@ -55,7 +55,7 @@
 
 1. **AI เลือก Skill ตามงาน** ภายใต้ Approved Goal/Task Engineer Override ได้ ไม่บังคับ pstack/grill-me Chain
 2. **Fixed Human Gates** ใช้ที่ทางออกของ Design, Planning, Implementation, Verification เป็น Approval ของ Deliverable ที่ตกลง ไม่ใช่ Permission Prompt ทุก Code Edit/Test Risk-based Review เปลี่ยนความลึก ไม่เปลี่ยนการมี Human Gate
-3. **หลัง Implementation Approval** Authorized Publish Operation สามารถ Push Work Branch ที่กำหนด ก่อน **Draft MR ทุกอัน** AI ตรวจ **Git Flow จริงของ Repo/Work Item** เสนอ Source + Target + เหตุผล + Jira Link และ **รอ Human Confirmation เฉพาะ MR** ห้ามสมมติ `master`, `main`, `develop` สิทธิ์ Push ไม่แทน MR Confirmation
+3. **หลัง Implementation Approval** ต้องทำ Formal Independent Verification ที่ทำ Local ได้และผ่าน Human Verification Gate ก่อนเป็นค่าเริ่มต้น; ถ้าจำเป็นต้องใช้ Remote Evidence ต้องอนุมัติข้อยกเว้นก่อน จากนั้นจึงอนุญาต Scoped Push ก่อน **Draft MR ทุกอัน** AI ตรวจ **Git Flow จริงของ Repo/Work Item** เสนอ Source + Target + เหตุผล + Jira Link และ **รอ Human Confirmation เฉพาะ MR** ห้ามสมมติ `master`, `main`, `develop` สิทธิ์ Push ไม่แทน MR Confirmation
 4. **ระหว่าง Verification** Provisional Review/Scoped Fix วนซ้ำได้ แต่ต้อง Retest ตามสัดส่วนและผ่าน Human Verification Gate หาก Material Change ให้เปิด Invalidated Upstream Gates
 5. **หลัง Verification** AI แสดง Evidence/Readiness Summary **มนุษย์เท่านั้น** Mark Ready/Merge ส่วน Merge และ Production Release เป็นคนละ Decision
 
@@ -65,6 +65,8 @@
 - **Gate Granularity สำหรับ Jira Ownership:** Design/Planning อนุมัติระดับ Feature/Story; Implementation/Verification ระดับ Work Item (Story/Sub-task/Bug/Task ตามที่รับ) Material Change เปิดเฉพาะ Gates ที่ถูกทำให้ไม่ถูกต้อง Human Approver Identity และ Evidence Storage ตัดสินตาม Team/Work Item โดยใช้ Jira/MR ที่มี
 - **เรื่องเฉพาะ Repo ไม่ใช่ Framework Global:** Actual Target Branch/Git Flow, Required Reviewers/CI, Commit Convention, Allowed Push Credentials และ Branch Protection ต้องค้นจาก Repo/Task จริง **ถามคนเมื่อขาดหรือกำกวม** ห้ามเดาใน Generic Public Workflow
 - **งานอนาคตที่ไม่ Block การรีวิว Workflow v1.0 ทั้งสอง:** Detailed Release & Operations, GitLab Connector/Permission Enforcement และ `puen-stack` Skill Design/Evaluation ไม่มีการแก้ GitLab Settings จริงหรือมอบสิทธิ์
+
+**การปรับลำดับที่อนุมัติ (2026-10-11) — Verify Before Publish เป็นค่าเริ่มต้น:** เมื่อ Developer Checks ที่เกี่ยวข้องผ่านจริงและ Human Implementation Gate อนุมัติ ให้ทำ **Formal Independent Verification ในส่วนที่ทำ Local ได้** (Review แยก, Test Quality, Behavior ที่ได้รับอนุญาต) ก่อน Publish จากนั้น Human Verification Gate พิจารณาหลักฐานว่าพอสำหรับขั้นต่อไปหรือไม่ แล้วจึงขอ Push Authorization และการยืนยัน Draft PR/MR รายครั้ง **ข้อยกเว้น:** ถ้าหลักฐานจำเป็นต้องพึ่ง Remote CI, Preview Environment หรือ Integration ที่ทำ Local ไม่ได้ Human อาจอนุญาตให้ Push ไปยัง Branch ที่จำกัดขอบเขตก่อน และเปิด Draft PR/MR เฉพาะเมื่อจำเป็นและอนุมัติแยกกัน ผล Remote Checks ที่ยังไม่รันต้องเป็น `Not run/Blocked`; **ห้ามอ้างว่า Verification Gate ผ่าน** ก่อน Evidence ที่จำเป็นจะครบและ Human ยืนยันผล หลัง Publish หาก CI/PR/MR พบปัญหาต้องกลับมาแก้ใน Scope, Retest, Independent Reverify และขอ Gate ใหม่ตามผลกระทบ ห้าม Auto Ready/Merge/Deploy.
 
 ## Track A — ข้อตกลงสุดท้ายเรื่อง Gate Granularity (ตกลง 2026-10-10)
 

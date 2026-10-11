@@ -7,6 +7,8 @@
 ## Goal
 Build features efficiently with AI assistance while retaining developer ownership and correctness.
 
+**Accepted ordering update (2026-10-11) — Verify before publish by default:** After passing developer checks and the Human Implementation Gate, run all locally feasible **Formal Independent Verification** (separate review pass, test quality and authorized behavior checks) before publishing. The **Human Verification Gate** decides whether this evidence is sufficient for the next step. Only then seek separately scoped Push authorization and per-PR/MR human confirmation. **Exception:** when required proof depends on remote CI, a preview environment or other unavailable local integration, the human may explicitly authorize an earlier narrowly scoped branch Push (and Draft PR/MR only if necessary and separately approved). Pending remote-dependent checks stay `Not run/Blocked`; do not claim the Verification Gate passed until necessary post-publish evidence is verified, and revisit the Human Verification Gate if new evidence changes the decision. Remote CI and PR/MR review findings trigger scoped fixes, retests, independent re-verification and a renewed gate decision where applicable. Never mark Ready, Merge or Deploy automatically.
+
 ## Track A design decisions — grill-me round 1 (agreed 2026-10-10)
 
 **Decision status (at the time of Q1–Q3 design):** Confirmed for further design, not an automatic workflow approval. **Current approval state:** Implementation and Verification v1.0 were each explicitly Accepted by the repository owner on 2026-10-10; this overarching AI-assisted decision record remains Draft. These AI-specific preferences do not retroactively change the already Accepted, adaptable Feature Delivery Lifecycle.
@@ -55,7 +57,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 
 1. **AI selects task-appropriate skills** within the approved goal and task; engineer overrides. No forced pstack/grill-me skill chain.
 2. **Fixed Human Gates** apply to the AI-assisted flow's Design, Planning, Implementation and Verification exits; gates are approvals of agreed deliverables, **not** permission prompts for each code edit or test. Risk-based review changes depth, **not** whether a human gate exists.
-3. **After Implementation approval**, a specifically authorized publish operation may push the approved work branch. **Before each Draft MR**, AI investigates the **actual Git Flow of the repo/work item**, proposes source + target + reason + Jira link and **waits for an explicit per-MR human confirmation**; do not assume `master`, `main` or `develop`. A separate permission for push does not bypass MR-specific confirmation.
+3. **After Implementation approval**, first complete locally feasible Formal Independent Verification and its Human Verification Gate; use an explicitly approved remote-evidence exception if needed, then separately authorize scoped publishing. **Before each Draft MR**, AI investigates the **actual Git Flow of the repo/work item**, proposes source + target + reason + Jira link and **waits for an explicit per-MR human confirmation**; do not assume `master`, `main` or `develop`. A separate permission for push does not bypass MR-specific confirmation.
 4. **During Verification**, provisional review and scoped fixes can cycle; each fix requires proportional retesting and a human Verification Gate decision. Material departures reopen relevant upstream gates.
 5. **After Verification**, AI provides evidence and readiness summary; **only a human** can mark MR Ready or Merge. Merge and production release remain separate decisions.
 
@@ -139,7 +141,7 @@ Build features efficiently with AI assistance while retaining developer ownershi
 3. **Feature-level Delivery Planning Gate** — human agrees feature-wide scope/risks, a detailed initial work item and progressive refinement of later work items.
 4. **Verification-first for each Work Item** — before writing code, define source-backed scenarios, expected results, a suitable test seam and proof strategy; this is preparation, not a new gate.
 5. **Per-Work-Item Implementation** — AI works within the agreed work item, **passes applicable unit/regression tests and required developer checks with actual evidence before formal Independent Verification**, and may make local commits; **Human Implementation Gate for that work item** reviews changed scope/diff/evidence.
-6. **Scoped publish + Draft MR** — with specific work-branch publish authorization, AI can push; **inspect actual Git Flow, propose source/target and ask human before creating each Draft MR**. No automatic branch assumptions.
+6. **Verification Gate → Scoped publish + Draft PR/MR (or explicit remote-evidence exception)** — with specific work-branch publish authorization, AI can push; **inspect actual Git Flow, propose source/target and ask human before creating each Draft MR**. No automatic branch assumptions.
 7. **Per-Work-Item Verification ↔ scoped rework** — actual evidence, independent review proportionate to risk, CI/MR feedback, fixes and targeted retests; **Human Verification Gate for that work item** confirms outcome. Only material changes reopen invalidated upstream gate(s).
 8. **Human MR completion** — human alone marks Draft as Ready and performs Merge. Release/operations approval is separate.
 

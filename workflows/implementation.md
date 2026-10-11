@@ -39,12 +39,12 @@ Implementation: small slices + optional TDD → unit/regression tests PASS
     ↓
 HUMAN IMPLEMENTATION GATE: review scope, diff, checks and publish authority
     ↓
-Scoped publish / Draft MR (if needed; explicit approval for EACH MR)
-    ↓
 FORMAL INDEPENDENT VERIFICATION: test quality + behavior + code review
-    ↳ findings → scoped Implementation fix → unit tests PASS → reverify
     ↓
 HUMAN VERIFICATION GATE → separate MR completion / release decisions
+    ↳ findings → scoped Implementation fix → unit tests PASS → reverify
+    ↓
+Scoped publish / Draft MR (if needed; explicit approval for EACH MR)
 ```
 
 **Verification-first starts before code** by defining expected behavior and a meaningful proof strategy. Provisional review of scenarios, contracts and partial diffs is allowed during Implementation; **formal** Independent Verification starts only after observed passing developer checks and the **Human Implementation Gate**. The diagram shows the fixed approval order, **not** a mandatory waterfall for every edit or early reviewer comment. A small standalone bug can use a lean, human-approved Design/Planning path (defined below), not silently omit those approvals. Handoff information belongs in the **same issue/MR**, not mandatory duplicate documents:
@@ -70,6 +70,8 @@ Scale the checks and independent review to risk. Solo work may use separate self
 **AI use:** Separate agent context/models when useful to reduce shared assumptions, not as a mandatory multi-agent tax or substitute for executed evidence and human review. Save approved scenarios, checked results and failures in existing Jira/MR links; no extra mandatory test-plan file and no new skill is created by this workflow.
 
 **Related references:** [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md), [pstack Build & Clean](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/05-build-and-clean.md) and [pstack Prove It Works](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md).
+
+**Accepted ordering update (2026-10-11) — Verify before publish by default:** After passing developer checks and the Human Implementation Gate, run all locally feasible **Formal Independent Verification** (separate review pass, test quality and authorized behavior checks) before publishing. The **Human Verification Gate** decides whether this evidence is sufficient for the next step. Only then seek separately scoped Push authorization and per-PR/MR human confirmation. **Exception:** when required proof depends on remote CI, a preview environment or other unavailable local integration, the human may explicitly authorize an earlier narrowly scoped branch Push (and Draft PR/MR only if necessary and separately approved). Pending remote-dependent checks stay `Not run/Blocked`; do not claim the Verification Gate passed until necessary post-publish evidence is verified, and revisit the Human Verification Gate if new evidence changes the decision. Remote CI and PR/MR review findings trigger scoped fixes, retests, independent re-verification and a renewed gate decision where applicable. Never mark Ready, Merge or Deploy automatically.
 
 ## Developer-check precondition for formal Independent Verification (agreed 2026-10-10)
 

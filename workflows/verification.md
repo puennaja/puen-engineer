@@ -38,12 +38,12 @@ Implementation: slices + optional TDD → unit tests PASS + developer checks
    ↓
 HUMAN IMPLEMENTATION GATE: scope, diff and test evidence
    ↓
-Scoped publish / Draft MR if needed (human approves EACH MR)
-   ↓
 FORMAL INDEPENDENT VERIFICATION: code review + behavior + test quality
-   ↳ Findings → scoped fix → rerun affected unit tests → reverify
    ↓
 HUMAN VERIFICATION GATE → separate MR completion / release decisions
+   ↳ Findings → scoped fix → rerun affected unit tests → reverify
+   ↓
+Scoped publish / Draft MR if needed (human approves EACH MR)
 ```
 
 **Verification-first preparation starts before code:** define trustworthy expected behavior, examples and observable proof from confirmed requirements. **Preliminary feedback** may assess API/contracts, test strategy and partial diffs before the Implementation Gate; this is **not formal Independent Verification**. A "Ready for Verification" label is useful for handoff but does not bypass the formal entry rule below. Developer tests remain Implementation-owned; formal independent evidence judgment follows the agreed entry condition.
@@ -74,6 +74,8 @@ When a reliable test harness exists, Verification may create a **small executabl
 **Human authority:** Verification-first describes **when to reason/test**, not permission to bypass the existing per-Work-Item Implementation and Verification Human Gates. Record scenario/expected result/check/evidence in existing Jira/MR. No mandatory new document or Skill.
 
 **References:** [mattpocock TDD](https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md), [pstack verify-and-ship](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/06-verify-and-ship.md).
+
+**Accepted ordering update (2026-10-11) — Verify before publish by default:** After passing developer checks and the Human Implementation Gate, run all locally feasible **Formal Independent Verification** (separate review pass, test quality and authorized behavior checks) before publishing. The **Human Verification Gate** decides whether this evidence is sufficient for the next step. Only then seek separately scoped Push authorization and per-PR/MR human confirmation. **Exception:** when required proof depends on remote CI, a preview environment or other unavailable local integration, the human may explicitly authorize an earlier narrowly scoped branch Push (and Draft PR/MR only if necessary and separately approved). Pending remote-dependent checks stay `Not run/Blocked`; do not claim the Verification Gate passed until necessary post-publish evidence is verified, and revisit the Human Verification Gate if new evidence changes the decision. Remote CI and PR/MR review findings trigger scoped fixes, retests, independent re-verification and a renewed gate decision where applicable. Never mark Ready, Merge or Deploy automatically.
 
 ## Formal Independent Verification entry: unit tests green first (agreed 2026-10-10)
 

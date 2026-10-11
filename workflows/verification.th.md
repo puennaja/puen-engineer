@@ -41,12 +41,12 @@ Implementation: Vertical Slices + TDD เมื่อเหมาะ → Unit Te
    ↓
 HUMAN IMPLEMENTATION GATE: Scope, Diff, Test Evidence
    ↓
-Scoped Publish / Draft MR เมื่อจำเป็น (Human ยืนยันทุก MR)
-   ↓
 FORMAL INDEPENDENT VERIFICATION: Code Review + Behavior + Test Quality
-   ↳ Findings → Scoped Fix → รัน Unit Tests ที่กระทบใหม่ → Reverify
    ↓
 HUMAN VERIFICATION GATE → MR Completion / Release Decision (แยก)
+   ↳ Findings → Scoped Fix → รัน Unit Tests ที่กระทบใหม่ → Reverify
+   ↓
+Scoped Publish / Draft MR เมื่อจำเป็น (Human ยืนยันทุก MR)
 ```
 
 **Verification-first Preparation เริ่มได้ก่อนเขียนโค้ด:** กำหนด Acceptance, Expected Behavior และ Evidence จาก Requirement/Contract ที่ยืนยันแล้ว ส่วน **Preliminary Feedback** ตรวจ Test Strategy, Contract หรือ Partial Diff ระหว่าง Implement ได้ แต่ **ยังไม่ใช่ Formal Independent Verification** ป้าย Ready for Verification เป็นเพียงการส่งต่องาน ไม่ได้ข้ามเกณฑ์เข้า Formal ที่อยู่ด้านล่าง Developer Tests ยังเป็นหน้าที่ Implementation

@@ -43,12 +43,12 @@ Implementation: Vertical Slice + TDD เมื่อเหมาะ → Unit Tes
    ↓
 HUMAN IMPLEMENTATION GATE: ตรวจ Scope, Diff, Tests, Publish Permission
    ↓
-Scoped Publish / Draft MR (เมื่อจำเป็น; ขอ Human ยืนยันแต่ละ MR)
-   ↓
 FORMAL INDEPENDENT VERIFICATION: Test Quality + Behavior + Code Review
-   ↳ Findings → Scoped Fix → Unit Tests PASS → Reverify
    ↓
 HUMAN VERIFICATION GATE → MR Completion / Release Decision (แยก)
+   ↳ Findings → Scoped Fix → Unit Tests PASS → Reverify
+   ↓
+Scoped Publish / Draft MR (เมื่อจำเป็น; ขอ Human ยืนยันแต่ละ MR)
 ```
 
 **Verification-first เริ่มก่อนเขียนโค้ดได้** เพื่อกำหนด Expected Behavior จาก Requirement/Contract และรับ Preliminary Feedback ระหว่าง Implement ได้ แต่ **Formal Independent Verification** ที่ประเมิน Code, Test Quality และ Behavior จริงต้องรอผล Developer Checks ที่ผ่านและ **Human Implementation Gate** ก่อน Diagram แสดงลำดับอนุมัติที่ตกลง ไม่ได้ห้าม Review เบื้องต้นหรือ Test ระหว่างเขียนโค้ด ส่วน Bug เล็กแบบ Standalone ใช้เส้นทาง Design/Planning ที่กระชับได้ (ดูด้านล่าง) แต่ไม่ข้าม Human Decisions ที่จำเป็น
@@ -73,6 +73,8 @@ Verification กำหนด **Acceptance Scenarios, Expected Outcomes และ
 Implementation เป็นเจ้าของ Code และ Unit/Regression Tests ทำทีละ Vertical Slice และใช้ **Red → Green → Refactor → Rerun** เมื่อ TDD มี Feedback ที่เชื่อถือได้ ไม่บังคับทุกงาน ห้ามเปลี่ยน Expected Result เพียงเพื่อให้ Test ผ่าน
 
 Verification กลับมาตรวจคุณภาพ Tests และรัน Independent Behavior Evidence บน Surface จริงตาม Risk เพราะ Build/Unit Tests ผ่านไม่ได้พิสูจน์ทุกอย่าง หากต้องแก้ Acceptance/Design/Scope สำคัญต้องขอ Human Decision ใช้ Jira/MR เดิม ไม่มี Gate หรือ Skill บังคับเพิ่ม
+
+**การปรับลำดับที่อนุมัติ (2026-10-11) — Verify Before Publish เป็นค่าเริ่มต้น:** เมื่อ Developer Checks ที่เกี่ยวข้องผ่านจริงและ Human Implementation Gate อนุมัติ ให้ทำ **Formal Independent Verification ในส่วนที่ทำ Local ได้** (Review แยก, Test Quality, Behavior ที่ได้รับอนุญาต) ก่อน Publish จากนั้น Human Verification Gate พิจารณาหลักฐานว่าพอสำหรับขั้นต่อไปหรือไม่ แล้วจึงขอ Push Authorization และการยืนยัน Draft PR/MR รายครั้ง **ข้อยกเว้น:** ถ้าหลักฐานจำเป็นต้องพึ่ง Remote CI, Preview Environment หรือ Integration ที่ทำ Local ไม่ได้ Human อาจอนุญาตให้ Push ไปยัง Branch ที่จำกัดขอบเขตก่อน และเปิด Draft PR/MR เฉพาะเมื่อจำเป็นและอนุมัติแยกกัน ผล Remote Checks ที่ยังไม่รันต้องเป็น `Not run/Blocked`; **ห้ามอ้างว่า Verification Gate ผ่าน** ก่อน Evidence ที่จำเป็นจะครบและ Human ยืนยันผล หลัง Publish หาก CI/PR/MR พบปัญหาต้องกลับมาแก้ใน Scope, Retest, Independent Reverify และขอ Gate ใหม่ตามผลกระทบ ห้าม Auto Ready/Merge/Deploy.
 
 ## Unit Tests ต้องผ่านก่อน Formal Independent Verification (ตกลง 2026-10-10)
 

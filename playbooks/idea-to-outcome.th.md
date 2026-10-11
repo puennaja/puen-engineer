@@ -30,6 +30,8 @@ Pilot จะผ่านในขอบเขตที่เราทดลอ�
 - **`git-commit` + Git hosting integration:** Commit แบบ Scoped; GitHub ใช้ Draft PR, GitLab ใช้ Draft MR โดยแยก Human Permission สำหรับ Push และแต่ละ PR/MR; `gitlab-draft-mr` ใช้ได้เฉพาะ GitLab
 - **Plane OAuth Role, GitHub/GitLab Permissions และ Sandbox:** เป็นสิทธิ์เชิงเทคนิคจริง; Skills ไม่สามารถแจกสิทธิ์เอง
 
+**การปรับลำดับที่อนุมัติ (2026-10-11) — Verify Before Publish เป็นค่าเริ่มต้น:** เมื่อ Developer Checks ที่เกี่ยวข้องผ่านจริงและ Human Implementation Gate อนุมัติ ให้ทำ **Formal Independent Verification ในส่วนที่ทำ Local ได้** (Review แยก, Test Quality, Behavior ที่ได้รับอนุญาต) ก่อน Publish จากนั้น Human Verification Gate พิจารณาหลักฐานว่าพอสำหรับขั้นต่อไปหรือไม่ แล้วจึงขอ Push Authorization และการยืนยัน Draft PR/MR รายครั้ง **ข้อยกเว้น:** ถ้าหลักฐานจำเป็นต้องพึ่ง Remote CI, Preview Environment หรือ Integration ที่ทำ Local ไม่ได้ Human อาจอนุญาตให้ Push ไปยัง Branch ที่จำกัดขอบเขตก่อน และเปิด Draft PR/MR เฉพาะเมื่อจำเป็นและอนุมัติแยกกัน ผล Remote Checks ที่ยังไม่รันต้องเป็น `Not run/Blocked`; **ห้ามอ้างว่า Verification Gate ผ่าน** ก่อน Evidence ที่จำเป็นจะครบและ Human ยืนยันผล หลัง Publish หาก CI/PR/MR พบปัญหาต้องกลับมาแก้ใน Scope, Retest, Independent Reverify และขอ Gate ใหม่ตามผลกระทบ ห้าม Auto Ready/Merge/Deploy.
+
 ## Step 0 — Bootstrap และ Project Readiness (ทำครั้งแรก / เมื่อเปลี่ยน Provider)
 
 **Source of Truth:** Engineering Workflow อยู่ใน `puen-engineer`; การติดตั้ง Tools และ Skills อยู่ใน [puen-stack](https://github.com/puennaja/puen-stack). เลือก Provider ตามงานจริง ไม่ผูกกับ Plane, GitHub, GitLab, Codex หรือ Claude ตายตัว.
