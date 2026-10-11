@@ -13,24 +13,32 @@ Given only a product idea **or** a feature requirement, can Codex/Claude **get t
 
 It must also be obvious **what happened and why** from the existing tracker, Git and MR records when the owner resumes tomorrow, without reading a long AI transcript or adding duplicate templates.
 
-**Initial pilot:** choose a small, reversible feature in a **private, disposable one-repo greenfield application** with synthetic data and local/staging verification. A brownfield, three-repo feature is a **second pilot** after the one-repo workflow succeeds. Plane Cloud serves as source of truth for Work Items and progress; GitLab or another authorized Git forge owns code/MR records. A successful local/staging pilot does **not** prove production readiness or business impact.
+**Initial pilot:** choose a small, reversible feature in a **private, disposable one-repo greenfield application** with synthetic data and local/staging verification. A brownfield, three-repo feature is a **second pilot** after the one-repo workflow succeeds. Plane Cloud serves as source of truth for Work Items and progress; GitHub (current pilot) or GitLab (optional) owns Git/PR-or-MR records. A successful local/staging pilot does **not** prove production readiness or business impact.
 
 ## Roles and authority
 
 - **Human product/engineering owner** (may be the solo pilot operator): agrees the problem/outcome, reviews Design and Planning, approves each Work Item Implementation and Verification Gate, independently authorizes branch publication and each Draft MR, and controls MR Ready/Merge and each production release.
 - **AI coordinator:** `work-item-runner`, tracking and routing only, with **bounded Plane CRUD** in the specified pilot project if granted; AI comments must say they are not approvals.
-- **AI specialists:** `codebase-explore` (read-only), `verify-work-item` (pre-code expectations, developer checks or eligible formal checks), `review-change` (read-only independent judgment), `git-commit` (local scoped commit) and `gitlab-draft-mr` (propose/create only after human confirms **each** Draft MR).
-- **Actual security boundary:** Plane OAuth/project role, agent workspace/sandbox, GitLab repo/branch protections and company policy. A Skill never elevates privileges.
+- **AI specialists:** `codebase-explore` (read-only), `verify-work-item` (pre-code expectations, developer checks or eligible formal checks), `review-change` (read-only independent judgment), `git-commit` (local scoped commit) and `gitlab-draft-mr` for GitLab only, or a verified GitHub CLI/connector for Draft PR (only after human confirms **each** Draft PR/MR).
+- **Actual security boundary:** Plane OAuth/project role, agent workspace/sandbox, GitHub/GitLab repo/branch protections and company policy. A Skill never elevates privileges.
 
 ## Step 0 — one-time setup from nothing
 
 1. **Plane Cloud:** create/select workspace and project via UI; grant signed-in operator appropriate Contributor/Admin role for Work Item create/update/comment; don't give unnecessary workspace-admin rights. Follow [Plane setup](https://github.com/puennaja/puen-stack/blob/master/setup/plane-cloud.md) to configure OAuth MCP separately for Codex and Claude if both will participate.
 2. **Version control:** initialize/select an approved private Git repository. Create an initial README with a lightweight product goal, a safe local run/test command and a short `AGENTS.md` only if the owner approves exact content. No obligation to install every tool or add `CLAUDE.md`.
-3. **Skills:** from cloned `puen-stack`, run `node scripts/setup.mjs`, choose **Global or Project**, agent(s), skills, Link/Copy and verify Dry-run preview. Restart agents to confirm discovery. The wizard installs **Skills only**, not Plane MCP or permissions.
+3. **Skills:** when Codex skills are already installed globally, verify discovery and **skip reinstalling**. Otherwise, from cloned `puen-stack`, run `node scripts/setup.mjs`, choose **Global or Project**, agent(s), skills, Link/Copy and verify Dry-run preview. Restart agents to confirm discovery. The wizard installs **Skills only**, not Plane MCP or permissions.
 4. **Plane read/write smoke:** call `work-item-runner` with [the Plane setup prompt](https://github.com/puennaja/puen-stack/blob/master/setup/plane-cloud.md) against one authorized synthetic practice item; confirm actual Create → Read-back → Update → Comment → Read-back results. No blind retries.
 5. **Boundary:** decide the nonproduction environment, safe synthetic fixtures, allowed repo paths and the person who approves human gates and reviewer/Release decisions. Treat Production deployment as **out of scope** unless separately authorized.
 
 **Exit evidence:** real Plane project URL, read/write smoke result and MCP identity; Git repository branch; agents actually discover skills; test environment and human decision owner recorded. If any fails, mark `Setup Blocked`, no pretending connectivity.
+
+### Current pilot baseline (2026-10-11)
+
+- Codex profiles configured by operator; only `fast` launch confirmed, verify all models/effort in `/model`
+- Codex skills installed **globally** by operator; discovery/live skill calls not yet confirmed
+- Version control = **Git**; remote host = **GitHub now**, with **GitLab** as an alternative, selected from `git remote -v`
+- GitHub uses **Draft Pull Requests (PR)**; GitLab uses **Draft Merge Requests (MR)**; do not call GitLab-only skill on GitHub
+- Every stage must capture actual events, issues, fixes, failures and evidence in `pilot-projects/docs` (or the pilot repository's `docs/`), separately from Plane index/comments
 
 ## Copy/paste kickoff prompt (new idea)
 
@@ -64,7 +72,7 @@ with real links. No production deployment unless separately authorized.
 | **7. Implementation** | Assigned coding agent under `work-item-runner` | Scoped files, diff, no destruction of pre-existing changes, applicable unit tests, real lint/build results | Child evidence summary, real `Pass/Fail/Not run/Blocked` links | **Human Implementation Gate per Work Item** after applicable checks |
 | **8. Formal independent Verification** | `review-change` + `verify-work-item` | **Only after developer-green & Implementation Gate**; fixed diff, test quality, real behavior/contract proof where safely authorized, residual risk | Independent findings, evidence, fix/retest loops | **Human Verification Gate per Work Item** |
 | **9. Local commit** | `git-commit` | Confirm intended staged hunks, tests/hooks, scoped local commit, real SHA. Tracker ID from **Plane or Jira** | Link child to branch/commit, no fake success | Scoped local commit authorization; **not Push** |
-| **10. Push + Draft MR** | `gitlab-draft-mr` | Verify actual GitLab host/project/source/target and target rationale; source-branch Push **separately authorized**; create Draft only | Link actual Draft MR, CI state, integration dependency | **Human confirms each Draft MR**; **human only** Ready/Merge |
+| **10. Push + Draft PR/MR** | GitHub: verified GitHub CLI/connector; GitLab: `gitlab-draft-mr` | Check `git remote -v`, correct remote, base/head, branch permissions; authorize Push separately, then GitHub Draft PR or GitLab Draft MR | Real PR/MR URL, CI state, dependency | **Human confirms each Draft PR/MR**; **human only** Ready/Merge |
 | **11. Release readiness** | `work-item-runner` + [Release artifact](https://github.com/puennaja/puen-engineer/blob/master/artifacts/workflows/release-operations.md) | Pinned build, included Work Items, environment, smoke/safety checks, observability, mitigation/recovery owner | Release-bound evidence and **actual** result; parent/child trace | **Human Go/No-Go for each real Production Release**; fresh human confirmation **for every anomaly intervention** |
 | **12. Observe and learn** | `work-item-runner` | Technical deploy, service health, feature behavior and **business/user outcome** recorded as separate predicates; follow-ups, measurable pilot score | Final outcome note: Healthy/Degraded/Inconclusive/Not deployed; owner/date | Human confirms outcome or another iteration; never invent a metric |
 
@@ -126,4 +134,4 @@ Capture a **baseline where observable** (manual process duration/defect rate, or
 
 No approved tracker project, missing OAuth/write permission, ambiguous owner, critical source evidence missing, rejected Gate, failed required test, prohibited side-effecting verification, inaccessible contract, no MR rights, unapproved release, no safe monitoring: record **Blocker + Owner + Smallest Next Action**. Continue other authorized read-only work if helpful. Never replace a missing evidence source with an AI guess.
 
-**Limitations:** This pilot runbook and associated Skills have not been executed end-to-end against real Plane + Codex/Claude + GitLab; tests must be performed and evidence added to the actual pilot Work Item.
+**Limitations:** This pilot runbook and associated Skills have not been executed end-to-end against real Plane + Codex + GitHub/GitLab; tests must be performed and evidence added to the actual pilot Work Item.
