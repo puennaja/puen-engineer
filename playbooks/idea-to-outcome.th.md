@@ -46,7 +46,7 @@ Pilot จะผ่านในขอบเขตที่เราทดลอ�
 - Codex Profiles: **configured by operator**, ตรวจแต่ละ Profile/Model ผ่าน `/model` ก่อนใช้งาน; `fast` ผ่านการเปิดใช้งานจริงแล้ว ส่วน Profile อื่นยังต้องยืนยัน
 - Codex Skills: **installed globally by operator**, ยังต้อง Smoke Test การค้นพบและการเรียก Skill; ไม่ต้องติดตั้งใหม่โดยอัตโนมัติ
 - Version control: **Git**; Remote Git hosting: **GitHub (Pilot ปัจจุบัน)** หรือ **GitLab (ทางเลือก)** เลือกจาก `git remote -v` และตรวจความสามารถจริง
-- GitHub: **Draft Pull Request (PR)**; GitLab: **Draft Merge Request (MR)**. ห้ามเรียก `gitlab-draft-mr` กับ GitHub หรืออ้างว่ามี GitHub Skill จนกว่าจะตรวจสอบ
+- GitHub: **Draft Pull Request (PR)**; GitLab: **Draft Merge Request (MR)**. GitHub ใช้ `git-draft-pr` ที่เพิ่มไว้แล้ว แต่ยังต้อง Smoke Test จริงก่อนถือว่า Ready; ห้ามใช้ `gitlab-draft-mr` กับ GitHub
 - ทุก Stage ต้องบันทึก Activity, Problems, Solutions, Worked/Failed/Not Verified, Evidence ใน `pilot-projects/docs`; อย่าใช้ Plane comments แทน Experiment Log ทั้งหมด
 - ตรวจตั้งแต่ต้นว่า `pilot-projects` เป็น Repository หรือ Parent Folder แล้ววาง `docs/` ให้ถูกที่
 
@@ -86,7 +86,7 @@ Do not delete, merge, deploy Production, or self-approve Human Gates.
 | **7. Implementation** | Coding Agent + `work-item-runner` | เขียนเฉพาะ Scope ที่มอบหมาย, รักษา Existing Changes, รัน Developer Unit/Lint/Build, เก็บผลจริง | Child Status + Diff/Checks Evidence | **Human Implementation Gate ราย Work Item** เมื่อ Checks ผ่านจริง |
 | **8. Independent Verification** | `review-change` + `verify-work-item` | เข้า **Formal** ได้หลัง Developer Checks ที่เกี่ยวข้องผ่านจริง + Human Implementation Gate แล้ว; ตรวจ Fixed Diff, Behavior, Test Quality, Integration | Findings/Pass/Fail/Not run/Blocked พร้อม Evidence; แก้แล้ว Reverify | **Human Verification Gate ราย Work Item** |
 | **9. Local Commit** | `git-commit` | Scoped Stage, Commit ตาม `[WORK-123] feat: ...` โดยใช้ **Plane Work Item ID จริง**, ทดสอบ Hooks และบันทึก SHA | Link Branch/Commit กลับ Child | ต้องมี Scoped Commit Authorization; **Commit ไม่ใช่ Push** |
-| **10. Push + Draft PR/MR** | GitHub: GitHub CLI/Connector ที่ตรวจว่ามีสิทธิ์; GitLab: `gitlab-draft-mr` | ตรวจ `git remote -v`, Host/Repo/Source/Target จริง ไม่เดา `master`; ขอ Push Permission แยก; GitHub เปิด Draft PR / GitLab เปิด Draft MR | Link PR/MR URL จริง + CI/Gaps | **Human Confirm ทุก Draft PR/MR แยก**; Ready/Merge **Human เท่านั้น** |
+| **10. Push + Draft PR/MR** | GitHub: `git-draft-pr` (ใช้ `gh` หรือ GitHub integration ที่ยืนยันสิทธิ์แล้ว); GitLab: `gitlab-draft-mr` | ตรวจ `git remote -v`, Host/Repo/Source/Target จริง ไม่เดา `master`; ขอ Push Permission แยก; GitHub เปิด Draft PR / GitLab เปิด Draft MR | Link PR/MR URL จริง + CI/Gaps | **Human Confirm ทุก Draft PR/MR แยก**; Ready/Merge **Human เท่านั้น** |
 | **11. Release Readiness** | `work-item-runner` | ระบุ Immutable Build, Environment, Deployment Scope, Smoke Checks, Monitoring, Recovery Owner | Release Evidence / Stage Outcome | **Human Go/No-Go ก่อน Production ทุก Release** |
 | **12. Observe** | `work-item-runner` | แยก Deploy สำเร็จจาก Service Health, Changed Behavior และ Users/Business Outcome | Actual Result: Local/Staging/Production พร้อมหลักฐาน | Anomaly-driven Intervention ทุก Action ต้อง **Human Confirm ใหม่** |
 | **13. Outcome & Learning** | `work-item-runner` | สรุป Success Signal, Residual Risks, Defects, Human Corrections, Runtime, Next Experiment | Outcome Note + Follow-up Owner/Date | Human รับรอง Outcome หรือเลือก Iterate ใหม่ |
