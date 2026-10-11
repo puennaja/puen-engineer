@@ -27,19 +27,28 @@ Pilot จะผ่านในขอบเขตที่เราทดลอ�
 - **`codebase-explore`:** สำรวจ Codebase แบบ Read-only / Greenfield Feasibility
 - **`verify-work-item`:** เตรียม Expected Behavior ก่อนโค้ด, Developer Checks, และ Formal Verification เมื่อถึงเงื่อนไขจริง
 - **`review-change`:** Review Diff อย่างเป็นอิสระ พร้อม Risks/Test Quality
-- **`git-commit` / `gitlab-draft-mr`:** Commit แบบ Scoped และเปิด Draft MR โดยแยก Human Permission สำหรับ Push กับแต่ละ MR
-- **Plane OAuth Role, GitLab Permissions และ Sandbox:** เป็นสิทธิ์เชิงเทคนิคจริง; Skills ไม่สามารถแจกสิทธิ์เอง
+- **`git-commit` + Git hosting integration:** Commit แบบ Scoped; GitHub ใช้ Draft PR, GitLab ใช้ Draft MR โดยแยก Human Permission สำหรับ Push และแต่ละ PR/MR; `gitlab-draft-mr` ใช้ได้เฉพาะ GitLab
+- **Plane OAuth Role, GitHub/GitLab Permissions และ Sandbox:** เป็นสิทธิ์เชิงเทคนิคจริง; Skills ไม่สามารถแจกสิทธิ์เอง
 
 ## Step 0 — Setup ตั้งแต่ไม่มีอะไรเลย (ทำครั้งเดียว)
 
 1. **Plane Cloud:** เข้า [app.plane.so](https://app.plane.so) สร้าง Workspace และ Project สำหรับ Pilot ด้วยตัวเอง กำหนด Project Identifier (เช่น `PILOT` เป็นตัวอย่างเท่านั้น), ให้บัญชีที่เชื่อมมี Project Role **Contributor/Admin** เพื่อ Create/Update/Comment ได้ ไม่ต้องใช้สิทธิ์ Admin กว้างเกินจำเป็น
 2. **Repository:** เตรียม Git Repo ของ Product ที่ได้รับอนุญาต (เลือก Private ถ้ามีข้อมูลส่วนตัว/บริษัท) Greenfield เริ่มต้น Repo เปล่าได้ ไม่ต้องบังคับสร้างสถาปัตยกรรมก่อน Discovery
-3. **Skills:** Clone/Update [puen-stack](https://github.com/puennaja/puen-stack) แล้วรัน `node scripts/setup.mjs` เลือก **Global หรือ Project → Codex/Claude/Both → Skills → Link/Copy → Dry-run Preview → Confirm**; ต้องมี Node.js 18+
+3. **Skills:** ถ้าติดตั้ง Codex Skills แบบ Global แล้ว ให้ตรวจว่า Codex ค้นพบได้จริงและ **ข้ามการติดตั้งซ้ำ**; ถ้ายังไม่ติดตั้งจึง Clone/Update [puen-stack](https://github.com/puennaja/puen-stack) แล้วรัน `node scripts/setup.mjs` เลือก **Global หรือ Project → Codex/Claude/Both → Skills → Link/Copy → Dry-run Preview → Confirm**; ต้องมี Node.js 18+
 4. **Plane MCP:** ติดตั้งและ Login Official Plane Cloud MCP แบบ OAuth แยกสำหรับ Codex และ Claude ตาม [Setup Guide ภาษาไทย](https://github.com/puennaja/puen-stack/blob/master/setup/plane-cloud.th.md) ตัว Skill Installer **ไม่ได้ Login Plane หรือเปิด Write Permission ให้อัตโนมัติ**
 5. **ทดสอบ Connection:** ใช้ `work-item-runner` ทำ Read-only ตรวจ Workspace/Project แล้วขออนุญาตสร้าง **Synthetic Pilot Work Item 1 รายการ** จากนั้น Create → Read Back → Update → Comment → Read Back ต้องเห็น ID/URL จริงใน Plane
 6. **Human & Safety:** กำหนด Owner ของ Gate, Scope ที่ Agent แก้ Code ได้, Safe Test Fixtures และเลือก Local/Staging ก่อน **ไม่ต้องเปิด Production Access** เพื่อให้ Pilot ครบวงจรตัดสินใจ
 
 **Setup ถือว่าพร้อมเมื่อ:** Skills ถูกค้นพบจริง, Plane MCP Authenticate ได้กับ Project ที่ตั้งใจ, การทดสอบ Create/Update/Comment สำเร็จพร้อมหลักฐาน และมี Repo/Owner/Test Environment ที่ชัดเจน ถ้าไม่ผ่านให้บันทึก `Setup Blocked` ไม่เดา
+
+### Current Pilot baseline (2026-10-11)
+
+- Codex Profiles: **configured by operator**, ตรวจแต่ละ Profile/Model ผ่าน `/model` ก่อนใช้งาน; `fast` ผ่านการเปิดใช้งานจริงแล้ว ส่วน Profile อื่นยังต้องยืนยัน
+- Codex Skills: **installed globally by operator**, ยังต้อง Smoke Test การค้นพบและการเรียก Skill; ไม่ต้องติดตั้งใหม่โดยอัตโนมัติ
+- Version control: **Git**; Remote Git hosting: **GitHub (Pilot ปัจจุบัน)** หรือ **GitLab (ทางเลือก)** เลือกจาก `git remote -v` และตรวจความสามารถจริง
+- GitHub: **Draft Pull Request (PR)**; GitLab: **Draft Merge Request (MR)**. ห้ามเรียก `gitlab-draft-mr` กับ GitHub หรืออ้างว่ามี GitHub Skill จนกว่าจะตรวจสอบ
+- ทุก Stage ต้องบันทึก Activity, Problems, Solutions, Worked/Failed/Not Verified, Evidence ใน `pilot-projects/docs`; อย่าใช้ Plane comments แทน Experiment Log ทั้งหมด
+- ตรวจตั้งแต่ต้นว่า `pilot-projects` เป็น Repository หรือ Parent Folder แล้ววาง `docs/` ให้ถูกที่
 
 ## Step 1 — โยน Idea ให้ AI
 
@@ -77,7 +86,7 @@ Do not delete, merge, deploy Production, or self-approve Human Gates.
 | **7. Implementation** | Coding Agent + `work-item-runner` | เขียนเฉพาะ Scope ที่มอบหมาย, รักษา Existing Changes, รัน Developer Unit/Lint/Build, เก็บผลจริง | Child Status + Diff/Checks Evidence | **Human Implementation Gate ราย Work Item** เมื่อ Checks ผ่านจริง |
 | **8. Independent Verification** | `review-change` + `verify-work-item` | เข้า **Formal** ได้หลัง Developer Checks ที่เกี่ยวข้องผ่านจริง + Human Implementation Gate แล้ว; ตรวจ Fixed Diff, Behavior, Test Quality, Integration | Findings/Pass/Fail/Not run/Blocked พร้อม Evidence; แก้แล้ว Reverify | **Human Verification Gate ราย Work Item** |
 | **9. Local Commit** | `git-commit` | Scoped Stage, Commit ตาม `[WORK-123] feat: ...` โดยใช้ **Plane Work Item ID จริง**, ทดสอบ Hooks และบันทึก SHA | Link Branch/Commit กลับ Child | ต้องมี Scoped Commit Authorization; **Commit ไม่ใช่ Push** |
-| **10. Push + Draft MR** | `gitlab-draft-mr` | ตรวจ GitLab Host/Project, Source/Target จริง ไม่เดา `master`; ขอ Push Permission แยก แล้ว Draft MR | Link MR URL จริง + CI/Gaps | **Human Confirm ทุก Draft MR แยก**; Ready/Merge **Human เท่านั้น** |
+| **10. Push + Draft PR/MR** | GitHub: GitHub CLI/Connector ที่ตรวจว่ามีสิทธิ์; GitLab: `gitlab-draft-mr` | ตรวจ `git remote -v`, Host/Repo/Source/Target จริง ไม่เดา `master`; ขอ Push Permission แยก; GitHub เปิด Draft PR / GitLab เปิด Draft MR | Link PR/MR URL จริง + CI/Gaps | **Human Confirm ทุก Draft PR/MR แยก**; Ready/Merge **Human เท่านั้น** |
 | **11. Release Readiness** | `work-item-runner` | ระบุ Immutable Build, Environment, Deployment Scope, Smoke Checks, Monitoring, Recovery Owner | Release Evidence / Stage Outcome | **Human Go/No-Go ก่อน Production ทุก Release** |
 | **12. Observe** | `work-item-runner` | แยก Deploy สำเร็จจาก Service Health, Changed Behavior และ Users/Business Outcome | Actual Result: Local/Staging/Production พร้อมหลักฐาน | Anomaly-driven Intervention ทุก Action ต้อง **Human Confirm ใหม่** |
 | **13. Outcome & Learning** | `work-item-runner` | สรุป Success Signal, Residual Risks, Defects, Human Corrections, Runtime, Next Experiment | Outcome Note + Follow-up Owner/Date | Human รับรอง Outcome หรือเลือก Iterate ใหม่ |
@@ -146,7 +155,7 @@ real action, its owner, and the smallest safe next action. Do not write.
 - Requirement/Owner/Risk สำคัญยัง Unknown → ถามเฉพาะคำถามที่ต้องตัดสินใจ
 - Required Tests ล้มเหลว → **ไม่เข้า Formal Verification** และไม่เคลม Pass
 - Test ต้องยุ่ง Production/DB/Payment จริง → หยุดก่อน Side Effect; หา Safe Alternative
-- Branch/Target หรือ GitLab Permissions ไม่ชัด → ห้าม Push/MR มั่ว
+- Branch/Target หรือ GitHub/GitLab Permissions ไม่ชัด → ห้าม Push/MR มั่ว
 - ไม่มี Production Authorization → Pilot ทำ Local/Staging ต่อได้ แต่ Status Production ต้องเป็น `Not deployed / Not tested`
 
-**สถานะ:** Playbook นี้และ Skills ยังไม่ได้ทดสอบ End-to-end ด้วย Plane + Codex/Claude + GitLab ของมึงจริง ต้องทำ Pilot และเก็บ Observed Results ก่อนยืนยันประสิทธิภาพ
+**สถานะ:** Playbook นี้และ Skills ยังไม่ได้ทดสอบ End-to-end ด้วย Plane + Codex + GitHub/GitLab ของมึงจริง ต้องทำ Pilot และเก็บ Observed Results ก่อนยืนยันประสิทธิภาพ
