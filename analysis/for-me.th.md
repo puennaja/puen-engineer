@@ -168,3 +168,18 @@ Write description only; do not push, open MR, merge, or deploy.
 - [Multi-Repo Feature — FE, BFF, BE และ Database](./for-me-private-finance-multi-repo-example.th.md)
 
 > ทุกตัวอย่างเป็นสถานการณ์สมมติ ใช้งานทีละ Skill ตามความจำเป็น และต้องตรวจหลักฐาน/ขอบเขต Git/สิทธิ์ตามนโยบายของทีม
+
+## 8. Optional — Ponytail สำหรับ Code ที่เล็กแต่ครบและปลอดภัย
+
+**Ponytail ไม่ใช่ Lifecycle Runner**; ให้ใช้เฉพาะตอน Implement หรือ Review เพื่อหลีกเลี่ยง Overengineering โดยยังคง Validation, Security, Error Handling และ Test ที่จำเป็น
+
+- **Implementation:** เริ่ม `ponytail full` หลัง Scope/Design อนุมัติแล้ว ให้ Coding Agent ใช้ของเดิมก่อน ไม่เพิ่ม Abstraction/Dependency โดยไม่มีเหตุผล และทดสอบ logic ที่เสี่ยง เช่น เงิน/Refund/Concurrency
+- **Review:** `ponytail-review` ใช้ตรวจ bugs/security/load/callers นอก Diff และโค้ดเกินจำเป็น; **Matt `code-review` ยังเป็นตัวหลัก** สำหรับ Standards และ Spec Compliance. เพิ่ม Ponytail เฉพาะ High Risk/รีวิวก่อน Commit ที่ต้องอ่าน Uncommitted Diff
+- **Repo Audit:** `ponytail-audit` ใช้ตรวจ Legacy เฉพาะพื้นที่เสี่ยงเมื่อจำเป็น ไม่ต้องรันทุก Ticket
+- **ไม่ต้องใช้ทุกอัน:** `lite/full/ultra` ต่างกัน; `ultra` อาจย้อนถาม Requirement ที่ทีมอนุมัติแล้ว จึงไม่ใช้เป็น Default; `ponytail-gain` เป็น benchmark ของผู้พัฒนา ไม่ใช่ Cost Measurement ของเรา
+
+Prompt ตัวอย่าง: `/ponytail-review ดู diff ที่ยังไม่ commit นี้หน่อย เน้นยอดเงิน timezone refund และ caller ที่อาจพัง ขอแค่ findings ไม่ต้องแก้`
+
+**Codex:** upstream ระบุว่า command อาจอยู่ใต้ namespace `$ponytail:ponytail-review`; ต้องตรวจการติดตั้งและ Hooks จริง และเช็กนโยบายบริษัทก่อนเปิด always-on mode
+
+[อ่าน Analysis + Private Finance Prompt ภาษาไทยของ Ponytail](./ponytail/README.th.md)
