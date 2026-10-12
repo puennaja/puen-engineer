@@ -168,3 +168,18 @@ Write description only; do not push, open MR, merge, or deploy.
 - [Multi-Repo Feature — FE, BFF, BE และ Database](./for-me-private-finance-multi-repo-example.th.md)
 
 > ทุกตัวอย่างเป็นสถานการณ์สมมติ ใช้งานทีละ Skill ตามความจำเป็น และต้องตรวจหลักฐาน/ขอบเขต Git/สิทธิ์ตามนโยบายของทีม
+
+## 8. Optional Visualization — Archify
+
+**Archify เป็น Skill สำหรับสร้าง Interactive HTML Diagrams ไม่ใช่ตัว Design/Review/Verify ระบบเอง.** เหมาะใช้เมื่อภาพช่วยทีมเข้าใจงานได้ดีกว่าข้อความ:
+
+- หลัง pstack `/how` → ใช้ **archify architecture/sequence** ทำ As-Is จาก Source Code ที่ตรวจจริง
+- หลัง pstack `/architect with checkpoint` → ใช้ **archify architecture/dataflow** ทำ To-Be ให้ทีม Review
+- ตอนอธิบาย Jira/Review/Release Gates → ใช้ **archify workflow/lifecycle** เฉพาะเมื่อ flow ซับซ้อน
+- หลัง Implement → ใช้ **Architecture Delta** เปรียบเทียบ diagram before/after โดยไม่อ้างว่าเป็น proof ของ runtime impact
+
+Prompt ตัวอย่าง: `ใช้ archify วาด Sequence ของรายการใช้จ่าย private-finance จาก FE → BFF → BE → DB เอาเฉพาะ flow ที่ยืนยันจากโค้ดได้ และบอก unknown ด้วย`
+
+ต้องตรวจหลักฐานแต่ละ Repo, source revision และห้ามส่งข้อมูลบริษัทสู่ public repo. Archify validate/rendering ผ่าน **ไม่ใช่** behavior tests หรือ design approval.
+
+[อ่าน Analysis + Prompt ภาษาไทยของ Archify](./archify/README.th.md)
