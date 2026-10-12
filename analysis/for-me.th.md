@@ -158,6 +158,13 @@ Write description only; do not push, open MR, merge, or deploy.
 
 **เกณฑ์ย้ายเข้า puen-stack:** ขณะใช้จริงจดว่าทำไม skill ไหนดี/ไม่ดี, token/cost, test/review outcomes และ friction. เขียน custom skills เฉพาะส่วนที่ซ้ำ/ขาด โดยไม่ผูก workflow กับ provider เดียว.
 
-## 7. ตัวอย่างการใช้งานจริง
+## 7. ตัวอย่างการใช้งานจริง (Private Finance)
 
-ตัวอย่าง Feature วิเคราะห์การใช้จ่ายใน `private-finance` (FE → BFF → BE → Database) พร้อม Prompt ภาษาไทยตั้งแต่ Requirement ถึง Draft MR: [อ่าน Example แยกไฟล์](./for-me-private-finance-example.th.md)
+ตัวอย่าง Prompt ภาษาไทยสั้น ๆ โดยสมมติ Product `private-finance` มี Architecture `FE → BFF → BE → Database`
+
+- [เพิ่ม Feature วิเคราะห์การใช้จ่าย — ตั้งแต่ Requirement ถึง Draft MR](./for-me-private-finance-example.th.md)
+- [Bug Fix — Dashboard สรุปรายจ่ายไม่ตรงรายการ](./for-me-private-finance-bugfix-example.th.md)
+- [Refactoring — ลด Logic แปลง Transaction ที่ซ้ำโดยรักษา Behavior](./for-me-private-finance-refactoring-example.th.md)
+- [Multi-Repo Feature — FE, BFF, BE และ Database](./for-me-private-finance-multi-repo-example.th.md)
+
+> ทุกตัวอย่างเป็นสถานการณ์สมมติ ใช้งานทีละ Skill ตามความจำเป็น และต้องตรวจหลักฐาน/ขอบเขต Git/สิทธิ์ตามนโยบายของทีม
