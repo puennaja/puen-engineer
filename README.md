@@ -18,3 +18,7 @@
 - [Tooling Setup in puen-stack](https://github.com/puennaja/puen-stack/blob/master/setup/codex-model-routing.th.md)
 
 Workflow อยู่ที่นี่, Tooling อยู่ที่ puen-stack และหลักฐานการทดลอง (Activity, Problems, Solutions, Verified/Failed Results) ต้องอยู่ใน `pilot-projects/docs` ของ Pilot Project
+
+## Engineering Knowledge
+
+- [Design Patterns — Refactoring.Guru (TH): all 22 patterns, trade-offs, BE/BFF examples](./knowledge/design-patterns/refactoring-guru-patterns.th.md)
